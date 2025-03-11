@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "56zsRhYpUL5Mdyuno7+Y1hcGIS0aZ4Emo2K1uL9pObM=",
+  "Source": "WebApp",
+  "BasePath": "_content/WebApp",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "WebApp\\wwwroot",
+      "Source": "WebApp",
+      "ContentRoot": "D:\\MySite\\MyApp\\WebApp\\wwwroot\\",
+      "BasePath": "_content/WebApp",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\MySite\\MyApp\\WebApp\\wwwroot\\images\\profile\\be60a53c-f5a2-4ad5-a6ab-613adff8df23.png",
+      "SourceId": "WebApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\MySite\\MyApp\\WebApp\\wwwroot\\",
+      "BasePath": "_content/WebApp",
+      "RelativePath": "images/profile/be60a53c-f5a2-4ad5-a6ab-613adff8df23.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\profile\\be60a53c-f5a2-4ad5-a6ab-613adff8df23.png"
+    }
+  ]
+}

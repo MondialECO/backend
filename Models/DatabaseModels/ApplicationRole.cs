@@ -1,0 +1,13 @@
+﻿using AspNetCore.Identity.MongoDbCore.Models;
+using Microsoft.AspNetCore.Identity;
+using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
+
+namespace WebApp.Models.DatabaseModels
+{
+    public class ApplicationRole : MongoIdentityRole<Guid>
+    {
+        [Required]
+        public string Description { get; set; } // Add custom properties like description if needed
+    }
+}
