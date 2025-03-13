@@ -20,6 +20,7 @@ namespace WebApp.DbContext
         public IMongoCollection<ContactModel> Contacts => _database.GetCollection<ContactModel>("Contacts");
         public IMongoCollection<AboutModel> About => _database.GetCollection<AboutModel>("About");
         public IMongoCollection<FAQsModel> FAQs => _database.GetCollection<FAQsModel>("FAQs");
+        public IMongoCollection<TestimonialModel> Testimonials => _database.GetCollection<TestimonialModel>("Testimonials");
 
 
 

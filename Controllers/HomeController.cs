@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.InterfaceRepository;
+using WebApp.Models;
+using WebApp.Models.DatabaseModels;
 using WebApp.Services.Interface;
 using WebApp.Services.Repository;
 
@@ -11,12 +14,15 @@ namespace WebApp.Controllers
     {
         private readonly IInfoRepository _infoRepository;
         private readonly IFAQsRepository _faqRepository;
+        private readonly ITestimonialRepository _testimonialRepository;
 
         public HomeController(IInfoRepository infoRepository,
-            IFAQsRepository faqRepository)
+            IFAQsRepository faqRepository,
+            ITestimonialRepository testimonialRepository)
         {
             _infoRepository = infoRepository;
             _faqRepository = faqRepository;
+            _testimonialRepository = testimonialRepository;
         }
 
 
@@ -62,5 +68,63 @@ namespace WebApp.Controllers
             return Ok(faqs);
         }
 
+        // GET: api/Home/best-testimonials
+        [HttpGet("best-testimonials")]
+        public async Task<ActionResult<IEnumerable<TestimonialModel>>> GetBestTestimonials()
+        {
+            var bestTestimonials = await _testimonialRepository.GetBestAsync();
+            return Ok(bestTestimonials);
+        }
+
+
+        // POST: api/Admin/create-testimonial
+        [HttpPost("create-testimonial")]
+        public async Task<ActionResult> CreateTestimonial(TestimonialUserModel model)
+        {
+            string imagePath = null;
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (model.imageFile != null && model.imageFile.Length > 0)
+            {
+                var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Testimonial");
+
+                if (!Directory.Exists(imagesPath))
+                    Directory.CreateDirectory(imagesPath);
+
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(model.imageFile.FileName)}";
+                var filePath = Path.Combine(imagesPath, fileName);
+
+                try
+                {
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.imageFile.CopyToAsync(stream);
+                    }
+
+                    imagePath = $"/images/Testimonial/{fileName}";
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, new { Message = "An error occurred while uploading the image.", Error = ex.Message });
+                }
+            }
+
+            // Create TestimonialModel to store in MongoDB
+            var testimonial = new TestimonialModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                CompanyName = model.CompanyName,
+                Description = model.Description,
+                Profession = model.Profession,
+                Point = model.Point,
+                Author = model.Author,
+                Image = imagePath
+            };
+
+            await _testimonialRepository.AddOneAsync(testimonial);
+            return Ok(new { Message = "Testimonial Created successfully." });
+        }
     }
 }

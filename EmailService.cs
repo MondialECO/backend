@@ -39,6 +39,7 @@ public class EmailService
 
             return true;
         }
+
         catch (Exception ex)
         {
             Console.WriteLine($"Email sending failed: {ex.Message}");

@@ -11,6 +11,8 @@ using WebApp.Services.Repository;
 using WebApp.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using WebApp.Models.DatabaseModels;
+using WebApp.InterfaceRepository;
+using WebApp.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +72,7 @@ builder.Services.AddScoped<IUserGeolocationRepository, UserGeolocationRepository
 builder.Services.AddScoped<IUserLogsRepository, UserLogsRepository>();
 builder.Services.AddScoped<IInfoRepository, InfoRepository>();
 builder.Services.AddSingleton<IFAQsRepository, FAQsRepository>();
+builder.Services.AddSingleton<ITestimonialRepository, TestimonialRepository>();
 
 
 
@@ -93,7 +96,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

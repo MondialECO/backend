@@ -15,7 +15,6 @@ namespace WebApp.Helpers
             string audience,
             int expiryHours = 1)
         {
-            // Create claims
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId),
@@ -23,11 +22,9 @@ namespace WebApp.Helpers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            // Generate the key and credentials
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            // Create the token
             var token = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,
@@ -36,7 +33,6 @@ namespace WebApp.Helpers
                 signingCredentials: creds
             );
 
-            // Return the serialized token
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

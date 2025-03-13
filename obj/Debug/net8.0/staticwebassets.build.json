@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8GWMuqRQwThUQAz6xuftletljrtj3EFDJh2/YZAi4/U=",
+  "Hash": "87lYJG6VJMZCZDLVH0WHKaAqWa95O/4QnT6webwHSTw=",
   "Source": "WebApp",
   "BasePath": "_content/WebApp",
   "Mode": "Default",
@@ -34,6 +34,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\profile\\be60a53c-f5a2-4ad5-a6ab-613adff8df23.png"
+    },
+    {
+      "Identity": "D:\\GitHub\\WebApp\\wwwroot\\images\\Testimonial\\b9a5d805-0499-455c-8117-d6e2241ecf05.JPG",
+      "SourceId": "WebApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\GitHub\\WebApp\\wwwroot\\",
+      "BasePath": "_content/WebApp",
+      "RelativePath": "images/Testimonial/b9a5d805-0499-455c-8117-d6e2241ecf05.JPG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Testimonial\\b9a5d805-0499-455c-8117-d6e2241ecf05.JPG"
     }
   ]
 }
