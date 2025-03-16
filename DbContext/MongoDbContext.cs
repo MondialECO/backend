@@ -21,8 +21,8 @@ namespace WebApp.DbContext
         public IMongoCollection<AboutModel> About => _database.GetCollection<AboutModel>("About");
         public IMongoCollection<FAQsModel> FAQs => _database.GetCollection<FAQsModel>("FAQs");
         public IMongoCollection<TestimonialModel> Testimonials => _database.GetCollection<TestimonialModel>("Testimonials");
-
-
+        public IMongoCollection<BlogCommentModel> BlogsComments => _database.GetCollection<BlogCommentModel>("BlogsComments");
+        public IMongoCollection<BlogModel> Blogs => _database.GetCollection<BlogModel>("Blogs");
 
     }
 

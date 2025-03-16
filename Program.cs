@@ -73,6 +73,7 @@ builder.Services.AddScoped<IUserLogsRepository, UserLogsRepository>();
 builder.Services.AddScoped<IInfoRepository, InfoRepository>();
 builder.Services.AddSingleton<IFAQsRepository, FAQsRepository>();
 builder.Services.AddSingleton<ITestimonialRepository, TestimonialRepository>();
+builder.Services.AddSingleton<IBlogRepository, BlogRepository>();
 
 
 

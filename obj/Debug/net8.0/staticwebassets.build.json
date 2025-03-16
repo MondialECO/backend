@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "87lYJG6VJMZCZDLVH0WHKaAqWa95O/4QnT6webwHSTw=",
+  "Hash": "WwHL9hRq+7Bj1FVEjzJI4ogv3SIjUb2C64yr+srJIJc=",
   "Source": "WebApp",
   "BasePath": "_content/WebApp",
   "Mode": "Default",
@@ -36,12 +36,12 @@
       "OriginalItemSpec": "wwwroot\\images\\profile\\be60a53c-f5a2-4ad5-a6ab-613adff8df23.png"
     },
     {
-      "Identity": "D:\\GitHub\\WebApp\\wwwroot\\images\\Testimonial\\b9a5d805-0499-455c-8117-d6e2241ecf05.JPG",
+      "Identity": "D:\\GitHub\\WebApp\\wwwroot\\images\\Testimonial\\f1d5c560-e209-49a9-b327-834ece099a1e.jpg",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\GitHub\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
-      "RelativePath": "images/Testimonial/b9a5d805-0499-455c-8117-d6e2241ecf05.JPG",
+      "RelativePath": "images/Testimonial/f1d5c560-e209-49a9-b327-834ece099a1e.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -52,7 +52,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\Testimonial\\b9a5d805-0499-455c-8117-d6e2241ecf05.JPG"
+      "OriginalItemSpec": "wwwroot\\images\\Testimonial\\f1d5c560-e209-49a9-b327-834ece099a1e.jpg"
     }
   ]
 }
