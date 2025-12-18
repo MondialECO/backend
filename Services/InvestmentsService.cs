@@ -28,6 +28,10 @@ namespace WebApp.Services
         {
             return await _repo.GetByIdeaIdAsync(ideaId);
         }
+        public async Task<IEnumerable<Investments>> GetByIdeaIdsAsync(List<string> ideaIds)
+        {
+            return await _repo.GetByIdeaIdsAsync(ideaIds);
+        }
 
         public async Task<IEnumerable<Investments>> GetByInvestorAsync(string investorId)
         {

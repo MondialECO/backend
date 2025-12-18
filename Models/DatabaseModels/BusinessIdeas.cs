@@ -8,8 +8,6 @@ namespace WebApp.Models.DatabaseModels
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
-
-        [BsonRepresentation(BsonType.ObjectId)]
         public string? CreatorId { get; set; }
         public string Title { get; set; }
         public string Summary { get; set; }

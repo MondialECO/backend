@@ -3,100 +3,28 @@
   "WorkspaceRootPath": "D:\\GitHub\\Client_Project\\mondial_eco_API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\businessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\businessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\controllers\\businessideacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\businessideacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\transactionsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\transactionsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\investmentsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\investmentsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\repository\\transactionsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\transactionsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\repository\\submmitdatarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\submmitdatarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\repository\\mongorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\mongorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\repository\\investmentsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\investmentsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\repository\\businessideasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\businessideasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\interface\\isubmmitdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\interface\\isubmmitdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\interface\\itransactionsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\interface\\itransactionsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\interface\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\interface\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\interface\\iinvestmentsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\interface\\iinvestmentsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\interface\\ibusinessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\interface\\ibusinessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\dbcontext\\mongodbsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:dbcontext\\mongodbsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\dbcontext\\mongodbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:dbcontext\\mongodbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\controllers\\transactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\transactioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\controllers\\investmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\investmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\models\\databasemodels\\businessideas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\databasemodels\\businessideas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\models\\databasemodels\\transactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\databasemodels\\transactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\models\\databasemodels\\investments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\databasemodels\\investments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\repository\\investmentsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\investmentsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\models\\databasemodels\\businessideas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\databasemodels\\businessideas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\businessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\businessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\models\\databasemodels\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\databasemodels\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\repository\\businessideasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\businessideasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\models\\databasemodels\\applicationrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\databasemodels\\applicationrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\controllers\\creatorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\creatorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -106,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -130,314 +58,80 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:52.569Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "TransactionsService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\TransactionsService.cs",
-              "RelativeDocumentMoniker": "Services\\TransactionsService.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\TransactionsService.cs",
-              "RelativeToolTip": "Services\\TransactionsService.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:47.377Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "InvestmentsService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\InvestmentsService.cs",
-              "RelativeDocumentMoniker": "Services\\InvestmentsService.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\InvestmentsService.cs",
-              "RelativeToolTip": "Services\\InvestmentsService.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:44.009Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "BusinessIdeasService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\BusinessIdeasService.cs",
-              "RelativeDocumentMoniker": "Services\\BusinessIdeasService.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\BusinessIdeasService.cs",
-              "RelativeToolTip": "Services\\BusinessIdeasService.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAUwCgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:40.672Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "TransactionsRepository.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\TransactionsRepository.cs",
-              "RelativeDocumentMoniker": "Services\\Repository\\TransactionsRepository.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\TransactionsRepository.cs",
-              "RelativeToolTip": "Services\\Repository\\TransactionsRepository.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:36.177Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BusinessIdeaController.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\BusinessIdeaController.cs",
-              "RelativeDocumentMoniker": "Controllers\\BusinessIdeaController.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\BusinessIdeaController.cs",
-              "RelativeToolTip": "Controllers\\BusinessIdeaController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABUAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:51:32.407Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "SubmmitdataRepository.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\SubmmitdataRepository.cs",
-              "RelativeDocumentMoniker": "Services\\Repository\\SubmmitdataRepository.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\SubmmitdataRepository.cs",
-              "RelativeToolTip": "Services\\Repository\\SubmmitdataRepository.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAA1wAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:32.494Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "MongoRepository.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\MongoRepository.cs",
-              "RelativeDocumentMoniker": "Services\\Repository\\MongoRepository.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\MongoRepository.cs",
-              "RelativeToolTip": "Services\\Repository\\MongoRepository.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABMAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:26.821Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "InvestmentsRepository.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\InvestmentsRepository.cs",
-              "RelativeDocumentMoniker": "Services\\Repository\\InvestmentsRepository.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\InvestmentsRepository.cs",
-              "RelativeToolTip": "Services\\Repository\\InvestmentsRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:22.306Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "BusinessIdeasRepository.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\BusinessIdeasRepository.cs",
-              "RelativeDocumentMoniker": "Services\\Repository\\BusinessIdeasRepository.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\BusinessIdeasRepository.cs",
-              "RelativeToolTip": "Services\\Repository\\BusinessIdeasRepository.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:15.369Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ISubmmitdata.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\ISubmmitdata.cs",
-              "RelativeDocumentMoniker": "Services\\Interface\\ISubmmitdata.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\ISubmmitdata.cs",
-              "RelativeToolTip": "Services\\Interface\\ISubmmitdata.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:11.624Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ITransactionsService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\ITransactionsService.cs",
-              "RelativeDocumentMoniker": "Services\\Interface\\ITransactionsService.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\ITransactionsService.cs",
-              "RelativeToolTip": "Services\\Interface\\ITransactionsService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:09.635Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "IRepository.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\IRepository.cs",
-              "RelativeDocumentMoniker": "Services\\Interface\\IRepository.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\IRepository.cs",
-              "RelativeToolTip": "Services\\Interface\\IRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:06.767Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "IInvestmentsService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\IInvestmentsService.cs",
-              "RelativeDocumentMoniker": "Services\\Interface\\IInvestmentsService.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\IInvestmentsService.cs",
-              "RelativeToolTip": "Services\\Interface\\IInvestmentsService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:04.325Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "IBusinessIdeasService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\IBusinessIdeasService.cs",
-              "RelativeDocumentMoniker": "Services\\Interface\\IBusinessIdeasService.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\IBusinessIdeasService.cs",
-              "RelativeToolTip": "Services\\Interface\\IBusinessIdeasService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:52:01.745Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "MongoDbSettings.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\DbContext\\MongoDbSettings.cs",
-              "RelativeDocumentMoniker": "DbContext\\MongoDbSettings.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\DbContext\\MongoDbSettings.cs",
-              "RelativeToolTip": "DbContext\\MongoDbSettings.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:51:54.469Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "MongoDbContext.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\DbContext\\MongoDbContext.cs",
-              "RelativeDocumentMoniker": "DbContext\\MongoDbContext.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\DbContext\\MongoDbContext.cs",
-              "RelativeToolTip": "DbContext\\MongoDbContext.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:51:49.892Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "TransactionController.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\TransactionController.cs",
-              "RelativeDocumentMoniker": "Controllers\\TransactionController.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\TransactionController.cs",
-              "RelativeToolTip": "Controllers\\TransactionController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:51:43.253Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "InvestmentController.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\InvestmentController.cs",
-              "RelativeDocumentMoniker": "Controllers\\InvestmentController.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\InvestmentController.cs",
-              "RelativeToolTip": "Controllers\\InvestmentController.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAA1wAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T11:51:38.145Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "ApplicationUser.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\ApplicationUser.cs",
-              "RelativeDocumentMoniker": "Models\\DatabaseModels\\ApplicationUser.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\ApplicationUser.cs",
-              "RelativeToolTip": "Models\\DatabaseModels\\ApplicationUser.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:39:41.056Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "ApplicationRole.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\ApplicationRole.cs",
-              "RelativeDocumentMoniker": "Models\\DatabaseModels\\ApplicationRole.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\ApplicationRole.cs",
-              "RelativeToolTip": "Models\\DatabaseModels\\ApplicationRole.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:39:40.231Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
               "Title": "Transactions.cs",
               "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\Transactions.cs",
               "RelativeDocumentMoniker": "Models\\DatabaseModels\\Transactions.cs",
               "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\Transactions.cs",
               "RelativeToolTip": "Models\\DatabaseModels\\Transactions.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:37:48.986Z",
+              "WhenOpened": "2025-12-18T09:13:24.796Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "Investments.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\Investments.cs",
-              "RelativeDocumentMoniker": "Models\\DatabaseModels\\Investments.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\Investments.cs",
-              "RelativeToolTip": "Models\\DatabaseModels\\Investments.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAqAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "InvestmentsRepository.cs",
+              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\InvestmentsRepository.cs",
+              "RelativeDocumentMoniker": "Services\\Repository\\InvestmentsRepository.cs",
+              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\InvestmentsRepository.cs",
+              "RelativeToolTip": "Services\\Repository\\InvestmentsRepository.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:37:11.668Z",
+              "WhenOpened": "2025-12-18T09:12:38.281Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 4,
+              "Title": "BusinessIdeasRepository.cs",
+              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\BusinessIdeasRepository.cs",
+              "RelativeDocumentMoniker": "Services\\Repository\\BusinessIdeasRepository.cs",
+              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\BusinessIdeasRepository.cs",
+              "RelativeToolTip": "Services\\Repository\\BusinessIdeasRepository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA4wBsAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T09:08:05.781Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BusinessIdeasService.cs",
+              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\BusinessIdeasService.cs",
+              "RelativeDocumentMoniker": "Services\\BusinessIdeasService.cs",
+              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\BusinessIdeasService.cs",
+              "RelativeToolTip": "Services\\BusinessIdeasService.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAowCYAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T09:07:54.766Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "BusinessIdeas.cs",
               "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\BusinessIdeas.cs",
               "RelativeDocumentMoniker": "Models\\DatabaseModels\\BusinessIdeas.cs",
               "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\DatabaseModels\\BusinessIdeas.cs",
               "RelativeToolTip": "Models\\DatabaseModels\\BusinessIdeas.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAUwCoAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-14T10:37:02.777Z",
+              "WhenOpened": "2025-12-18T08:36:58.64Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CreatorsController.cs",
+              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\CreatorsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CreatorsController.cs",
+              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\CreatorsController.cs",
+              "RelativeToolTip": "Controllers\\CreatorsController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAUwDQAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T05:38:46.072Z",
               "EditorCaption": ""
             }
           ]

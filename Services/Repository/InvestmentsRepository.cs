@@ -31,5 +31,12 @@ namespace WebApp.Services.Repository
             var filter = Builders<Investments>.Filter.Eq(i => i.IdeaId, ideaId);
             return await _collection.Find(filter).ToListAsync();
         }
+
+        public async Task<IEnumerable<Investments>> GetByIdeaIdsAsync(List<string> ideaIds)
+        {
+            var filter = Builders<Investments>.Filter.In(i => i.IdeaId, ideaIds);
+            return await _collection.Find(filter).ToListAsync();
+        }
+
     }
 }

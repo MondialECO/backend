@@ -322,6 +322,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "WebApp.Controllers.CreatorsController",
+    "Method": "GetCreatorDashboard",
+    "RelativePath": "api/Creators/dashboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebApp.Controllers.FormdataController",
     "Method": "GetAll",
     "RelativePath": "api/Formdata/all",

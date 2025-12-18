@@ -536,6 +536,18 @@
         }
       }
     },
+    "/api/Creators/dashboard": {
+      "get": {
+        "tags": [
+          "Creators"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Formdata/submit": {
       "post": {
         "tags": [
