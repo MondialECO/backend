@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Crypto;
 using System.Security.Claims;
+using WebApp.Models.BusinessIdeas;
 using WebApp.Models.DatabaseModels;
 using WebApp.Services.Interface;
 
@@ -82,6 +83,47 @@ namespace WebApp.Controllers
                 ideas = ideaSummaries
             });
         }
+
+
+        [HttpPost("new-idea")]
+        public async Task<IActionResult> CreateBusinessIdea([FromBody] CreateIdeaDto idea)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            var data = new BusinessIdeas
+            {
+                CreatorId = userId,
+                Title = idea.Title,
+                Summary = idea.Summary,
+                Stage = idea.Stage,
+                Status = "Pending",
+                MarketSize = idea.MarketSize,
+                Problem = idea.Problem,
+                Solution = idea.Solution,
+                RevenueModel = idea.RevenueModel,
+                FundingRequired = idea.FundingRequired,
+                EquityOffered = idea.EquityOffered,
+                Milestones = idea.Milestones?.Select(m => new Milestone
+                {
+                    Title = m.Title,
+                    Description = m.Description,
+                    TargetDate = m.TargetDate
+                }).ToList() ?? new List<Milestone>()
+            };
+            data.CreatedAt = DateTime.UtcNow;
+
+            var createdIdea = await _serviceIdea.CreateIdeaAsync(data);
+            return Ok(new
+            {
+                success = true,
+                message = "Idea submitted for review",
+                ideaId = data.Id
+            });
+        }
+
+
 
 
     }

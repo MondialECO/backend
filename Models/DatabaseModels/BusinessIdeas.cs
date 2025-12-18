@@ -23,7 +23,7 @@ namespace WebApp.Models.DatabaseModels
         public List<Milestone> Milestones { get; set; } = new();
         public List<InvestmentRound> InvestmentRounds { get; set; } = new();
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
 
         // Indexes:
         // 1. CreatorId

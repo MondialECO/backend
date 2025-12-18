@@ -332,6 +332,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "WebApp.Controllers.CreatorsController",
+    "Method": "CreateBusinessIdea",
+    "RelativePath": "api/Creators/new-idea",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idea",
+        "Type": "WebApp.Models.BusinessIdeas.CreateIdeaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebApp.Controllers.FormdataController",
     "Method": "GetAll",
     "RelativePath": "api/Formdata/all",
