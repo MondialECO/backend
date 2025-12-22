@@ -226,70 +226,53 @@ namespace WebApp.Controllers
         }
 
 
-        //[HttpPut("update/{id}")]
-        //public async Task<IActionResult> UpdateIdea(string id, [FromBody] UpdateIdeaRequest request)
-        //{
-        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+ 
+        [HttpGet("{id}/investments")]
+        public async Task<IActionResult> GetIdeaInvestments(string id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        //    if (string.IsNullOrEmpty(userId))
-        //        return Unauthorized();
+            var idea = await _serviceIdea.GetByIdAsync(id);
+            if (idea == null || idea.CreatorId != userId) return NotFound();
 
-        //    var existingIdea = await _serviceIdea.GetByIdAsync(id);
+            var investments = await _investmentsService.GetByIdeaAsync(id);
+            if(investments == null || !investments.Any())
+                return Ok(new List<object>());
 
-        //    if (existingIdea == null || existingIdea.CreatorId != userId)
-        //        return NotFound("Idea not found or you don't have permission to edit it.");
+            var response = investments.Select(inv => new
+            {
+                id = inv.Id,
+                investorName = inv.InvestorName,
+                investedAmount = inv.Amount,
+                equityPercentage = inv.EquityPercentage,
+                investedDate = inv.InvestedAt.ToString("yyyy-MM-dd"),
+                roundName = inv.RoundName ?? "Seed Round"
+            }).ToList();
 
-        //    // Update the fields
-        //    existingIdea.Title = request.Title ?? existingIdea.Title;
-        //    existingIdea.Summary = request.Summary ?? existingIdea.Summary;
-        //    existingIdea.Stage = request.Stage;
-        //    existingIdea.MarketSize = request.MarketSize ?? existingIdea.MarketSize;
-        //    existingIdea.Problem = request.Problem ?? existingIdea.Problem;
-        //    existingIdea.Solution = request.Solution ?? existingIdea.Solution;
-        //    existingIdea.RevenueModel = request.RevenueModel ?? existingIdea.RevenueModel;
-        //    existingIdea.FundingRequired = request.FundingRequired;
-        //    existingIdea.EquityOffered = request.EquityOffered;
+            return Ok(response);
+        }
 
-        //    // Update milestones (simple replace — delete old, add new)
-        //    if (existingIdea.Milestones != null)
-        //    {
-        //        _context.IdeaMilestones.RemoveRange(existingIdea.Milestones);
-        //    }
 
-        //    if (request.Milestones != null && request.Milestones.Any())
-        //    {
-        //        existingIdea.Milestones = request.Milestones.Select(m => new IdeaMilestone
-        //        {
-        //            Title = m.Title,
-        //            Description = m.Description,
-        //            TargetDate = DateTime.Parse(m.TargetDate)
-        //        }).ToList();
-        //    }
+        [HttpPut("ideas/{id}")]
+        public async Task<IActionResult> UpdateIdea(string id, [FromBody] CreateIdeaDto request)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        //    await _serviceIdea.UpdateAsync(existingIdea);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
 
-        //    return Ok(new { message = "Idea updated successfully!" });
-        //}
+            var existingIdea = await _serviceIdea.GetByIdAsync(id);
 
-        //public class UpdateIdeaRequest
-        //{
-        //    public string? Title { get; set; }
-        //    public string? Summary { get; set; }
-        //    public IdeaStage Stage { get; set; }
-        //    public string? MarketSize { get; set; }
-        //    public string? Problem { get; set; }
-        //    public string? Solution { get; set; }
-        //    public string? RevenueModel { get; set; }
-        //    public decimal FundingRequired { get; set; }
-        //    public decimal EquityOffered { get; set; }
-        //    public List<MilestoneRequest>? Milestones { get; set; }
-        //}
+            if (existingIdea == null || existingIdea.CreatorId != userId)
+                return NotFound("Idea not found or you don't have permission to edit it.");
 
-        //public class MilestoneRequest
-        //{
-        //    public string Title { get; set; } = string.Empty;
-        //    public string Description { get; set; } = string.Empty;
-        //    public string TargetDate { get; set; } // "yyyy-MM-dd"
-        //}
+            await _serviceIdea.UpdateIdeaAsync(existingIdea, request);
+
+            return Ok(new { message = "Idea updated successfully!" });
+        }
+
+
+
     }
 }

@@ -47,13 +47,13 @@ namespace WebApp.Controllers
             return Ok(ideas);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, BusinessIdeas idea)
-        {
-            //idea.Id = id;
-            var updated = await _service.UpdateIdeaAsync(id, idea);
-            return Ok(updated);
-        }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Update(string id, BusinessIdeas idea)
+        //{
+        //    //idea.Id = id;
+        //    var updated = await _service.UpdateIdeaAsync(id, idea);
+        //    return Ok(updated);
+        //}
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]

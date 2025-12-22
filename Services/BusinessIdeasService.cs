@@ -1,4 +1,6 @@
-﻿using WebApp.Models.DatabaseModels;
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+using WebApp.Models.BusinessIdeas;
+using WebApp.Models.DatabaseModels;
 using WebApp.Services.Interface;
 using WebApp.Services.Repository;
 
@@ -44,11 +46,42 @@ namespace WebApp.Services
             return await _repo.GetPendingIdeasAsync();
         }
 
-        public async Task<BusinessIdeas> UpdateIdeaAsync(string id, BusinessIdeas idea)
+        public async Task<BusinessIdeas> UpdateIdeaAsync(
+         BusinessIdeas existingIdea,
+         CreateIdeaDto request)
         {
-            await _repo.UpdatePartialAsync(id, idea);
-            return idea;
+            existingIdea.Title = request.Title ?? existingIdea.Title;
+            existingIdea.Summary = request.Summary ?? existingIdea.Summary;
+            existingIdea.MarketSize = request.MarketSize ?? existingIdea.MarketSize;
+            existingIdea.Problem = request.Problem ?? existingIdea.Problem;
+            existingIdea.Solution = request.Solution ?? existingIdea.Solution;
+            existingIdea.RevenueModel = request.RevenueModel ?? existingIdea.RevenueModel;
+
+            if (!string.IsNullOrEmpty(request.Stage))
+                existingIdea.Stage = request.Stage;
+
+            if (request.FundingRequired > 0)
+                existingIdea.FundingRequired = request.FundingRequired;
+
+            if (request.EquityOffered > 0)
+                existingIdea.EquityOffered = request.EquityOffered;
+
+            // Replace milestones (MongoDB-friendly)
+            if (request.Milestones != null)
+            {
+                existingIdea.Milestones = request.Milestones.Select(m => new Milestone
+                {
+                    Title = m.Title,
+                    Description = m.Description,
+                    TargetDate = m.TargetDate,
+                    Status = "Pending"
+                }).ToList();
+            }
+
+            await _repo.UpdatePartialAsync(existingIdea.Id, existingIdea);
+            return existingIdea;
         }
+
 
 
     }

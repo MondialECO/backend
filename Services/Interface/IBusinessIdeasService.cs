@@ -1,4 +1,5 @@
-﻿using WebApp.Models.DatabaseModels;
+﻿using WebApp.Models.BusinessIdeas;
+using WebApp.Models.DatabaseModels;
 
 namespace WebApp.Services.Interface
 {
@@ -8,7 +9,7 @@ namespace WebApp.Services.Interface
         Task<IEnumerable<BusinessIdeas>> GetAllIdeasAsync();
         Task<IEnumerable<BusinessIdeas>> GetByCreatorAsync(string creatorId);
         Task<BusinessIdeas> GetByIdAsync(string id);
-        Task<BusinessIdeas> UpdateIdeaAsync(string id, BusinessIdeas idea);
+        Task<BusinessIdeas> UpdateIdeaAsync(BusinessIdeas existingIdea, CreateIdeaDto request);
         Task DeleteIdeaAsync(string id);
         Task<IEnumerable<BusinessIdeas>> GetPendingIdeasAsync();
     }

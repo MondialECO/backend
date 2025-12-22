@@ -286,27 +286,6 @@
   },
   {
     "ContainingType": "WebApp.Controllers.BusinessIdeaController",
-    "Method": "Update",
-    "RelativePath": "api/BusinessIdea/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.String",
-        "IsRequired": true
-      },
-      {
-        "Name": "idea",
-        "Type": "WebApp.Models.DatabaseModels.BusinessIdeas",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.BusinessIdeaController",
     "Method": "Delete",
     "RelativePath": "api/BusinessIdea/{id}",
     "HttpMethod": "DELETE",
@@ -349,6 +328,27 @@
   },
   {
     "ContainingType": "WebApp.Controllers.CreatorsController",
+    "Method": "UpdateIdea",
+    "RelativePath": "api/Creators/ideas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "WebApp.Models.BusinessIdeas.CreateIdeaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.CreatorsController",
     "Method": "MyIdeas",
     "RelativePath": "api/Creators/my",
     "HttpMethod": "GET",
@@ -368,6 +368,22 @@
       {
         "Name": "idea",
         "Type": "WebApp.Models.BusinessIdeas.CreateIdeaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.CreatorsController",
+    "Method": "GetIdeaInvestments",
+    "RelativePath": "api/Creators/{id}/investments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],

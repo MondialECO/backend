@@ -38,16 +38,24 @@ namespace WebApp.Services.Repository
 
         public async Task UpdatePartialAsync(string id, BusinessIdeas idea)
         {
-            var filter = Builders<BusinessIdeas>.Filter.Eq("_id", MongoDB.Bson.ObjectId.Parse(id));
+            var filter = Builders<BusinessIdeas>.Filter.Eq(i => i.Id, id);
 
             var update = Builders<BusinessIdeas>.Update
                 .Set(x => x.Title, idea.Title)
                 .Set(x => x.Summary, idea.Summary)
-                .Set(x => x.Status, idea.Status)
-                .Set(x => x.Stage, idea.Stage);
+                .Set(x => x.MarketSize, idea.MarketSize)
+                .Set(x => x.Problem, idea.Problem)
+                .Set(x => x.Solution, idea.Solution)
+                .Set(x => x.RevenueModel, idea.RevenueModel)
+                .Set(x => x.Stage, idea.Stage)
+                .Set(x => x.FundingRequired, idea.FundingRequired)
+                .Set(x => x.EquityOffered, idea.EquityOffered)
+                .Set(x => x.Milestones, idea.Milestones)
+                .Set(x => x.UpdatedAt, DateTime.UtcNow);
 
             await _collection.UpdateOneAsync(filter, update);
         }
+
 
 
 

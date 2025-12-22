@@ -10,6 +10,7 @@ namespace WebApp.Models.DatabaseModels
         public string Id { get; set; }
 
         public string InvestorId { get; set; }
+        public string InvestorName { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string IdeaId { get; set; }

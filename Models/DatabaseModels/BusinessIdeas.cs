@@ -24,6 +24,7 @@ namespace WebApp.Models.DatabaseModels
         public List<InvestmentRound> InvestmentRounds { get; set; } = new();
 
         public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         // Indexes:
         // 1. CreatorId
