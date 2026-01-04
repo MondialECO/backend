@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Crypto;
 using System.Security.Claims;
 using WebApp.Models.BusinessIdeas;
 using WebApp.Models.DatabaseModels;
@@ -11,12 +9,12 @@ namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CreatorsController : ControllerBase
+    public class FounderController : ControllerBase
     {
         private readonly IBusinessIdeasService _serviceIdea;
         private readonly IInvestmentsService _investmentsService;
         private readonly ITransactionsService _transactionsService;
-        public CreatorsController(IBusinessIdeasService service,
+        public FounderController(IBusinessIdeasService service,
             IInvestmentsService investmentsService,
             ITransactionsService transactionsService)
         {
@@ -171,7 +169,7 @@ namespace WebApp.Controllers
                         title = m.Title ?? "",
                         description = m.Description ?? "",
                         targetDate = m.TargetDate.ToString("yyyy-MM-dd")
-                    }).ToList<object>() 
+                    }).ToList<object>()
                     : new List<object>()
             }).ToList();
 
@@ -196,7 +194,7 @@ namespace WebApp.Controllers
             var investments = await _investmentsService.GetByIdeaAsync(id);
             var totalRaised = investments.Sum(i => i.Amount);
 
-      
+
 
             var response = new
             {
@@ -226,7 +224,7 @@ namespace WebApp.Controllers
         }
 
 
- 
+
         [HttpGet("{id}/investments")]
         public async Task<IActionResult> GetIdeaInvestments(string id)
         {
@@ -237,7 +235,7 @@ namespace WebApp.Controllers
             if (idea == null || idea.CreatorId != userId) return NotFound();
 
             var investments = await _investmentsService.GetByIdeaAsync(id);
-            if(investments == null || !investments.Any())
+            if (investments == null || !investments.Any())
                 return Ok(new List<object>());
 
             var response = investments.Select(inv => new
@@ -271,7 +269,6 @@ namespace WebApp.Controllers
 
             return Ok(new { message = "Idea updated successfully!" });
         }
-
 
 
     }

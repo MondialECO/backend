@@ -8,10 +8,10 @@ namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InvestmentController : ControllerBase
+    public class InvestorController : ControllerBase
     {
         private readonly IInvestmentsService _service;
-        public InvestmentController(IInvestmentsService service)
+        public InvestorController(IInvestmentsService service)
         {
             _service = service;
         }
@@ -44,5 +44,6 @@ namespace WebApp.Controllers
             await _service.DeleteInvestmentAsync(id);
             return NoContent();
         }
+
     }
 }

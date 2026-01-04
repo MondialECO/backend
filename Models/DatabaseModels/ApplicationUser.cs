@@ -22,10 +22,10 @@ namespace WebApp.Models.DatabaseModels
         public string ImagePath { get; set; }
 
         [BsonElement("RefreshToken")]
-        public string RefreshToken { get; set; }
+        public RefreshToken RefreshToken { get; set; } = new();
 
-        [BsonElement("RefreshTokenExpiryTime")]
-        public DateTime RefreshTokenExpiryTime { get; set; }
+        //[BsonElement("RefreshTokenExpiryTime")]
+        //public DateTime RefreshTokenExpiryTime { get; set; }
 
         [BsonElement("Bio")]
         public string Bio { get; set; }
@@ -49,5 +49,20 @@ namespace WebApp.Models.DatabaseModels
         public string City { get; set; }
         public string Country { get; set; }
     }
+
+    public class RefreshToken
+    {
+        public ObjectId Id { get; set; }
+
+        //public string UserId { get; set; } = null!;
+        public string Token { get; set; } = null!;
+
+        public DateTime ExpiresAt { get; set; }
+        public bool IsRevoked { get; set; } = false;
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string CreatedByIp { get; set; } = "";
+    }
+
 
 }

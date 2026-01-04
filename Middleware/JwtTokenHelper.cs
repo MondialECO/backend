@@ -1,9 +1,10 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
-namespace WebApp.Helpers
+namespace WebApp.Middleware
 {
     public static class JwtTokenHelper
     {
@@ -13,7 +14,7 @@ namespace WebApp.Helpers
             string secretKey,
             string issuer,
             string audience,
-            int expiryHours = 1)
+            int expiryHours = 8)
         {
             var claims = new List<Claim>
             {
@@ -29,11 +30,18 @@ namespace WebApp.Helpers
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
+                expires: DateTime.UtcNow.AddHours(expiryHours),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public static string GenerateRefreshToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        }
+
+
     }
 }

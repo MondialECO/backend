@@ -14,6 +14,7 @@ namespace WebApp.DbContext
             _database = client.GetDatabase(settings.Value.DatabaseName);
         }
 
+        public IMongoCollection<ApplicationUser> ApplicationUsers => _database.GetCollection<ApplicationUser>("ApplicationUsers");
 
         // Business Collections
         public IMongoCollection<BusinessIdeas> BusinessIdeas => _database.GetCollection<BusinessIdeas>("BusinessIdeas");
