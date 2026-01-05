@@ -14,7 +14,7 @@ using WebApp.DbContext;
 using WebApp.Middleware;
 using WebApp.Models;
 using WebApp.Models.DatabaseModels;
-using static Org.BouncyCastle.Math.EC.ECCurve;
+//using static Org.BouncyCastle.Math.EC.ECCurve;
 namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
