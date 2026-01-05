@@ -182,6 +182,37 @@
         }
       }
     },
+    "/api/Auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRefreshRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRefreshRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRefreshRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Auth/logout": {
       "post": {
         "tags": [
@@ -497,10 +528,10 @@
         }
       }
     },
-    "/api/Creators/dashboard": {
+    "/api/Chat/conversations": {
       "get": {
         "tags": [
-          "Creators"
+          "Chat"
         ],
         "responses": {
           "200": {
@@ -509,26 +540,66 @@
         }
       }
     },
-    "/api/Creators/new-idea": {
+    "/api/Chat/messages/{conversationId}": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 30
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Chat/send": {
       "post": {
         "tags": [
-          "Creators"
+          "Chat"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
+                "$ref": "#/components/schemas/SendMessageRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
+                "$ref": "#/components/schemas/SendMessageRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
+                "$ref": "#/components/schemas/SendMessageRequest"
               }
             }
           }
@@ -540,87 +611,14 @@
         }
       }
     },
-    "/api/Creators/my": {
-      "get": {
+    "/api/Chat/read/{conversationId}": {
+      "post": {
         "tags": [
-          "Creators"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Creators/ideas/{id}": {
-      "get": {
-        "tags": [
-          "Creators"
+          "Chat"
         ],
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Creators"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Creators/{id}/investments": {
-      "get": {
-        "tags": [
-          "Creators"
-        ],
-        "parameters": [
-          {
-            "name": "id",
+            "name": "conversationId",
             "in": "path",
             "required": true,
             "schema": {
@@ -722,10 +720,148 @@
         }
       }
     },
-    "/api/Investment": {
+    "/api/Founder/dashboard": {
+      "get": {
+        "tags": [
+          "Founder"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Founder/new-idea": {
       "post": {
         "tags": [
-          "Investment"
+          "Founder"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Founder/my": {
+      "get": {
+        "tags": [
+          "Founder"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Founder/ideas/{id}": {
+      "get": {
+        "tags": [
+          "Founder"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Founder"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Founder/{id}/investments": {
+      "get": {
+        "tags": [
+          "Founder"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Investor": {
+      "post": {
+        "tags": [
+          "Investor"
         ],
         "requestBody": {
           "content": {
@@ -753,10 +889,10 @@
         }
       }
     },
-    "/api/Investment/investor/{investorId}": {
+    "/api/Investor/investor/{investorId}": {
       "get": {
         "tags": [
-          "Investment"
+          "Investor"
         ],
         "parameters": [
           {
@@ -775,10 +911,10 @@
         }
       }
     },
-    "/api/Investment/idea/{ideaId}": {
+    "/api/Investor/idea/{ideaId}": {
       "get": {
         "tags": [
-          "Investment"
+          "Investor"
         ],
         "parameters": [
           {
@@ -797,10 +933,44 @@
         }
       }
     },
-    "/api/Investment/{id}": {
+    "/api/Investor/{id}": {
       "delete": {
         "tags": [
-          "Investment"
+          "Investor"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Notification": {
+      "get": {
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Notification/{id}/read": {
+      "patch": {
+        "tags": [
+          "Notification"
         ],
         "parameters": [
           {
@@ -1318,6 +1488,34 @@
             "minLength": 1,
             "type": "string",
             "format": "password"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendMessageRequest": {
+        "type": "object",
+        "properties": {
+          "conversationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TokenRefreshRequest": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

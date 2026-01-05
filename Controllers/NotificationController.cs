@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using WebApp.Services.Interface;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NotificationController : ControllerBase
@@ -15,18 +18,20 @@ namespace WebApp.Controllers
             _service = service;
         }
 
+        private Guid CurrentUserId => Guid.Parse(User.FindFirst("sub")!.Value);
+
         [HttpGet]
-        public async Task<IActionResult> GetMyNotifications()
+        public async Task<IActionResult> GetNotifications(int skip = 0, int limit = 30)
         {
-            var userId = User.FindFirst("sub")?.Value;
-            return Ok(await _service.GetByUser(userId));
+            var data = await _service.GetUserNotifications(CurrentUserId, skip, limit);
+            return Ok(data);
         }
 
-        [HttpPatch("{id}/read")]
-        public async Task<IActionResult> MarkRead(string id)
+        [HttpPost("read/{id}")]
+        public async Task<IActionResult> MarkAsRead(string id)
         {
-            await _service.MarkRead(id);
-            return NoContent();
+            await _service.MarkAsRead(ObjectId.Parse(id));
+            return Ok();
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
@@ -26,7 +27,6 @@ namespace WebApp.Controllers
         private readonly IConfiguration _configuration;
         private readonly EmailService _emailService;
         private readonly ILogger<AuthController> _logger;
-        private readonly MongoDbContext _context;
 
 
         public AuthController(
@@ -35,8 +35,7 @@ namespace WebApp.Controllers
             IConfiguration configuration,
             RoleManager<ApplicationRole> roleManager,
             EmailService emailSender,
-            ILogger<AuthController> logger,
-            MongoDbContext context
+            ILogger<AuthController> logger
 
             )
         {
@@ -46,7 +45,6 @@ namespace WebApp.Controllers
             _roleManager = roleManager;
             _emailService = emailSender;
             _logger = logger;
-            _context = context;
         }
 
 
@@ -123,56 +121,56 @@ namespace WebApp.Controllers
         }
 
 
-        //[HttpPost("refresh")]
-        //public async Task<IActionResult> Refresh(TokenRefreshRequest request)
-        //{
-        //    var principal = JwtTokenHelper.GetPrincipalFromExpiredToken(
-        //        request.AccessToken,
-        //        _jwt.Key,
-        //        _jwt.Issuer,
-        //        _jwt.Audience
-        //    );
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh(TokenRefreshRequest request)
+        {
+            var principal = JwtTokenHelper.GetPrincipalFromExpiredToken(
+                request.AccessToken,
+               _configuration["JwtSettings:Key"],
+                _configuration["JwtSettings:Issuer"],
+                _configuration["JwtSettings:Audience"]
+            );
 
-        //    var userId = principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        //    if (userId == null)
-        //        return Unauthorized();
+            var userId = principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            if (userId == null)
+                return Unauthorized();
 
-        //    var user = await _userManager.FindByIdAsync(userId);
-        //    if (user == null)
-        //        return Unauthorized();
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return Unauthorized();
 
-        //    // Validate refresh token
-        //    if (user.RefreshToken == null ||
-        //        user.RefreshToken.Token != request.RefreshToken ||
-        //        user.RefreshToken.ExpiresAt < DateTime.UtcNow ||
-        //        user.RefreshToken.IsRevoked)
-        //    {
-        //        return Unauthorized("Invalid refresh token");
-        //    }
+            // Validate refresh token
+            if (user.RefreshToken == null ||
+                user.RefreshToken.Token != request.RefreshToken ||
+                user.RefreshToken.ExpiresAt < DateTime.UtcNow ||
+                user.RefreshToken.IsRevoked)
+            {
+                return Unauthorized("Invalid refresh token");
+            }
 
-        //    // Generate new tokens
-        //    var newAccessToken = JwtTokenHelper.GenerateToken(
-        //        user.Id.ToString(),
-        //        "User",
-        //        _jwt.Key,
-        //        _jwt.Issuer,
-        //        _jwt.Audience
-        //    );
+            // Generate new tokens
+            var newAccessToken = JwtTokenHelper.GenerateToken(
+                user.Id.ToString(),
+                user.User,
+                _configuration["JwtSettings:Key"],
+                _configuration["JwtSettings:Issuer"],
+                _configuration["JwtSettings:Audience"]
+            );
 
-        //    var newRefreshToken = Guid.NewGuid().ToString("N");
+            var newRefreshToken = JwtTokenHelper.GenerateRefreshToken();
 
-        //    // Rotate refresh token
-        //    user.RefreshToken.Token = newRefreshToken;
-        //    user.RefreshToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
+            // Rotate refresh token
+            user.RefreshToken.Token = newRefreshToken;
+            user.RefreshToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
 
-        //    await _userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
 
-        //    return Ok(new
-        //    {
-        //        accessToken = newAccessToken,
-        //        refreshToken = newRefreshToken
-        //    });
-        //}
+            return Ok(new
+            {
+                accessToken = newAccessToken,
+                refreshToken = newRefreshToken
+            });
+        }
 
         [Authorize]
         [HttpPost("logout")]
@@ -186,38 +184,10 @@ namespace WebApp.Controllers
 
             user.RefreshToken.IsRevoked = true;
             await _userManager.UpdateAsync(user);
-
+            await _signInManager.SignOutAsync();
             return Ok("Logged out");
         }
 
-        public static ClaimsPrincipal GetPrincipalFromExpiredToken(
-            string token,
-            string secretKey,
-            string issuer,
-            string audience)
-        {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(secretKey)
-                ),
-                ValidateLifetime = false,
-                ValidIssuer = issuer,
-                ValidAudience = audience
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var principal = tokenHandler.ValidateToken(
-                token,
-                tokenValidationParameters,
-                out SecurityToken securityToken
-            );
-
-            return principal;
-        }
 
 
 

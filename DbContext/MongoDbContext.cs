@@ -25,6 +25,13 @@ namespace WebApp.DbContext
         public IMongoCollection<ContactModel> Contacts => _database.GetCollection<ContactModel>("Contacts");
         public IMongoCollection<FormData> FormDatas => _database.GetCollection<FormData>("FormDatas");
 
+        // Chat Collections
+        public IMongoCollection<Conversation> Conversations => _database.GetCollection<Conversation>("Conversations");
+        public IMongoCollection<ChatMessage> ChatMessages => _database.GetCollection<ChatMessage>("ChatMessages");
+       
+        // notifications collection
+        public IMongoCollection<Notification> Notifications => _database.GetCollection<Notification>("Notifications");
+
 
     }
 

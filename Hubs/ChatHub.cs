@@ -1,27 +1,48 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Amazon.Runtime.Internal;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using MongoDB.Bson;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System.IdentityModel.Tokens.Jwt;
+using WebApp.Models.DatabaseModels;
+using WebApp.Models.Dtos;
+using WebApp.Services.Interface;
 
 [Authorize]
 public class ChatHub : Hub
 {
+    private readonly IChatService _chatService;
+
+    public ChatHub(IChatService chatService)
+    {
+        _chatService = chatService;
+    }
+
     public async Task JoinConversation(string conversationId)
     {
+        if (!ObjectId.TryParse(conversationId, out _))
+            throw new HubException("Invalid conversation id");
+
         await Groups.AddToGroupAsync(Context.ConnectionId, conversationId);
     }
 
-    public async Task SendMessage(string conversationId, string message)
+    public async Task SendMessage(SendMessageRequest request)
     {
-        var senderId = Context.User?
-            .FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (string.IsNullOrWhiteSpace(request.Message))
+            throw new HubException("Message empty");
 
-        await Clients.Group(conversationId).SendAsync("ReceiveMessage", new
+        var senderId = Guid.Parse(
+            Context.User!.FindFirst(JwtRegisteredClaimNames.Sub)!.Value
+        );
+        var message = new ChatMessage
         {
-            ConversationId = conversationId,
+            ConversationId = ObjectId.Parse(request.ConversationId),
             SenderId = senderId,
-            Message = message,
-            CreatedAt = DateTime.UtcNow
-        });
+            Message = request.Message
+        };
+        var savedMessage = await _chatService.AddMessage(message);
+
+        await Clients.Group(request.ConversationId)
+            .SendAsync("ReceiveMessage", savedMessage);
     }
 }
-

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -40,9 +41,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        //policy.AllowAnyOrigin()
+        //      .AllowAnyMethod()
+        //      .AllowAnyHeader();
+        policy.WithOrigins(
+        "http://localhost:3000",
+        "https://mondialbusiness.eu" // Replace with actual domain
+        )
+         .AllowAnyHeader()
+         .AllowAnyMethod()
+         .AllowCredentials();
     });
 });
 
@@ -108,14 +116,22 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<BusinessIdeasRepository>();
 builder.Services.AddScoped<InvestmentsRepository>();
 builder.Services.AddScoped<TransactionsRepository>();
-
+// Chat Repositories
+builder.Services.AddScoped<MessagesRepository>();
+builder.Services.AddScoped<ConversationRepository>();
+builder.Services.AddScoped<NotificationRepository>();
 // Services
 builder.Services.AddScoped<IBusinessIdeasService, BusinessIdeasService>();
 builder.Services.AddScoped<IInvestmentsService, InvestmentsService>();
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
 
+// Chat Service
+builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
 builder.Services.AddScoped<ISubmmitdata, SubmmitdataRepository>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
 // signalR for real-time features
 builder.Services.AddSignalR();

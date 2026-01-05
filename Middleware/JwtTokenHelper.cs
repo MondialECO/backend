@@ -43,5 +43,35 @@ namespace WebApp.Middleware
         }
 
 
+        public static ClaimsPrincipal GetPrincipalFromExpiredToken(
+            string token,
+            string secretKey,
+            string issuer,
+            string audience)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(secretKey)
+                ),
+                ValidateLifetime = false,
+                ValidIssuer = issuer,
+                ValidAudience = audience
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(
+                token,
+                tokenValidationParameters,
+                out SecurityToken securityToken
+            );
+
+            return principal;
+        }
+
+
     }
 }
