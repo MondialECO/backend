@@ -120,14 +120,17 @@ builder.Services.AddScoped<TransactionsRepository>();
 builder.Services.AddScoped<MessagesRepository>();
 builder.Services.AddScoped<ConversationRepository>();
 builder.Services.AddScoped<NotificationRepository>();
+builder.Services.AddScoped<PushSubscriptionEntityRepository>();
 // Services
 builder.Services.AddScoped<IBusinessIdeasService, BusinessIdeasService>();
 builder.Services.AddScoped<IInvestmentsService, InvestmentsService>();
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
 
-// Chat Service
+
+// Chat Service and Notification Service
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IPushSubscriptionEntity, PushSubscriptionEntityService>();
 
 builder.Services.AddScoped<ISubmmitdata, SubmmitdataRepository>();
 builder.Services.AddScoped<EmailService>();

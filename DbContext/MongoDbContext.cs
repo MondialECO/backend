@@ -31,7 +31,7 @@ namespace WebApp.DbContext
        
         // notifications collection
         public IMongoCollection<Notification> Notifications => _database.GetCollection<Notification>("Notifications");
-
+        public IMongoCollection<PushSubscriptionEntity> PushSubscription => _database.GetCollection<PushSubscriptionEntity>("PushSubscriptions");
 
     }
 

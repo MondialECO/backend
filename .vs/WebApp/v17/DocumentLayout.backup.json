@@ -3,44 +3,16 @@
   "WorkspaceRootPath": "D:\\GitHub\\Client_Project\\mondial_eco_API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\repository\\pushsubscriptionentityrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\pushsubscriptionentityrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\webpushservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\webpushservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\models\\dtos\\vapidsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\dtos\\vapidsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\hubs\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:hubs\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\fcmpushservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\fcmpushservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\hubs\\presencetracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:hubs\\presencetracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\client_project\\mondial_eco_api\\services\\interface\\ipushsubscriptionentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\interface\\ipushsubscriptionentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,127 +46,42 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAABAAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T12:06:41.019Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "VapidSettings.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\Dtos\\VapidSettings.cs",
-              "RelativeDocumentMoniker": "Models\\Dtos\\VapidSettings.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Models\\Dtos\\VapidSettings.cs",
-              "RelativeToolTip": "Models\\Dtos\\VapidSettings.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Title": "IPushSubscriptionEntity.cs",
+              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\IPushSubscriptionEntity.cs",
+              "RelativeDocumentMoniker": "Services\\Interface\\IPushSubscriptionEntity.cs",
+              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Interface\\IPushSubscriptionEntity.cs",
+              "RelativeToolTip": "Services\\Interface\\IPushSubscriptionEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T12:04:20.703Z",
+              "WhenOpened": "2026-01-06T11:52:20.349Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "WebPushService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\WebPushService.cs",
-              "RelativeDocumentMoniker": "Services\\WebPushService.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\WebPushService.cs",
-              "RelativeToolTip": "Services\\WebPushService.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAQwB4AAAALAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAAAIkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T12:03:36.072Z",
+              "WhenOpened": "2026-01-06T11:51:45.131Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "NotificationController.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\NotificationController.cs",
-              "RelativeDocumentMoniker": "Controllers\\NotificationController.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\NotificationController.cs",
-              "RelativeToolTip": "Controllers\\NotificationController.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAowCIAAAAJAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "PushSubscriptionEntityRepository.cs",
+              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\PushSubscriptionEntityRepository.cs",
+              "RelativeDocumentMoniker": "Services\\Repository\\PushSubscriptionEntityRepository.cs",
+              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\Repository\\PushSubscriptionEntityRepository.cs",
+              "RelativeToolTip": "Services\\Repository\\PushSubscriptionEntityRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T09:53:30.3Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "FcmPushService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\FcmPushService.cs",
-              "RelativeDocumentMoniker": "Services\\FcmPushService.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\FcmPushService.cs",
-              "RelativeToolTip": "Services\\FcmPushService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T09:45:51.995Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "NotificationService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\NotificationService.cs",
-              "RelativeDocumentMoniker": "Services\\NotificationService.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Services\\NotificationService.cs",
-              "RelativeToolTip": "Services\\NotificationService.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAowCUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T09:43:39.494Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "PresenceTracker.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Hubs\\PresenceTracker.cs",
-              "RelativeDocumentMoniker": "Hubs\\PresenceTracker.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Hubs\\PresenceTracker.cs",
-              "RelativeToolTip": "Hubs\\PresenceTracker.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T09:21:28.323Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ChatHub.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Hubs\\ChatHub.cs",
-              "RelativeDocumentMoniker": "Hubs\\ChatHub.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Hubs\\ChatHub.cs",
-              "RelativeToolTip": "Hubs\\ChatHub.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAxwC0AAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T08:55:33.863Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "NotificationHub.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Hubs\\NotificationHub.cs",
-              "RelativeDocumentMoniker": "Hubs\\NotificationHub.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Hubs\\NotificationHub.cs",
-              "RelativeToolTip": "Hubs\\NotificationHub.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAiwCoAAABeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T08:35:51.589Z",
+              "WhenOpened": "2026-01-06T11:51:34.943Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ChatController.cs",
-              "DocumentMoniker": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\ChatController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ChatController.cs",
-              "ToolTip": "D:\\GitHub\\Client_Project\\mondial_eco_API\\Controllers\\ChatController.cs",
-              "RelativeToolTip": "Controllers\\ChatController.cs",
-              "ViewState": "AgIAAD4AAAAAAAAAAAAcwEkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T07:33:25.878Z"
             }
           ]
         }

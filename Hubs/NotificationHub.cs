@@ -3,15 +3,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.IdentityModel.Tokens.Jwt;
 using WebApp.Hubs;
+using WebApp.Services;
 using WebApp.Services.Interface;
 
 [Authorize]
 public class NotificationHub : Hub
 {
     private readonly INotificationService _notificationService;
-    public NotificationHub(INotificationService notificationService)
+    public readonly WebPushService _webPushService;
+    private readonly IPushSubscriptionEntity _pushRepo;
+    public NotificationHub(INotificationService notificationService, 
+        WebPushService webPushService,
+        IPushSubscriptionEntity pushRepo)
     {
         _notificationService = notificationService;
+        _webPushService = webPushService;
+        _pushRepo = pushRepo;
     }
 
     public override async Task OnConnectedAsync()
@@ -50,7 +57,13 @@ public class NotificationHub : Hub
         else
         {
             // Offline: push via FCM / OneSignal / Web Push
-            await _notificationService.SendPushNotification(userId, notification);
+            var subscriptions = await _pushRepo.GetByUserId(userId);
+            foreach (var sub in subscriptions)
+            {
+                await _webPushService.SendAsync(sub, notification);
+            }
+
+            //await _notificationService.SendPushNotification(userId, notification);
         }
     }
 }

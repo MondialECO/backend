@@ -8,15 +8,13 @@ namespace WebApp.Services
     public class NotificationService : INotificationService
     {
         private readonly NotificationRepository _repo;
-        private readonly IPushService _pushService;
+        public readonly NotificationHub _notificationHub;
 
-        public NotificationService(NotificationRepository repo, IPushService pushService)
+        public NotificationService(NotificationRepository repo, NotificationHub notificationHub)
         {
             _repo = repo;
-            _pushService = pushService;
+            _notificationHub = notificationHub;
         }
-
-
 
 
         public async Task<Notification> CreateNotification(Guid userId, string title, string body)
@@ -34,7 +32,10 @@ namespace WebApp.Services
         public async Task SendPushNotification(Guid userId, Notification notification)
         {
             // implement FCM / Web Push here
-            await _pushService.Send(userId, notification.Title, notification.Body);
+            //await _pushService.Send(userId, notification.Title, notification.Body);
+            // notificationHub is used here to send real-time notifications as well
+            // write business logic to decide whether to use real-time or offline push
+            await _notificationHub.SendNotification(userId, notification.Title, notification.Body);
         }
 
         public async Task<List<Notification>> GetUserNotifications(Guid userId, int skip = 0, int limit = 30)
