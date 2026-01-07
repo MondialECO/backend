@@ -56,14 +56,13 @@ public class NotificationHub : Hub
         }
         else
         {
-            // Offline: push via FCM / OneSignal / Web Push
+            // Offline: Web Push
             var subscriptions = await _pushRepo.GetByUserId(userId);
             foreach (var sub in subscriptions)
             {
                 await _webPushService.SendAsync(sub, notification);
             }
-
-            //await _notificationService.SendPushNotification(userId, notification);
+           
         }
     }
 }
