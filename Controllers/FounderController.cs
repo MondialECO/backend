@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using WebApp.Models.BusinessIdeas;
 using WebApp.Models.DatabaseModels;
+using WebApp.Models.Dtos;
 using WebApp.Services.Interface;
 
 namespace WebApp.Controllers
@@ -24,64 +24,64 @@ namespace WebApp.Controllers
         }
 
 
-        [HttpGet("dashboard")]
-        public async Task<IActionResult> GetCreatorDashboard()
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-                return Unauthorized();
+        //[HttpGet("dashboard")]
+        //public async Task<IActionResult> GetCreatorDashboard()
+        //{
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    if (string.IsNullOrEmpty(userId))
+        //        return Unauthorized();
 
-            // 1. Creator Ideas
-            var ideas = (await _serviceIdea.GetByCreatorAsync(userId)).ToList();
-            var ideaIds = ideas.Select(i => i.Id).ToList();
+        //    // 1. Creator Ideas
+        //    var ideas = (await _serviceIdea.GetByCreatorAsync(userId)).ToList();
+        //    var ideaIds = ideas.Select(i => i.Id).ToList();
 
-            // 2. Investments on those ideas
-            var investments = ideaIds.Any()
-                ? (await _investmentsService.GetByIdeaIdsAsync(ideaIds)).ToList()
-                : new List<Investments>();
+        //    // 2. Investments on those ideas
+        //    var investments = ideaIds.Any()
+        //        ? (await _investmentsService.GetByIdeaIdsAsync(ideaIds)).ToList()
+        //        : new List<Investments>();
 
-            // 3. Wallet transactions
-            var transactions = (await _transactionsService.GetByUserAsync(userId)).ToList();
+        //    // 3. Wallet transactions
+        //    var transactions = (await _transactionsService.GetByUserAsync(userId)).ToList();
 
-            // CALCULATIONS
-            var totalIdeas = ideas.Count;
+        //    // CALCULATIONS
+        //    var totalIdeas = ideas.Count;
 
-            var totalFundRaised = investments.Sum(i => i.Amount);
+        //    var totalFundRaised = investments.Sum(i => i.Amount);
 
-            var activeInvestors = investments
-                .Select(i => i.InvestorId)
-                .Distinct()
-                .Count();
+        //    var activeInvestors = investments
+        //        .Select(i => i.InvestorId)
+        //        .Distinct()
+        //        .Count();
 
-            var walletBalance = transactions
-                .Where(t => t.Status == "Completed")
-                .Sum(t => t.Amount);
+        //    var walletBalance = transactions
+        //        .Where(t => t.Status == "Completed")
+        //        .Sum(t => t.Amount);
 
-            // Idea wise summary
-            var ideaSummaries = ideas.Select(i => new
-            {
-                id = i.Id,
-                title = i.Title,
-                status = i.Status,
-                stage = i.Stage,
-                fundingRequired = i.FundingRequired,
-                equityOffered = i.EquityOffered,
-                totalRaised = investments
-                    .Where(inv => inv.IdeaId == i.Id)
-                    .Sum(inv => inv.Amount)
-            });
+        //    // Idea wise summary
+        //    var ideaSummaries = ideas.Select(i => new
+        //    {
+        //        id = i.Id,
+        //        //title = i.Title,
+        //        status = i.Status,
+        //        //stage = i.Stage,
+        //        fundingRequired = i.FundingRequired,
+        //        equityOffered = i.EquityOffered,
+        //        totalRaised = investments
+        //            .Where(inv => inv.IdeaId == i.Id)
+        //            .Sum(inv => inv.Amount)
+        //    });
 
-            return Ok(new
-            {
-                totalIdeas,
-                totalFundRaised,
-                activeInvestors,
-                walletBalance,
-                ideas = ideaSummaries
-            });
-        }
+        //    return Ok(new
+        //    {
+        //        totalIdeas,
+        //        totalFundRaised,
+        //        activeInvestors,
+        //        walletBalance,
+        //        ideas = ideaSummaries
+        //    });
+        //}
 
-
+        // new draft or idea
         [HttpPost("new-idea")]
         public async Task<IActionResult> CreateBusinessIdea([FromBody] CreateIdeaDto idea)
         {
@@ -89,139 +89,132 @@ namespace WebApp.Controllers
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
 
-            var data = new BusinessIdeas
-            {
-                CreatorId = userId,
-                Title = idea.Title,
-                Summary = idea.Summary,
-                Stage = idea.Stage,
-                Status = "Pending",
-                MarketSize = idea.MarketSize,
-                Problem = idea.Problem,
-                Solution = idea.Solution,
-                RevenueModel = idea.RevenueModel,
-                FundingRequired = idea.FundingRequired,
-                EquityOffered = idea.EquityOffered,
-                Milestones = idea.Milestones?.Select(m => new Milestone
-                {
-                    Title = m.Title,
-                    Description = m.Description,
-                    TargetDate = m.TargetDate
-                }).ToList() ?? new List<Milestone>()
-            };
-            data.CreatedAt = DateTime.UtcNow;
-
-            var createdIdea = await _serviceIdea.CreateIdeaAsync(data);
+            var createdIdea = await _serviceIdea.CreateIdeaAsync(idea, userId);
             return Ok(new
             {
                 success = true,
-                message = "Idea submitted for review",
-                ideaId = data.Id
+                message = "Draft created/saved",
             });
         }
 
-        [HttpGet("my")]
-        public async Task<IActionResult> MyIdeas()
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (string.IsNullOrEmpty(userId))
-                return Unauthorized();
-
-            var ideas = await _serviceIdea.GetByCreatorAsync(userId);
-
-            if (ideas == null || !ideas.Any())
-                return Ok(new List<object>());
-
-            var ideaIds = ideas.Select(i => i.Id).ToList();
-
-            // Get investments for these ideas
-            var investments = ideaIds.Any()
-                ? await _investmentsService.GetByIdeaIdsAsync(ideaIds)
-                : new List<Investments>();
-
-            // Group investments by IdeaId to calculate totalRaised per idea
-            var investmentByIdea = investments
-                .GroupBy(inv => inv.IdeaId)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Sum(inv => inv.Amount)
-                );
-
-            // Build response with correct totalRaised for each idea
-            var response = ideas.Select(idea => new
-            {
-                id = idea.Id,
-                title = idea.Title ?? "",
-                summary = idea.Summary ?? "",
-                stage = idea.Stage.ToString(), // "Idea", "MVP", "Growth"
-                marketSize = idea.MarketSize ?? "",
-                problem = idea.Problem ?? "",
-                solution = idea.Solution ?? "",
-                revenueModel = idea.RevenueModel ?? "",
-                fundingRequired = idea.FundingRequired,
-                equityOffered = idea.EquityOffered,
-                totalRaised = investmentByIdea.TryGetValue(idea.Id, out var raised) ? raised : 0,
-                status = idea.Status.ToString(), // "Pending", "Approved", "Rejected"
-                milestones = idea.Milestones != null && idea.Milestones.Any()
-                    ? idea.Milestones.Select(m => new
-                    {
-                        title = m.Title ?? "",
-                        description = m.Description ?? "",
-                        targetDate = m.TargetDate.ToString("yyyy-MM-dd")
-                    }).ToList<object>()
-                    : new List<object>()
-            }).ToList();
-
-            return Ok(response);
-        }
-
-
-        [HttpGet("ideas/{id}")]
-        public async Task<IActionResult> GetIdea(string id)
+        // draft or idea update 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateIdea([FromBody] UpdateIdeaDto dto)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
 
-            var idea = await _serviceIdea.GetByIdAsync(id);
+            var result = await _serviceIdea.UpdateIdeaAsync(dto, userId);
 
-            if (idea == null || idea.CreatorId != userId)
-                return NotFound();
-
-
-            // Investments for totalRaised
-            var investments = await _investmentsService.GetByIdeaAsync(id);
-            var totalRaised = investments.Sum(i => i.Amount);
-
-
-
-            var response = new
-            {
-                id = idea.Id,
-                title = idea.Title ?? "",
-                summary = idea.Summary ?? "",
-                stage = idea.Stage.ToString(),
-                marketSize = idea.MarketSize ?? "",
-                problem = idea.Problem ?? "",
-                solution = idea.Solution ?? "",
-                revenueModel = idea.RevenueModel ?? "",
-                fundingRequired = idea.FundingRequired,
-                equityOffered = idea.EquityOffered,
-                totalRaised = totalRaised,
-                status = idea.Status.ToString(),
-                milestones = idea.Milestones != null && idea.Milestones.Any()
-                    ? idea.Milestones.Select(m => new
-                    {
-                        title = m.Title ?? "",
-                        description = m.Description ?? "",
-                        targetDate = m.TargetDate.ToString("yyyy-MM-dd")
-                    }).ToList<object>()
-                    : new List<object>()
-            };
-
-            return Ok(response);
+            return result.Match<IActionResult>(
+                idea => Ok(new { success = true, message = "Idea updated" }),
+                err => BadRequest(err)
+            );
         }
+
+        //[HttpGet("my")]
+        //public async Task<IActionResult> MyIdeas()
+        //{
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        //    if (string.IsNullOrEmpty(userId))
+        //        return Unauthorized();
+
+        //    var ideas = await _serviceIdea.GetByCreatorAsync(userId);
+
+        //    if (ideas == null || !ideas.Any())
+        //        return Ok(new List<object>());
+
+        //    var ideaIds = ideas.Select(i => i.Id).ToList();
+
+        //    // Get investments for these ideas
+        //    var investments = ideaIds.Any()
+        //        ? await _investmentsService.GetByIdeaIdsAsync(ideaIds)
+        //        : new List<Investments>();
+
+        //    // Group investments by IdeaId to calculate totalRaised per idea
+        //    var investmentByIdea = investments
+        //        .GroupBy(inv => inv.IdeaId)
+        //        .ToDictionary(
+        //            g => g.Key,
+        //            g => g.Sum(inv => inv.Amount)
+        //        );
+
+        //    // Build response with correct totalRaised for each idea
+        //    var response = ideas.Select(idea => new
+        //    {
+        //        id = idea.Id,
+        //        title = idea.Title ?? "",
+        //        summary = idea.Summary ?? "",
+        //        stage = idea.Stage.ToString(), // "Idea", "MVP", "Growth"
+        //        marketSize = idea.MarketSize ?? "",
+        //        problem = idea.Problem ?? "",
+        //        solution = idea.Solution ?? "",
+        //        revenueModel = idea.RevenueModel ?? "",
+        //        fundingRequired = idea.FundingRequired,
+        //        equityOffered = idea.EquityOffered,
+        //        totalRaised = investmentByIdea.TryGetValue(idea.Id, out var raised) ? raised : 0,
+        //        status = idea.Status.ToString(), // "Pending", "Approved", "Rejected"
+        //        milestones = idea.Milestones != null && idea.Milestones.Any()
+        //            ? idea.Milestones.Select(m => new
+        //            {
+        //                title = m.Title ?? "",
+        //                description = m.Description ?? "",
+        //                targetDate = m.TargetDate.ToString("yyyy-MM-dd")
+        //            }).ToList<object>()
+        //            : new List<object>()
+        //    }).ToList();
+
+        //    return Ok(response);
+        //}
+
+
+        //[HttpGet("ideas/{id}")]
+        //public async Task<IActionResult> GetIdea(string id)
+        //{
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    if (string.IsNullOrEmpty(userId))
+        //        return Unauthorized();
+
+        //    var idea = await _serviceIdea.GetByIdAsync(id);
+
+        //    if (idea == null || idea.CreatorId != userId)
+        //        return NotFound();
+
+
+        //    // Investments for totalRaised
+        //    var investments = await _investmentsService.GetByIdeaAsync(id);
+        //    var totalRaised = investments.Sum(i => i.Amount);
+
+
+
+        //    var response = new
+        //    {
+        //        id = idea.Id,
+        //        title = idea.Title ?? "",
+        //        summary = idea.Summary ?? "",
+        //        stage = idea.Stage.ToString(),
+        //        marketSize = idea.MarketSize ?? "",
+        //        problem = idea.Problem ?? "",
+        //        solution = idea.Solution ?? "",
+        //        revenueModel = idea.RevenueModel ?? "",
+        //        fundingRequired = idea.FundingRequired,
+        //        equityOffered = idea.EquityOffered,
+        //        totalRaised = totalRaised,
+        //        status = idea.Status.ToString(),
+        //        milestones = idea.Milestones != null && idea.Milestones.Any()
+        //            ? idea.Milestones.Select(m => new
+        //            {
+        //                title = m.Title ?? "",
+        //                description = m.Description ?? "",
+        //                targetDate = m.TargetDate.ToString("yyyy-MM-dd")
+        //            }).ToList<object>()
+        //            : new List<object>()
+        //    };
+
+        //    return Ok(response);
+        //}
 
 
 

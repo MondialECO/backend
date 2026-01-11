@@ -1,8 +1,9 @@
 ﻿
-using WebApp.Models.DatabaseModels;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApp.Models.DatabaseModels;
 
 namespace WebApp.Services.Repository
 {
@@ -15,14 +16,47 @@ namespace WebApp.Services.Repository
         }
         private async Task CreateIndexesAsync()
         {
-            // Index on CreatorId for fast queries
-            var creatorIndex = Builders<BusinessIdeas>.IndexKeys.Ascending(b => b.CreatorId);
-            await _collection.Indexes.CreateOneAsync(new CreateIndexModel<BusinessIdeas>(creatorIndex));
+            // 1️ Founder dashboard (very frequent)
+            await _collection.Indexes.CreateOneAsync(
+                new CreateIndexModel<BusinessIdeas>(
+                    Builders<BusinessIdeas>.IndexKeys.Ascending(x => x.CreatorId)
+                )
+            );
 
-            // Index on Status for pending/approved filtering
-            var statusIndex = Builders<BusinessIdeas>.IndexKeys.Ascending(b => b.Status);
-            await _collection.Indexes.CreateOneAsync(new CreateIndexModel<BusinessIdeas>(statusIndex));
+            // 2️ Admin moderation queue
+            await _collection.Indexes.CreateOneAsync(
+                new CreateIndexModel<BusinessIdeas>(
+                    Builders<BusinessIdeas>.IndexKeys
+                        .Ascending(x => x.Status)
+                        .Ascending(x => x.CreatedAt)
+                )
+            );
+
+            // 3️ Investor discovery (MOST IMPORTANT)
+            await _collection.Indexes.CreateOneAsync(
+                new CreateIndexModel<BusinessIdeas>(
+                    Builders<BusinessIdeas>.IndexKeys
+                        .Ascending(x => x.IsVisibleToInvestors)
+                        .Ascending(x => x.CurrentStage)
+                        .Descending(x => x.ReadinessScore),
+                    new CreateIndexOptions<BusinessIdeas>   // 🔥 IMPORTANT
+                    {
+                        Name = "Investor_Discovery_Index",
+                        PartialFilterExpression =
+                            Builders<BusinessIdeas>.Filter.Eq(x => x.Status, "Approved")
+                    }
+                )
+            );
+
+
+            // 4️ Stage analytics / filtering
+            await _collection.Indexes.CreateOneAsync(
+                new CreateIndexModel<BusinessIdeas>(
+                    Builders<BusinessIdeas>.IndexKeys.Ascending(x => x.CurrentStage)
+                )
+            );
         }
+
 
         public async Task<IEnumerable<BusinessIdeas>> GetByCreatorIdAsync(string creatorId)
         {
@@ -36,25 +70,25 @@ namespace WebApp.Services.Repository
             return await _collection.Find(filter).ToListAsync();
         }
 
-        public async Task UpdatePartialAsync(string id, BusinessIdeas idea)
-        {
-            var filter = Builders<BusinessIdeas>.Filter.Eq(i => i.Id, id);
+        //public async Task UpdatePartialAsync(string id, BusinessIdeas idea)
+        //{
+        //    var filter = Builders<BusinessIdeas>.Filter.Eq(i => i.Id, id);
 
-            var update = Builders<BusinessIdeas>.Update
-                .Set(x => x.Title, idea.Title)
-                .Set(x => x.Summary, idea.Summary)
-                .Set(x => x.MarketSize, idea.MarketSize)
-                .Set(x => x.Problem, idea.Problem)
-                .Set(x => x.Solution, idea.Solution)
-                .Set(x => x.RevenueModel, idea.RevenueModel)
-                .Set(x => x.Stage, idea.Stage)
-                .Set(x => x.FundingRequired, idea.FundingRequired)
-                .Set(x => x.EquityOffered, idea.EquityOffered)
-                .Set(x => x.Milestones, idea.Milestones)
-                .Set(x => x.UpdatedAt, DateTime.UtcNow);
+        //    var update = Builders<BusinessIdeas>.Update
+        //        .Set(x => x.Title, idea.Title)
+        //        .Set(x => x.Summary, idea.Summary)
+        //        .Set(x => x.MarketSize, idea.MarketSize)
+        //        .Set(x => x.Problem, idea.Problem)
+        //        .Set(x => x.Solution, idea.Solution)
+        //        .Set(x => x.RevenueModel, idea.RevenueModel)
+        //        .Set(x => x.Stage, idea.Stage)
+        //        .Set(x => x.FundingRequired, idea.FundingRequired)
+        //        .Set(x => x.EquityOffered, idea.EquityOffered)
+        //        .Set(x => x.Milestones, idea.Milestones)
+        //        .Set(x => x.UpdatedAt, DateTime.UtcNow);
 
-            await _collection.UpdateOneAsync(filter, update);
-        }
+        //    await _collection.UpdateOneAsync(filter, update);
+        //}
 
 
 
