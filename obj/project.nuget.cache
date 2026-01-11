@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "giiWZ+H9NTs=",
+  "dgSpecHash": "hjDquTIMAS0=",
   "success": true,
-  "projectFilePath": "D:\\GitHub\\Client_Project\\mondial_eco_API\\WebApp.csproj",
+  "projectFilePath": "D:\\GitHub\\Mondial.Eco\\Backend\\WebApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hafiz\\.nuget\\packages\\aspnetcore.identity.mongodbcore\\6.0.0\\aspnetcore.identity.mongodbcore.6.0.0.nupkg.sha512",
     "C:\\Users\\Hafiz\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
@@ -56,7 +56,11 @@
     "C:\\Users\\Hafiz\\.nuget\\packages\\system.security.cryptography.pkcs\\8.0.1\\system.security.cryptography.pkcs.8.0.1.nupkg.sha512",
     "C:\\Users\\Hafiz\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
     "C:\\Users\\Hafiz\\.nuget\\packages\\webpush\\1.0.12\\webpush.1.0.12.nupkg.sha512",
-    "C:\\Users\\Hafiz\\.nuget\\packages\\zstdsharp.port\\0.7.3\\zstdsharp.port.0.7.3.nupkg.sha512"
+    "C:\\Users\\Hafiz\\.nuget\\packages\\zstdsharp.port\\0.7.3\\zstdsharp.port.0.7.3.nupkg.sha512",
+    "C:\\Users\\Hafiz\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.22\\microsoft.windowsdesktop.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\Hafiz\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.22\\microsoft.netcore.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\Hafiz\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.22\\microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\Hafiz\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.22\\microsoft.netcore.app.host.win-x64.8.0.22.nupkg.sha512"
   ],
   "logs": []
 }
