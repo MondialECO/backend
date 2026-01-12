@@ -1,4 +1,6 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.AspNetCore.SignalR;
+using MongoDB.Bson;
+using WebApp.Hubs;
 using WebApp.Models.DatabaseModels;
 using WebApp.Services.Interface;
 using WebApp.Services.Repository;
@@ -8,12 +10,20 @@ namespace WebApp.Services
     public class NotificationService : INotificationService
     {
         private readonly NotificationRepository _repo;
-        public readonly NotificationHub _notificationHub;
+        private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IPushSubscriptionEntity _pushRepo;
+        public readonly WebPushService _webPushService;
 
-        public NotificationService(NotificationRepository repo, NotificationHub notificationHub)
+
+        public NotificationService(NotificationRepository repo,
+            IHubContext<NotificationHub> hubContext,
+            IPushSubscriptionEntity pushRepo,
+            WebPushService webPushService)
         {
             _repo = repo;
-            _notificationHub = notificationHub;
+            _hubContext = hubContext;
+            _pushRepo = pushRepo;
+            _webPushService = webPushService;
         }
 
 
@@ -23,20 +33,36 @@ namespace WebApp.Services
             {
                 UserId = userId,
                 Title = title,
-                Body = body
+                Body = body,
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false
             };
             await _repo.AddNotification(notif);
             return notif;
         }
 
-        public async Task SendPushNotification(Guid userId, Notification notification)
+
+        public async Task NotifyUser(Guid userId, string title, string body)
         {
-            // implement FCM / Web Push here
-            //await _pushService.Send(userId, notification.Title, notification.Body);
-            // notificationHub is used here to send real-time notifications as well
-            // write business logic to decide whether to use real-time or offline push
-            await _notificationHub.SendNotification(userId, notification.Title, notification.Body);
+            var notification = await CreateNotification(userId, title, body);
+
+            if (PresenceTracker.IsOnline(userId.ToString()))
+            {
+                await _hubContext.Clients.Group(userId.ToString()).SendAsync("ReceiveNotification", notification);
+            }
+            else
+            {
+                var subs = await _pushRepo.GetByUserId(userId);
+                foreach (var sub in subs)
+                {
+                    await _webPushService.SendAsync(sub, notification);
+                }
+            }
         }
+
+
+
+
 
         public async Task<List<Notification>> GetUserNotifications(Guid userId, int skip = 0, int limit = 30)
         {

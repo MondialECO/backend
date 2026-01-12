@@ -421,37 +421,6 @@
         }
       }
     },
-    "/api/BusinessIdea": {
-      "post": {
-        "tags": [
-          "BusinessIdea"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BusinessIdeas"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BusinessIdeas"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/BusinessIdeas"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/api/BusinessIdea/{id}": {
       "get": {
         "tags": [
@@ -763,18 +732,6 @@
         }
       }
     },
-    "/api/Founder/my": {
-      "get": {
-        "tags": [
-          "Founder"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/api/Founder/ideas/{id}": {
       "get": {
         "tags": [
@@ -795,40 +752,44 @@
             "description": "Success"
           }
         }
-      },
+      }
+    },
+    "/api/Founder/ideas": {
       "put": {
         "tags": [
           "Founder"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
+                "$ref": "#/components/schemas/UpdateIdeaDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
+                "$ref": "#/components/schemas/UpdateIdeaDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
+                "$ref": "#/components/schemas/UpdateIdeaDto"
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Founder/my/ideas": {
+      "get": {
+        "tags": [
+          "Founder"
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -960,6 +921,26 @@
         "tags": [
           "Notification"
         ],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 30
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -967,8 +948,8 @@
         }
       }
     },
-    "/api/Notification/{id}/read": {
-      "patch": {
+    "/api/Notification/read/{id}": {
+      "post": {
         "tags": [
           "Notification"
         ],
@@ -1097,78 +1078,35 @@
         },
         "additionalProperties": false
       },
-      "BusinessIdeas": {
+      "BusinessModel": {
         "type": "object",
         "properties": {
-          "id": {
+          "productOrService": {
             "type": "string",
             "nullable": true
           },
-          "creatorId": {
+          "pricing": {
             "type": "string",
             "nullable": true
           },
-          "title": {
+          "salesChannel": {
             "type": "string",
             "nullable": true
           },
-          "summary": {
-            "type": "string",
-            "nullable": true
-          },
-          "problem": {
-            "type": "string",
-            "nullable": true
-          },
-          "solution": {
-            "type": "string",
-            "nullable": true
-          },
-          "marketSize": {
-            "type": "string",
-            "nullable": true
-          },
-          "revenueModel": {
-            "type": "string",
-            "nullable": true
-          },
-          "fundingRequired": {
+          "startupCosts": {
             "type": "number",
             "format": "double"
           },
-          "equityOffered": {
+          "revenueTarget12Months": {
             "type": "number",
             "format": "double"
           },
-          "stage": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
-            "nullable": true
-          },
-          "milestones": {
+          "potentialPartners": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Milestone"
+              "type": "string"
             },
             "nullable": true
-          },
-          "investmentRounds": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/InvestmentRound"
-            },
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -1181,6 +1119,33 @@
             "nullable": true
           },
           "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Compliance": {
+        "type": "object",
+        "properties": {
+          "isRegulated": {
+            "type": "boolean"
+          },
+          "legalRisks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "certifications": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "helpNeeded": {
             "type": "string",
             "nullable": true
           }
@@ -1204,47 +1169,73 @@
       "CreateIdeaDto": {
         "type": "object",
         "properties": {
-          "title": {
+          "companyName": {
             "type": "string",
             "nullable": true
           },
-          "summary": {
-            "type": "string",
-            "nullable": true
-          },
-          "stage": {
-            "type": "string",
-            "nullable": true
-          },
-          "marketSize": {
-            "type": "string",
-            "nullable": true
+          "founderIdentity": {
+            "$ref": "#/components/schemas/FounderIdentity"
           },
           "problem": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/Problem"
           },
           "solution": {
+            "$ref": "#/components/schemas/Solution"
+          },
+          "market": {
+            "$ref": "#/components/schemas/Market"
+          },
+          "businessModel": {
+            "$ref": "#/components/schemas/BusinessModel"
+          },
+          "operations": {
+            "$ref": "#/components/schemas/Operations"
+          },
+          "roadmap": {
+            "$ref": "#/components/schemas/Roadmap"
+          },
+          "compliance": {
+            "$ref": "#/components/schemas/Compliance"
+          },
+          "readinessScore": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currentStage": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "stageLabel": {
             "type": "string",
             "nullable": true
           },
-          "revenueModel": {
-            "type": "string",
-            "nullable": true
+          "isVisibleToInvestors": {
+            "type": "boolean"
           },
           "fundingRequired": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "equityOffered": {
-            "type": "integer",
-            "format": "int32"
+            "type": "number",
+            "format": "double",
+            "nullable": true
           },
-          "milestones": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MilestoneDto"
-            },
+          "impressions": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "clicks": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -1309,6 +1300,35 @@
           },
           "conditions": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FounderIdentity": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "role": {
+            "type": "string",
+            "nullable": true
+          },
+          "experience": {
+            "type": "string",
+            "nullable": true
+          },
+          "launchedBefore": {
+            "type": "boolean"
+          },
+          "weeklyTimeHours": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "motivation": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1399,42 +1419,83 @@
         },
         "additionalProperties": false
       },
-      "Milestone": {
+      "Market": {
         "type": "object",
         "properties": {
-          "title": {
+          "primaryCustomer": {
             "type": "string",
             "nullable": true
           },
-          "description": {
+          "geography": {
             "type": "string",
             "nullable": true
           },
-          "targetDate": {
+          "buyingBehavior": {
             "type": "string",
-            "format": "date-time"
+            "nullable": true
           },
-          "status": {
+          "marketSize": {
             "type": "string",
+            "nullable": true
+          },
+          "competitors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "MilestoneDto": {
+      "Operations": {
         "type": "object",
         "properties": {
-          "title": {
+          "requirements": {
             "type": "string",
             "nullable": true
           },
+          "hasPrototype": {
+            "type": "boolean"
+          },
+          "plannedTools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
           "description": {
             "type": "string",
             "nullable": true
           },
-          "targetDate": {
+          "targetAudience": {
             "type": "string",
-            "format": "date-time"
+            "nullable": true
+          },
+          "currentSolutions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "gaps": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1492,6 +1553,24 @@
         },
         "additionalProperties": false
       },
+      "Roadmap": {
+        "type": "object",
+        "properties": {
+          "days30": {
+            "type": "string",
+            "nullable": true
+          },
+          "days90": {
+            "type": "string",
+            "nullable": true
+          },
+          "year1": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SendMessageRequest": {
         "type": "object",
         "properties": {
@@ -1500,6 +1579,31 @@
             "nullable": true
           },
           "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Solution": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "differentiation": {
+            "type": "string",
+            "nullable": true
+          },
+          "benefits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "vision": {
             "type": "string",
             "nullable": true
           }
@@ -1567,6 +1671,92 @@
           },
           "address": {
             "$ref": "#/components/schemas/Address"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateIdeaDto": {
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "founderIdentity": {
+            "$ref": "#/components/schemas/FounderIdentity"
+          },
+          "problem": {
+            "$ref": "#/components/schemas/Problem"
+          },
+          "solution": {
+            "$ref": "#/components/schemas/Solution"
+          },
+          "market": {
+            "$ref": "#/components/schemas/Market"
+          },
+          "businessModel": {
+            "$ref": "#/components/schemas/BusinessModel"
+          },
+          "operations": {
+            "$ref": "#/components/schemas/Operations"
+          },
+          "roadmap": {
+            "$ref": "#/components/schemas/Roadmap"
+          },
+          "compliance": {
+            "$ref": "#/components/schemas/Compliance"
+          },
+          "readinessScore": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currentStage": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "stageLabel": {
+            "type": "string",
+            "nullable": true
+          },
+          "isVisibleToInvestors": {
+            "type": "boolean"
+          },
+          "fundingRequired": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "equityOffered": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "impressions": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "clicks": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "investmentRounds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvestmentRound"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

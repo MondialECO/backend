@@ -244,22 +244,6 @@
   },
   {
     "ContainingType": "WebApp.Controllers.BusinessIdeaController",
-    "Method": "Create",
-    "RelativePath": "api/BusinessIdea",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "idea",
-        "Type": "WebApp.Models.DatabaseModels.BusinessIdeas",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.BusinessIdeaController",
     "Method": "GetByCreator",
     "RelativePath": "api/BusinessIdea/creator/{creatorId}",
     "HttpMethod": "GET",
@@ -454,6 +438,22 @@
   },
   {
     "ContainingType": "WebApp.Controllers.FounderController",
+    "Method": "UpdateIdea",
+    "RelativePath": "api/Founder/ideas",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "WebApp.Models.Dtos.UpdateIdeaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.FounderController",
     "Method": "GetIdea",
     "RelativePath": "api/Founder/ideas/{id}",
     "HttpMethod": "GET",
@@ -470,29 +470,8 @@
   },
   {
     "ContainingType": "WebApp.Controllers.FounderController",
-    "Method": "UpdateIdea",
-    "RelativePath": "api/Founder/ideas/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.String",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "WebApp.Models.BusinessIdeas.CreateIdeaDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.FounderController",
     "Method": "MyIdeas",
-    "RelativePath": "api/Founder/my",
+    "RelativePath": "api/Founder/my/ideas",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -509,7 +488,7 @@
     "Parameters": [
       {
         "Name": "idea",
-        "Type": "WebApp.Models.BusinessIdeas.CreateIdeaDto",
+        "Type": "WebApp.Models.Dtos.CreateIdeaDto",
         "IsRequired": true
       }
     ],
@@ -597,19 +576,30 @@
   },
   {
     "ContainingType": "WebApp.Controllers.NotificationController",
-    "Method": "GetMyNotifications",
+    "Method": "GetNotifications",
     "RelativePath": "api/Notification",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "skip",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "WebApp.Controllers.NotificationController",
-    "Method": "MarkRead",
-    "RelativePath": "api/Notification/{id}/read",
-    "HttpMethod": "PATCH",
+    "Method": "MarkAsRead",
+    "RelativePath": "api/Notification/read/{id}",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [

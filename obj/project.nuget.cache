@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "giiWZ+H9NTs=",
+  "dgSpecHash": "L9LvK7xiXOE=",
   "success": true,
-  "projectFilePath": "D:\\GitHub\\Client_Project\\mondial_eco_API\\WebApp.csproj",
+  "projectFilePath": "D:\\GitHub\\Mondial.Eco\\Backend\\WebApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hafiz\\.nuget\\packages\\aspnetcore.identity.mongodbcore\\6.0.0\\aspnetcore.identity.mongodbcore.6.0.0.nupkg.sha512",
     "C:\\Users\\Hafiz\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",

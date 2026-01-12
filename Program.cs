@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebApp.DbContext;
+using WebApp.Hubs;
 using WebApp.Models.DatabaseModels;
 using WebApp.Services;
 using WebApp.Services.Interface;
@@ -111,30 +112,45 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// SignalR
 builder.Services.AddSignalR();
-// Repositories
+// Define CustomUserIdProvider for SignalR
+builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+
+// Busess ideas, investments, transactions services and repositories
+builder.Services.AddScoped<IBusinessIdeasService, BusinessIdeasService>();
 builder.Services.AddScoped<BusinessIdeasRepository>();
+
+// Investments
+builder.Services.AddScoped<IInvestmentsService, InvestmentsService>();
 builder.Services.AddScoped<InvestmentsRepository>();
+
+// Transactions
+builder.Services.AddScoped<ITransactionsService, TransactionsService>();
 builder.Services.AddScoped<TransactionsRepository>();
-// Chat Repositories
+
+// Web Push service and repositories
+builder.Services.AddScoped<IPushSubscriptionEntity, PushSubscriptionEntityService>();
+builder.Services.AddScoped<PushSubscriptionEntityRepository>();
+
+// Chat services and repositories
 builder.Services.AddScoped<MessagesRepository>();
 builder.Services.AddScoped<ConversationRepository>();
-builder.Services.AddScoped<NotificationRepository>();
-builder.Services.AddScoped<PushSubscriptionEntityRepository>();
-// Services
-builder.Services.AddScoped<IBusinessIdeasService, BusinessIdeasService>();
-builder.Services.AddScoped<IInvestmentsService, InvestmentsService>();
-builder.Services.AddScoped<ITransactionsService, TransactionsService>();
-
-
-// Chat Service and Notification Service
 builder.Services.AddScoped<IChatService, ChatService>();
+// Notification services and repositories
 builder.Services.AddScoped<INotificationService, NotificationService>();
-builder.Services.AddScoped<IPushSubscriptionEntity, PushSubscriptionEntityService>();
+builder.Services.AddScoped<NotificationRepository>();
+// Web Push service
+builder.Services.AddScoped<WebPushService>();
 
+
+
+
+// need removed after using dashboard
 builder.Services.AddScoped<ISubmmitdata, SubmmitdataRepository>();
+
+// Email service
 builder.Services.AddScoped<EmailService>();
-builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
 
 builder.Services.AddAuthorization();
