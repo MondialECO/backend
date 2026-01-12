@@ -15,6 +15,7 @@ namespace WebApp.Services
             _repo = repo;
         }
 
+        // Create or draft idea
         public async Task<BusinessIdeas> CreateIdeaAsync(CreateIdeaDto idea, string userid)
         {
             var data = new BusinessIdeas
@@ -56,86 +57,79 @@ namespace WebApp.Services
             return data;
         }
 
-        public async Task DeleteIdeaAsync(string id)
+        // Update idea 
+        public async Task<BusinessIdeas> UpdateIdeaAsync(UpdateIdeaDto idea, string userId)
         {
-            await _repo.DeleteAsync(id);
+            var existingIdeas = await _repo.GetByIdeaDriftAsync(idea.Id, userId);
+
+            var data = new BusinessIdeas
+            {
+                CreatorId = existingIdeas.CreatorId,
+                CompanyName = idea.CompanyName ?? existingIdeas.CompanyName,
+                FounderIdentity = idea.FounderIdentity ?? existingIdeas.FounderIdentity,
+                Problem = idea.Problem ?? existingIdeas.Problem,
+                Solution = idea.Solution ?? existingIdeas.Solution,
+                Market = idea.Market ?? existingIdeas.Market,
+                BusinessModel = idea.BusinessModel ?? existingIdeas.BusinessModel,
+                Operations = idea.Operations ?? existingIdeas.Operations,
+                Roadmap = idea.Roadmap ?? existingIdeas.Roadmap,
+                Compliance = idea.Compliance ?? existingIdeas.Compliance,
+                ReadinessScore = idea.ReadinessScore ?? existingIdeas.ReadinessScore,
+                CurrentStage = idea.CurrentStage ?? existingIdeas.CurrentStage, // Default to stage 1
+                StageLabel = idea.StageLabel ?? existingIdeas.StageLabel,
+                IsVisibleToInvestors = existingIdeas.IsVisibleToInvestors,
+                FundingRequired = idea.FundingRequired ?? existingIdeas.FundingRequired,
+                EquityOffered = idea.EquityOffered ?? existingIdeas.EquityOffered,
+                Impressions = existingIdeas.Impressions,
+                Clicks = existingIdeas.Clicks,
+                Status = idea.Status, // Draft | Submitted | Approved | Rejected
+
+                //Milestones = idea.Milestones?.Select(m => new Milestone
+                //{
+                //    Title = m.Title,
+                //    Description = m.Description,
+                //    TargetDate = m.TargetDate
+                //}).ToList() ?? new List<Milestone>(),
+
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            await _repo.UpdateAsync(idea.Id, data);
+            return data;
         }
 
-        public async Task<IEnumerable<BusinessIdeas>> GetAllIdeasAsync()
-        {
-            return await _repo.GetAllAsync();
-        }
-
-        public async Task<BusinessIdeas> GetByIdAsync(string id)
-        {
-            return await _repo.GetByIdAsync(id);
-        }
-
+        // Get ideas by creator
         public async Task<IEnumerable<BusinessIdeas>> GetByCreatorAsync(string creatorId)
         {
             return await _repo.GetByCreatorIdAsync(creatorId);
         }
 
+        // Delete idea
+        public async Task DeleteIdeaAsync(string id)
+        {
+            await _repo.DeleteAsync(id);
+        }
+
+        // Get all ideas for admin dashboard
+        public async Task<IEnumerable<BusinessIdeas>> GetAllIdeasAsync()
+        {
+            return await _repo.GetAllAsync();
+        }
+
+        // Get idea by id for admin moderation
+        public async Task<BusinessIdeas> GetByIdAsync(string id)
+        {
+            return await _repo.GetByIdAsync(id);
+        }
+
+        // Get pending ideas for admin moderation
         public async Task<IEnumerable<BusinessIdeas>> GetPendingIdeasAsync()
         {
             return await _repo.GetPendingIdeasAsync();
         }
-        //public async Task<BusinessIdeas> UpdateIdeaAsync(UpdateIdeaDto dto, string userId)
-        //{
-        //    var idea = await _repo.GetByIdAsync(dto.Id);
-        //    if (idea == null)
-        //    {
-        //        return null;
-        //    }
-        //    if (idea.CreatorId != userId) return null;
-        //    if (idea.Status is "Approved" or "Submitted" or "Rejected")
-        //        return Result.Failure<BusinessIdeas>("Cannot edit in current status");
 
-        //    // ম্যাপ করা (যেগুলো পাঠানো হয়েছে শুধু সেগুলো আপডেট)
-        //    if (dto.CompanyName != null) idea.CompanyName = dto.CompanyName;
-        //    if (dto.FounderIdentity != null) idea.FounderIdentity = dto.FounderIdentity;
-        //    // ... একইভাবে বাকি ফিল্ড
-
-        //    idea.UpdatedAt = DateTime.UtcNow;
-
-        //    await _repository.ReplaceAsync(idea);
-        //    return Result.Success(idea);
-        //}
-        //public async Task<BusinessIdeas> UpdateIdeaAsync(
-        // BusinessIdeas existingIdea,
-        // CreateIdeaDto request)
-        //{
-        //    existingIdea.Title = request.Title ?? existingIdea.Title;
-        //    existingIdea.Summary = request.Summary ?? existingIdea.Summary;
-        //    existingIdea.MarketSize = request.MarketSize ?? existingIdea.MarketSize;
-        //    existingIdea.Problem = request.Problem ?? existingIdea.Problem;
-        //    existingIdea.Solution = request.Solution ?? existingIdea.Solution;
-        //    existingIdea.RevenueModel = request.RevenueModel ?? existingIdea.RevenueModel;
-
-        //    if (!string.IsNullOrEmpty(request.Stage))
-        //        existingIdea.Stage = request.Stage;
-
-        //    if (request.FundingRequired > 0)
-        //        existingIdea.FundingRequired = request.FundingRequired;
-
-        //    if (request.EquityOffered > 0)
-        //        existingIdea.EquityOffered = request.EquityOffered;
-
-        //    // Replace milestones (MongoDB-friendly)
-        //    if (request.Milestones != null)
-        //    {
-        //        existingIdea.Milestones = request.Milestones.Select(m => new Milestone
-        //        {
-        //            Title = m.Title,
-        //            Description = m.Description,
-        //            TargetDate = m.TargetDate,
-        //            Status = "Pending"
-        //        }).ToList();
-        //    }
-
-        //    await _repo.UpdatePartialAsync(existingIdea.Id, existingIdea);
-        //    return existingIdea;
-        //}
+       
 
 
 

@@ -6,7 +6,8 @@ namespace WebApp.Models.DatabaseModels
     public class BusinessIdeas
     {
         [BsonId]
-        public ObjectId Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string CreatorId { get; set; }

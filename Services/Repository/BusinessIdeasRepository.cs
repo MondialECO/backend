@@ -58,10 +58,20 @@ namespace WebApp.Services.Repository
         }
 
 
+        // Custom methods specific to BusinessIdeas for founder dashboard and admin moderation
         public async Task<IEnumerable<BusinessIdeas>> GetByCreatorIdAsync(string creatorId)
         {
             var filter = Builders<BusinessIdeas>.Filter.Eq(b => b.CreatorId, creatorId);
             return await _collection.Find(filter).ToListAsync();
+        }
+
+        public async Task<BusinessIdeas> GetByIdeaDriftAsync(string ideaDriftId, string creatorId)
+        {
+            var filter = Builders<BusinessIdeas>.Filter.And(
+                Builders<BusinessIdeas>.Filter.Eq(b => b.CreatorId, creatorId),
+                Builders<BusinessIdeas>.Filter.Eq(b => b.Id, ideaDriftId)
+            );
+            return await _collection.Find(filter).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<BusinessIdeas>> GetPendingIdeasAsync()

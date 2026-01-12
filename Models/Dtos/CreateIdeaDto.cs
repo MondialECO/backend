@@ -37,7 +37,7 @@ namespace WebApp.Models.Dtos
         public string? Status { get; set; } // Draft | Submitted | Approved | Rejected
 
         // --- Embedded ---
-        public List<Milestone?> Milestones { get; set; } = new();
+        //public List<Milestone?> Milestones { get; set; } = new();
         //public List<InvestmentRound?> InvestmentRounds { get; set; } = new();
 
     }

@@ -17,12 +17,12 @@ namespace WebApp.Controllers
             _service = service;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(BusinessIdeas idea)
-        {
-            var result = await _service.CreateIdeaAsync(idea);
-            return Ok(result);
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> Create(BusinessIdeas idea)
+        //{
+        //    var result = await _service.CreateIdeaAsync(idea);
+        //    return Ok(result);
+        //}
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
