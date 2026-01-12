@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\images\blogs\**" />
-    <Content Remove="wwwroot\images\blogs\**" />
-    <EmbeddedResource Remove="wwwroot\images\blogs\**" />
-    <None Remove="wwwroot\images\blogs\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="6.0.0" />
     <PackageReference Include="MailKit" Version="4.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
@@ -25,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\profile\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

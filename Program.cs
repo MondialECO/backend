@@ -111,7 +111,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+builder.Services.AddSignalR();
 // Repositories
 builder.Services.AddScoped<BusinessIdeasRepository>();
 builder.Services.AddScoped<InvestmentsRepository>();
@@ -136,8 +136,6 @@ builder.Services.AddScoped<ISubmmitdata, SubmmitdataRepository>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
-// signalR for real-time features
-builder.Services.AddSignalR();
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
