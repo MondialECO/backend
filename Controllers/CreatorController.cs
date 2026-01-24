@@ -1,27 +1,30 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using WebApp.Models.DatabaseModels;
 using WebApp.Models.Dtos;
 using WebApp.Services.Interface;
 
+
 namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FounderController : ControllerBase
+    public class CreatorController : ControllerBase
     {
         private readonly IBusinessIdeasService _serviceIdea;
         private readonly IInvestmentsService _investmentsService;
         private readonly ITransactionsService _transactionsService;
-        public FounderController(IBusinessIdeasService service,
+        private readonly UserManager<ApplicationUser> _userManager;
+        public CreatorController(IBusinessIdeasService service,
             IInvestmentsService investmentsService,
-            ITransactionsService transactionsService)
+            ITransactionsService transactionsService,
+             UserManager<ApplicationUser> userManager)
         {
             _serviceIdea = service;
             _investmentsService = investmentsService;
             _transactionsService = transactionsService;
+            _userManager = userManager;
         }
 
 
@@ -159,30 +162,85 @@ namespace WebApp.Controllers
                     g => g.Sum(inv => inv.Amount)
                 );
 
+            var investorIdsByIdea = investments
+                .GroupBy(inv => inv.IdeaId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(inv => inv.InvestorId).Distinct().ToList()
+                );
+
+
+            //var investorGuidSet = investorIdsByIdea
+            //    .SelectMany(x => x.Value)      // string userIds
+            //    .Where(id => Guid.TryParse(id, out _))
+            //    .Select(Guid.Parse)
+            //    .ToHashSet();
+
+            var investorGuidsByIdea = investorIdsByIdea
+             .ToDictionary(
+                 kvp => kvp.Key,
+                 kvp => kvp.Value
+                     .Where(id => Guid.TryParse(id, out _))
+                     .Select(Guid.Parse)
+                     .ToHashSet()
+             );
+
+            var investorGuidSet = investorGuidsByIdea
+                .SelectMany(x => x.Value)
+                .ToHashSet();
+
+
+            var profiles = await _userManager.Users
+                .Where(u => investorGuidSet.Contains(u.Id))
+                .ToListAsync();
+
+
+
+
+
+
+
             // Build response with correct totalRaised for each idea
             var response = ideas.Select(idea => new
             {
                 id = idea.Id,
-                problem = idea.Problem,
+                name = idea.Name,
+                view = idea.Clicks,
+                status = idea.Status, // "Pending", "Approved", "Rejected"
+                creatdate = idea.CreatedAt,
                 stageLabel = idea.StageLabel, // "Idea", "MVP", "Growth"
                 marketSize = idea.Market,
-                solution = idea.Solution,
-                revenueModel = idea.BusinessModel,
                 fundingRequired = idea.FundingRequired,
-                equityOffered = idea.EquityOffered,
                 totalRaised = investmentByIdea.TryGetValue(idea.Id, out var raised) ? raised : 0,
-                status = idea.Status, // "Pending", "Approved", "Rejected"
-                milestones = idea.Milestones != null && idea.Milestones.Any()
-                    ? idea.Milestones.Select(m => new
-                    {
-                        title = m.Title ?? "",
-                        description = m.Description ?? "",
-                        targetDate = m.TargetDate.ToString("yyyy-MM-dd")
-                    }).ToList<object>()
+                equityOffered = idea.EquityOffered,
+
+                investors = investorGuidsByIdea.TryGetValue(idea.Id, out var invGuids)
+                    ? profiles
+                        .Where(p => invGuids.Contains(p.Id))
+                        .Select(p => new
+                        {
+                            p.Id,
+                            p.UserName,
+                            p.Email,
+                            p.ImagePath
+                        })
+                        .ToList()
                     : new List<object>()
+
+        
             }).ToList();
 
             return Ok(response);
+
+
+            //milestones = idea.Milestones != null && idea.Milestones.Any()
+            //    ? idea.Milestones.Select(m => new
+            //    {
+            //        title = m.Title ?? "",
+            //        description = m.Description ?? "",
+            //        targetDate = m.TargetDate.ToString("yyyy-MM-dd")
+            //    }).ToList<object>()
+            //    : new List<object>()
         }
 
 
