@@ -369,6 +369,90 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "WebApp.Controllers.CreatorController",
+    "Method": "GetCreatorDashboard",
+    "RelativePath": "api/Creator/dashboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.CreatorController",
+    "Method": "UpdateIdea",
+    "RelativePath": "api/Creator/ideas",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "WebApp.Models.Dtos.UpdateIdeaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.CreatorController",
+    "Method": "GetIdea",
+    "RelativePath": "api/Creator/ideas/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.CreatorController",
+    "Method": "MyIdeas",
+    "RelativePath": "api/Creator/my/ideas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.CreatorController",
+    "Method": "CreateBusinessIdea",
+    "RelativePath": "api/Creator/new-idea",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idea",
+        "Type": "WebApp.Models.Dtos.CreateIdeaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.CreatorController",
+    "Method": "GetIdeaInvestments",
+    "RelativePath": "api/Creator/{id}/investments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebApp.Controllers.FormdataController",
     "Method": "GetAll",
     "RelativePath": "api/Formdata/all",
@@ -421,90 +505,6 @@
       {
         "Name": "id",
         "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.FounderController",
-    "Method": "GetCreatorDashboard",
-    "RelativePath": "api/Founder/dashboard",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.FounderController",
-    "Method": "UpdateIdea",
-    "RelativePath": "api/Founder/ideas",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "WebApp.Models.Dtos.UpdateIdeaDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.FounderController",
-    "Method": "GetIdea",
-    "RelativePath": "api/Founder/ideas/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.FounderController",
-    "Method": "MyIdeas",
-    "RelativePath": "api/Founder/my/ideas",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.FounderController",
-    "Method": "CreateBusinessIdea",
-    "RelativePath": "api/Founder/new-idea",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "idea",
-        "Type": "WebApp.Models.Dtos.CreateIdeaDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.FounderController",
-    "Method": "GetIdeaInvestments",
-    "RelativePath": "api/Founder/{id}/investments",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.String",
         "IsRequired": true
       }
     ],

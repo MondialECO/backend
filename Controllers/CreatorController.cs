@@ -176,23 +176,23 @@ namespace WebApp.Controllers
             //    .Select(Guid.Parse)
             //    .ToHashSet();
 
-            var investorGuidsByIdea = investorIdsByIdea
-             .ToDictionary(
-                 kvp => kvp.Key,
-                 kvp => kvp.Value
-                     .Where(id => Guid.TryParse(id, out _))
-                     .Select(Guid.Parse)
-                     .ToHashSet()
-             );
+            //var investorGuidsByIdea = investorIdsByIdea
+            // .ToDictionary(
+            //     kvp => kvp.Key,
+            //     kvp => kvp.Value
+            //         .Where(id => Guid.TryParse(id, out _))
+            //         .Select(Guid.Parse)
+            //         .ToHashSet()
+            // );
 
-            var investorGuidSet = investorGuidsByIdea
-                .SelectMany(x => x.Value)
-                .ToHashSet();
+            //var investorGuidSet = investorGuidsByIdea
+            //    .SelectMany(x => x.Value)
+            //    .ToHashSet();
 
 
-            var profiles = await _userManager.Users
-                .Where(u => investorGuidSet.Contains(u.Id))
-                .ToListAsync();
+            //var profiles = await _userManager.Users
+            //    .Where(u => investorGuidSet.Contains(u.Id))
+            //    .ToListAsync();
 
 
 
@@ -205,27 +205,35 @@ namespace WebApp.Controllers
             {
                 id = idea.Id,
                 name = idea.Name,
-                view = idea.Clicks,
+                
                 status = idea.Status, // "Pending", "Approved", "Rejected"
-                creatdate = idea.CreatedAt,
+                score = idea.ReadinessScore,
                 stageLabel = idea.StageLabel, // "Idea", "MVP", "Growth"
+                isVisible = idea.IsVisibleToInvestors,
+                creatdate = idea.CreatedAt,
                 marketSize = idea.Market,
-                fundingRequired = idea.FundingRequired,
-                totalRaised = investmentByIdea.TryGetValue(idea.Id, out var raised) ? raised : 0,
                 equityOffered = idea.EquityOffered,
 
-                investors = investorGuidsByIdea.TryGetValue(idea.Id, out var invGuids)
-                    ? profiles
-                        .Where(p => invGuids.Contains(p.Id))
-                        .Select(p => new
-                        {
-                            p.Id,
-                            p.UserName,
-                            p.Email,
-                            p.ImagePath
-                        })
-                        .ToList()
-                    : new List<object>()
+                clicks = idea.Clicks,
+                fundingRequired = idea.FundingRequired,
+                totalRaised = investmentByIdea.TryGetValue(idea.Id, out var raised) ? raised : 0,
+                //investors = idea.IsVisibleToInvestors,
+                equity = investments.Sum(inv => inv.EquityPercentage)
+
+                
+
+                //investors = investorGuidsByIdea.TryGetValue(idea.Id, out var invGuids)
+                //    ? profiles
+                //        .Where(p => invGuids.Contains(p.Id))
+                //        .Select(p => new
+                //        {
+                //            p.Id,
+                //            p.UserName,
+                //            p.Email,
+                //            p.ImagePath
+                //        })
+                //        .ToList()
+                //    : new List<object>()
 
         
             }).ToList();

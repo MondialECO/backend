@@ -11,6 +11,7 @@ namespace WebApp.Models.DatabaseModels
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string CreatorId { get; set; }
+        public string CompanyName { get; set; }
 
         public string Name { get; set; }
 
@@ -29,7 +30,7 @@ namespace WebApp.Models.DatabaseModels
         public string StageLabel { get; set; } // Idea | MVP | Growth
 
         // --- Investor visibility ---
-        public bool IsVisibleToInvestors { get; set; }
+        public bool IsVisibleToInvestors { get; set; } = false;
 
         // --- Funding ---
         public decimal FundingRequired { get; set; }
@@ -45,8 +46,6 @@ namespace WebApp.Models.DatabaseModels
         // --- Embedded ---
         public List<Milestone> Milestones { get; set; } = new();
         public List<InvestmentRound> InvestmentRounds { get; set; } = new();
-
-        public bool online { get; set; } = false;
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
