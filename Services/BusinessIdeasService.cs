@@ -21,6 +21,7 @@ namespace WebApp.Services
             var data = new BusinessIdeas
             {
                 CreatorId = userid,
+                Name = idea.Name,
                 CompanyName = idea.CompanyName ?? "Untitled Idea",
                 FounderIdentity = idea.FounderIdentity,
                 Problem = idea.Problem,
@@ -47,8 +48,8 @@ namespace WebApp.Services
                 //    TargetDate = m.TargetDate
                 //}).ToList() ?? new List<Milestone>(),
 
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow
+                //UpdatedAt = DateTime.UtcNow
             };
 
 
@@ -65,6 +66,7 @@ namespace WebApp.Services
             var data = new BusinessIdeas
             {
                 CreatorId = existingIdeas.CreatorId,
+                Name =idea.Name ?? existingIdeas.Name,
                 CompanyName = idea.CompanyName ?? existingIdeas.CompanyName,
                 FounderIdentity = idea.FounderIdentity ?? existingIdeas.FounderIdentity,
                 Problem = idea.Problem ?? existingIdeas.Problem,
@@ -91,7 +93,7 @@ namespace WebApp.Services
                 //    TargetDate = m.TargetDate
                 //}).ToList() ?? new List<Milestone>(),
 
-                CreatedAt = DateTime.UtcNow,
+                //CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
 

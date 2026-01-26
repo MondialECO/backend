@@ -9,6 +9,7 @@ namespace WebApp.Models.Dtos
         public string? CompanyName { get; set; }
 
         public FounderIdentity? FounderIdentity { get; set; }
+        public string? Name { get; set; }
         public Problem? Problem { get; set; }
         public Solution? Solution { get; set; }
         public Market? Market { get; set; }
