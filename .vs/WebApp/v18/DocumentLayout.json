@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "D:\\GitHub\\Mondial.Eco\\backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\controllers\\creatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\creatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\services\\businessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\businessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\models\\dtos\\createideadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\dtos\\createideadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\controllers\\creatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\creatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -28,19 +24,6 @@
           "DockedWidth": 200,
           "SelectedChildIndex": 7,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CreateIdeaDto.cs",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Dtos\\CreateIdeaDto.cs",
-              "RelativeDocumentMoniker": "Models\\Dtos\\CreateIdeaDto.cs",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Dtos\\CreateIdeaDto.cs",
-              "RelativeToolTip": "Models\\Dtos\\CreateIdeaDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-26T16:49:07.205Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -63,39 +46,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-01-26T16:40:36.476Z",
+              "DocumentIndex": 2,
+              "Title": "CreateIdeaDto.cs",
+              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Dtos\\CreateIdeaDto.cs",
+              "RelativeDocumentMoniker": "Models\\Dtos\\CreateIdeaDto.cs",
+              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Dtos\\CreateIdeaDto.cs",
+              "RelativeToolTip": "Models\\Dtos\\CreateIdeaDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T16:49:07.205Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "BusinessIdeasService.cs",
               "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Services\\BusinessIdeasService.cs",
               "RelativeDocumentMoniker": "Services\\BusinessIdeasService.cs",
               "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Services\\BusinessIdeasService.cs",
               "RelativeToolTip": "Services\\BusinessIdeasService.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAAADQAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAAABUAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-26T16:37:34.861Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "CreatorController.cs",
               "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Controllers\\CreatorController.cs",
               "RelativeDocumentMoniker": "Controllers\\CreatorController.cs",
               "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Controllers\\CreatorController.cs",
               "RelativeToolTip": "Controllers\\CreatorController.cs",
-              "ViewState": "AgIAAEsAAAAAAAAAAAAAALIAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAAGAAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-24T16:38:06.809Z",
               "EditorCaption": ""

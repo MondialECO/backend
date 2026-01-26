@@ -92,7 +92,8 @@ namespace WebApp.Controllers
         [HttpPost("new-idea")]
         public async Task<IActionResult> CreateBusinessIdea([FromBody] CreateIdeaDto idea)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = "ds347tgr47ghf8ch";
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
 
