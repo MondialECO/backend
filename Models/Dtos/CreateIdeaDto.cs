@@ -6,9 +6,6 @@ namespace WebApp.Models.Dtos
 {
     public class CreateIdeaDto
     {
-        public string? CompanyName { get; set; }
-
-        public FounderIdentity? FounderIdentity { get; set; }
         public string? Name { get; set; }
         public Problem? Problem { get; set; }
         public Solution? Solution { get; set; }
@@ -17,6 +14,12 @@ namespace WebApp.Models.Dtos
         public Operations? Operations { get; set; }
         public Roadmap? Roadmap { get; set; }
         public Compliance? Compliance { get; set; }
+
+
+
+        public string? CompanyName { get; set; }
+
+        public FounderIdentity? FounderIdentity { get; set; }
 
         // --- Scoring & Stage ---
         public double? ReadinessScore { get; set; } 

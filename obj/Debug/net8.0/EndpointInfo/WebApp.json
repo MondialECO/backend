@@ -39,34 +39,6 @@
         }
       }
     },
-    "/api/Admin/create-role": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "parameters": [
-          {
-            "name": "roleName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/api/Admin/assign-role": {
       "post": {
         "tags": [
@@ -1128,13 +1100,6 @@
           "revenueTarget12Months": {
             "type": "number",
             "format": "double"
-          },
-          "potentialPartners": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1197,13 +1162,6 @@
       "CreateIdeaDto": {
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "nullable": true
-          },
-          "founderIdentity": {
-            "$ref": "#/components/schemas/FounderIdentity"
-          },
           "name": {
             "type": "string",
             "nullable": true
@@ -1228,6 +1186,13 @@
           },
           "compliance": {
             "$ref": "#/components/schemas/Compliance"
+          },
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "founderIdentity": {
+            "$ref": "#/components/schemas/FounderIdentity"
           },
           "readinessScore": {
             "type": "number",
@@ -1490,18 +1455,8 @@
           "hasPrototype": {
             "type": "boolean"
           },
-          "plannedTools": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
           "risks": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+            "type": "string",
             "nullable": true
           }
         },
@@ -1519,10 +1474,7 @@
             "nullable": true
           },
           "currentSolutions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+            "type": "string",
             "nullable": true
           },
           "gaps": {
@@ -1710,13 +1662,6 @@
       "UpdateIdeaDto": {
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "nullable": true
-          },
-          "founderIdentity": {
-            "$ref": "#/components/schemas/FounderIdentity"
-          },
           "name": {
             "type": "string",
             "nullable": true
@@ -1741,6 +1686,13 @@
           },
           "compliance": {
             "$ref": "#/components/schemas/Compliance"
+          },
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "founderIdentity": {
+            "$ref": "#/components/schemas/FounderIdentity"
           },
           "readinessScore": {
             "type": "number",
