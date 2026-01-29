@@ -9,15 +9,18 @@ namespace WebApp.Models.DatabaseModels
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        public string InvestorId { get; set; }
-        public string InvestorName { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string RoundId { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string IdeaId { get; set; }
+        public string InvestorId { get; set; }
+        public string InvestorName { get; set; }
         public string RoundName { get; set; }
         public decimal Amount { get; set; }
         public double EquityPercentage { get; set; }
-        public DateTime InvestedAt { get; set; } = DateTime.UtcNow;
+        public string Status { get; set; } // Pending | Escrowed | Completed | Refunded
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Indexes: InvestorId, IdeaId, RoundName
     }

@@ -320,7 +320,7 @@ namespace WebApp.Controllers
                 investorName = inv.InvestorName,
                 investedAmount = inv.Amount,
                 equityPercentage = inv.EquityPercentage,
-                investedDate = inv.InvestedAt.ToString("yyyy-MM-dd"),
+                investedDate = inv.CreatedAt.ToString("yyyy-MM-dd"),
                 roundName = inv.RoundName ?? "Seed Round"
             }).ToList();
 

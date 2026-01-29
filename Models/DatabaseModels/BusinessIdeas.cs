@@ -38,7 +38,7 @@ namespace WebApp.Models.DatabaseModels
 
         // --- Analytics ---
         public long Impressions { get; set; }
-        public long Clicks { get; set; }
+        public decimal Clicks { get; set; }
 
         // --- Workflow ---
         public string Status { get; set; } // Draft | Submitted | Approved | Rejected
@@ -133,8 +133,11 @@ namespace WebApp.Models.DatabaseModels
 
     public class InvestmentRound
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string RoundName { get; set; } // Seed, Series A
-        public decimal TargetAmount { get; set; }
+        public decimal Amount { get; set; }
         public decimal MinInvestment { get; set; }
         public decimal MaxInvestment { get; set; }
         public DateTime OpenDate { get; set; }

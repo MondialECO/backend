@@ -1333,11 +1333,15 @@
       "InvestmentRound": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
           "roundName": {
             "type": "string",
             "nullable": true
           },
-          "targetAmount": {
+          "amount": {
             "type": "number",
             "format": "double"
           },
@@ -1371,15 +1375,19 @@
             "type": "string",
             "nullable": true
           },
+          "roundId": {
+            "type": "string",
+            "nullable": true
+          },
+          "ideaId": {
+            "type": "string",
+            "nullable": true
+          },
           "investorId": {
             "type": "string",
             "nullable": true
           },
           "investorName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ideaId": {
             "type": "string",
             "nullable": true
           },
@@ -1395,7 +1403,11 @@
             "type": "number",
             "format": "double"
           },
-          "investedAt": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
             "type": "string",
             "format": "date-time"
           }
