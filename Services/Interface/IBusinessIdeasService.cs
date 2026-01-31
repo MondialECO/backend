@@ -9,7 +9,7 @@ namespace WebApp.Services.Interface
         Task<IEnumerable<BusinessIdeas>> GetAllIdeasAsync();
         Task<IEnumerable<BusinessIdeas>> GetByCreatorAsync(string creatorId);
         Task<BusinessIdeas> GetByIdAsync(string id);
-        Task<BusinessIdeas> UpdateIdeaAsync(UpdateIdeaDto dto, string userid);
+        Task<BusinessIdeas> UpdateIdeaAsync(CreateIdeaDto dto, string userid, string id);
         Task DeleteIdeaAsync(string id);
         Task<IEnumerable<BusinessIdeas>> GetPendingIdeasAsync();
     }

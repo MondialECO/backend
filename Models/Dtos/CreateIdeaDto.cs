@@ -6,7 +6,7 @@ namespace WebApp.Models.Dtos
 {
     public class CreateIdeaDto
     {
-        public string? Name { get; set; }  // business name
+        public string Name { get; set; }  // business name
         public Problem? Problem { get; set; } // problem being solved
         public Solution? Solution { get; set; } // proposed solution
         public Market? Market { get; set; } // target market
@@ -16,13 +16,9 @@ namespace WebApp.Models.Dtos
         public Compliance? Compliance { get; set; }
         public FounderIdentity? FounderIdentity { get; set; }
 
-        public List<string?> ImageVideo { get; set; } = new();
+        public List<string?> ImageVideoUrls { get; set; } = new();
         public List<string?> DocumentUrls { get; set; } = new();
-
-
         public string? Status { get; set; } // 1–5 (Investor stages)
-        public string? StageLabel { get; set; } // Idea | MVP | Growth
-
         // --- Funding ---
         public decimal? FundingRequired { get; set; }
         public double? EquityOffered { get; set; }

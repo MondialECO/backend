@@ -22,7 +22,6 @@ namespace WebApp.Services
             {
                 CreatorId = userid,
                 Name = idea.Name,
-                FounderIdentity = idea.FounderIdentity,
                 Problem = idea.Problem,
                 Solution = idea.Solution,
                 Market = idea.Market,
@@ -30,32 +29,23 @@ namespace WebApp.Services
                 Operations = idea.Operations,
                 Roadmap = idea.Roadmap,
                 Compliance = idea.Compliance,
+                FounderIdentity = idea.FounderIdentity,
+                ImageVideo = idea.ImageVideoUrls,
+                DocumentUrls = idea.DocumentUrls,
+                Status = idea.Status ?? "Draft", // Draft | Submitted | Approved | Rejected
                 FundingRequired = idea.FundingRequired ?? 0,
                 EquityOffered = idea.EquityOffered ?? 0,
-                Status = idea.Status ?? "Draft", // Draft | Submitted | Approved | Rejected
-                ImageVideo = idea.ImageVideo,
-                DocumentUrls = idea.DocumentUrls,
-                //Milestones = idea.Milestones?.Select(m => new Milestone
-                //{
-                //    Title = m.Title,
-                //    Description = m.Description,
-                //    TargetDate = m.TargetDate
-                //}).ToList() ?? new List<Milestone>(),
 
                 CreatedAt = DateTime.UtcNow
-                //UpdatedAt = DateTime.UtcNow
             };
-
-
-
             await _repo.AddAsync(data);
             return data;
         }
 
         // Update idea 
-        public async Task<BusinessIdeas> UpdateIdeaAsync(UpdateIdeaDto idea, string userId)
+        public async Task<BusinessIdeas> UpdateIdeaAsync(CreateIdeaDto idea, string userid, string id)
         {
-            var existingIdeas = await _repo.GetByIdeaDriftAsync(idea.Id, userId);
+            var existingIdeas = await _repo.GetByIdeaDriftAsync(id, userid);
 
             var data = new BusinessIdeas
             {
@@ -75,8 +65,10 @@ namespace WebApp.Services
                 Impressions = existingIdeas.Impressions,
                 Clicks = existingIdeas.Clicks,
                 Status = idea.Status, // Draft | Submitted | Approved | Rejected
-                ImageVideo = idea.ImageVideo ?? existingIdeas.ImageVideo,
+                ImageVideo = idea.ImageVideoUrls ?? existingIdeas.ImageVideo,
                 DocumentUrls = idea.DocumentUrls ?? existingIdeas.DocumentUrls,
+
+                UpdatedAt = DateTime.UtcNow
 
 
                 //Milestones = idea.Milestones?.Select(m => new Milestone
@@ -87,10 +79,10 @@ namespace WebApp.Services
                 //}).ToList() ?? new List<Milestone>(),
 
                 //CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+
             };
 
-            await _repo.UpdateAsync(idea.Id, data);
+            await _repo.UpdateAsync(id, data);
             return data;
         }
 

@@ -89,15 +89,23 @@ namespace WebApp.Controllers
 
 
         // create new business idea or save draft
-        [HttpPost("new-idea")]
-        public async Task<IActionResult> CreateBusinessIdea([FromBody] CreateIdeaDto idea)
+        [HttpPost("new-idea/{id}")]
+        public async Task<IActionResult> CreateBusinessIdea([FromBody] CreateIdeaDto idea, string id)
         {
             //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var userId = "ds347tgr47ghf8ch";
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
 
-            var createdIdea = await _serviceIdea.CreateIdeaAsync(idea, userId);
+            if (string.IsNullOrEmpty(id))
+            {
+                var createdIdea = await _serviceIdea.CreateIdeaAsync(idea, userId);
+            }
+            else
+            {
+                var update = await _serviceIdea.UpdateIdeaAsync(idea, userId, id);
+            }
+
             return Ok(new
             {
                 success = true,
@@ -119,20 +127,20 @@ namespace WebApp.Controllers
         }
 
         // update existing idea
-        [HttpPut("ideas")]
-        public async Task<IActionResult> UpdateIdea(UpdateIdeaDto request)
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //[HttpPut("ideas")]
+        //public async Task<IActionResult> UpdateIdea(UpdateIdeaDto request)
+        //{
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (string.IsNullOrEmpty(userId))
-                return Unauthorized();
+        //    if (string.IsNullOrEmpty(userId))
+        //        return Unauthorized();
 
-            if(string.IsNullOrEmpty(request.Id))
-                return BadRequest(new { message = "Idea ID is required for update." });
+        //    if(string.IsNullOrEmpty(request.Id))
+        //        return BadRequest(new { message = "Idea ID is required for update." });
 
-            var resunt = await _serviceIdea.UpdateIdeaAsync(request, userId);
-            return Ok(new { message = "Idea updated successfully!" });
-        }
+        //    var resunt = await _serviceIdea.UpdateIdeaAsync(request, userId);
+        //    return Ok(new { message = "Idea updated successfully!" });
+        //}
 
 
         [HttpGet("my/ideas")]

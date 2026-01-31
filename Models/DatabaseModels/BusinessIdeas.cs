@@ -12,7 +12,7 @@ namespace WebApp.Models.DatabaseModels
         [BsonRepresentation(BsonType.ObjectId)]
         public string CreatorId { get; set; } // Reference to Users collection
 
-        public string Name { get; set; } // business name
+        public string Name { get; set; } // idea name
 
         public Problem Problem { get; set; } // problem being solved
         public Solution Solution { get; set; } // proposed solution
