@@ -11,8 +11,9 @@ namespace WebApp.Models.DatabaseModels
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string CreatorId { get; set; }
-
         public string CompanyName { get; set; }
+
+        public string Name { get; set; }
 
         public FounderIdentity FounderIdentity { get; set; }
         public Problem Problem { get; set; }
@@ -29,7 +30,7 @@ namespace WebApp.Models.DatabaseModels
         public string StageLabel { get; set; } // Idea | MVP | Growth
 
         // --- Investor visibility ---
-        public bool IsVisibleToInvestors { get; set; }
+        public bool IsVisibleToInvestors { get; set; } = false;
 
         // --- Funding ---
         public decimal FundingRequired { get; set; }
@@ -65,7 +66,8 @@ namespace WebApp.Models.DatabaseModels
     {
         public string Description { get; set; }
         public string TargetAudience { get; set; }
-        public List<string> CurrentSolutions { get; set; }
+        //public List<string> CurrentSolutions { get; set; }
+        public string CurrentSolutions { get; set; }
         public string Gaps { get; set; }
     }
 
@@ -93,16 +95,17 @@ namespace WebApp.Models.DatabaseModels
         public string SalesChannel { get; set; }
         public decimal StartupCosts { get; set; }
         public decimal RevenueTarget12Months { get; set; }
-        public List<string> PotentialPartners { get; set; }
+        //public List<string> PotentialPartners { get; set; }
     }
 
     public class Operations
     {
         public string Requirements { get; set; }
         public bool HasPrototype { get; set; }
-        public List<string> PlannedTools { get; set; }
+        //public List<string> PlannedTools { get; set; }
 
-        public List<string> Risks { get; set; }
+        //public List<string> Risks { get; set; }
+        public string Risks { get; set; }
     }
 
     public class Roadmap

@@ -630,6 +630,136 @@
         }
       }
     },
+    "/api/Creator/dashboard": {
+      "get": {
+        "tags": [
+          "Creator"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Creator/new-idea": {
+      "post": {
+        "tags": [
+          "Creator"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIdeaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Creator/ideas/{id}": {
+      "get": {
+        "tags": [
+          "Creator"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Creator/ideas": {
+      "put": {
+        "tags": [
+          "Creator"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIdeaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIdeaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIdeaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Creator/my/ideas": {
+      "get": {
+        "tags": [
+          "Creator"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Creator/{id}/investments": {
+      "get": {
+        "tags": [
+          "Creator"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Formdata/submit": {
       "post": {
         "tags": [
@@ -707,136 +837,6 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Founder/dashboard": {
-      "get": {
-        "tags": [
-          "Founder"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Founder/new-idea": {
-      "post": {
-        "tags": [
-          "Founder"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Founder/ideas/{id}": {
-      "get": {
-        "tags": [
-          "Founder"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Founder/ideas": {
-      "put": {
-        "tags": [
-          "Founder"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateIdeaDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateIdeaDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateIdeaDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Founder/my/ideas": {
-      "get": {
-        "tags": [
-          "Founder"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Founder/{id}/investments": {
-      "get": {
-        "tags": [
-          "Founder"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -1128,13 +1128,6 @@
           "revenueTarget12Months": {
             "type": "number",
             "format": "double"
-          },
-          "potentialPartners": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1197,12 +1190,9 @@
       "CreateIdeaDto": {
         "type": "object",
         "properties": {
-          "companyName": {
+          "name": {
             "type": "string",
             "nullable": true
-          },
-          "founderIdentity": {
-            "$ref": "#/components/schemas/FounderIdentity"
           },
           "problem": {
             "$ref": "#/components/schemas/Problem"
@@ -1224,6 +1214,13 @@
           },
           "compliance": {
             "$ref": "#/components/schemas/Compliance"
+          },
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "founderIdentity": {
+            "$ref": "#/components/schemas/FounderIdentity"
           },
           "readinessScore": {
             "type": "number",
@@ -1486,18 +1483,8 @@
           "hasPrototype": {
             "type": "boolean"
           },
-          "plannedTools": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
           "risks": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+            "type": "string",
             "nullable": true
           }
         },
@@ -1515,10 +1502,7 @@
             "nullable": true
           },
           "currentSolutions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+            "type": "string",
             "nullable": true
           },
           "gaps": {
@@ -1706,12 +1690,9 @@
       "UpdateIdeaDto": {
         "type": "object",
         "properties": {
-          "companyName": {
+          "name": {
             "type": "string",
             "nullable": true
-          },
-          "founderIdentity": {
-            "$ref": "#/components/schemas/FounderIdentity"
           },
           "problem": {
             "$ref": "#/components/schemas/Problem"
@@ -1733,6 +1714,13 @@
           },
           "compliance": {
             "$ref": "#/components/schemas/Compliance"
+          },
+          "companyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "founderIdentity": {
+            "$ref": "#/components/schemas/FounderIdentity"
           },
           "readinessScore": {
             "type": "number",
