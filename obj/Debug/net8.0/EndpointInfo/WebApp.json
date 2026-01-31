@@ -39,34 +39,6 @@
         }
       }
     },
-    "/api/Admin/create-role": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "parameters": [
-          {
-            "name": "roleName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/api/Admin/assign-role": {
       "post": {
         "tags": [
@@ -1153,20 +1125,10 @@
             "type": "boolean"
           },
           "legalRisks": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+            "type": "string",
             "nullable": true
           },
           "certifications": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "helpNeeded": {
             "type": "string",
             "nullable": true
           }
@@ -1215,29 +1177,30 @@
           "compliance": {
             "$ref": "#/components/schemas/Compliance"
           },
-          "companyName": {
-            "type": "string",
-            "nullable": true
-          },
           "founderIdentity": {
             "$ref": "#/components/schemas/FounderIdentity"
           },
-          "readinessScore": {
-            "type": "number",
-            "format": "double",
+          "imageVideo": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           },
-          "currentStage": {
-            "type": "integer",
-            "format": "int32",
+          "documentUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
             "nullable": true
           },
           "stageLabel": {
             "type": "string",
             "nullable": true
-          },
-          "isVisibleToInvestors": {
-            "type": "boolean"
           },
           "fundingRequired": {
             "type": "number",
@@ -1247,20 +1210,6 @@
           "equityOffered": {
             "type": "number",
             "format": "double",
-            "nullable": true
-          },
-          "impressions": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          },
-          "clicks": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
             "nullable": true
           }
         },
@@ -1332,7 +1281,7 @@
       "FounderIdentity": {
         "type": "object",
         "properties": {
-          "name": {
+          "businessName": {
             "type": "string",
             "nullable": true
           },
@@ -1341,7 +1290,10 @@
             "nullable": true
           },
           "experience": {
-            "type": "string",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           },
           "launchedBefore": {
@@ -1361,11 +1313,15 @@
       "InvestmentRound": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
           "roundName": {
             "type": "string",
             "nullable": true
           },
-          "targetAmount": {
+          "amount": {
             "type": "number",
             "format": "double"
           },
@@ -1399,15 +1355,19 @@
             "type": "string",
             "nullable": true
           },
+          "roundId": {
+            "type": "string",
+            "nullable": true
+          },
+          "ideaId": {
+            "type": "string",
+            "nullable": true
+          },
           "investorId": {
             "type": "string",
             "nullable": true
           },
           "investorName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ideaId": {
             "type": "string",
             "nullable": true
           },
@@ -1423,7 +1383,11 @@
             "type": "number",
             "format": "double"
           },
-          "investedAt": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
             "type": "string",
             "format": "date-time"
           }
@@ -1464,10 +1428,7 @@
             "nullable": true
           },
           "competitors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+            "type": "string",
             "nullable": true
           }
         },
@@ -1480,7 +1441,7 @@
             "type": "string",
             "nullable": true
           },
-          "hasPrototype": {
+          "protoType": {
             "type": "boolean"
           },
           "risks": {
@@ -1501,7 +1462,7 @@
             "type": "string",
             "nullable": true
           },
-          "currentSolutions": {
+          "existingSolutions": {
             "type": "string",
             "nullable": true
           },
@@ -1608,11 +1569,12 @@
             "type": "string",
             "nullable": true
           },
+          "stageLabel": {
+            "type": "string",
+            "nullable": true
+          },
           "benefits": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+            "type": "string",
             "nullable": true
           },
           "vision": {
@@ -1715,29 +1677,30 @@
           "compliance": {
             "$ref": "#/components/schemas/Compliance"
           },
-          "companyName": {
-            "type": "string",
-            "nullable": true
-          },
           "founderIdentity": {
             "$ref": "#/components/schemas/FounderIdentity"
           },
-          "readinessScore": {
-            "type": "number",
-            "format": "double",
+          "imageVideo": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           },
-          "currentStage": {
-            "type": "integer",
-            "format": "int32",
+          "documentUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
             "nullable": true
           },
           "stageLabel": {
             "type": "string",
             "nullable": true
-          },
-          "isVisibleToInvestors": {
-            "type": "boolean"
           },
           "fundingRequired": {
             "type": "number",
@@ -1747,20 +1710,6 @@
           "equityOffered": {
             "type": "number",
             "format": "double",
-            "nullable": true
-          },
-          "impressions": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          },
-          "clicks": {
-            "type": "integer",
-            "format": "int64",
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
             "nullable": true
           },
           "id": {

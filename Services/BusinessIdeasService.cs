@@ -22,7 +22,6 @@ namespace WebApp.Services
             {
                 CreatorId = userid,
                 Name = idea.Name,
-                CompanyName = idea.CompanyName ?? "Untitled Idea",
                 FounderIdentity = idea.FounderIdentity,
                 Problem = idea.Problem,
                 Solution = idea.Solution,
@@ -31,16 +30,11 @@ namespace WebApp.Services
                 Operations = idea.Operations,
                 Roadmap = idea.Roadmap,
                 Compliance = idea.Compliance,
-                ReadinessScore = idea.ReadinessScore ?? 0,
-                CurrentStage = idea.CurrentStage ?? 1, // Default to stage 1
-                StageLabel = idea.StageLabel ?? "Idea",
-                IsVisibleToInvestors = false,
                 FundingRequired = idea.FundingRequired ?? 0,
                 EquityOffered = idea.EquityOffered ?? 0,
-                Impressions = idea.Impressions ?? 0,
-                Clicks = idea.Clicks ?? 0,
                 Status = idea.Status ?? "Draft", // Draft | Submitted | Approved | Rejected
-
+                ImageVideo = idea.ImageVideo,
+                DocumentUrls = idea.DocumentUrls,
                 //Milestones = idea.Milestones?.Select(m => new Milestone
                 //{
                 //    Title = m.Title,
@@ -67,7 +61,6 @@ namespace WebApp.Services
             {
                 CreatorId = existingIdeas.CreatorId,
                 Name =idea.Name ?? existingIdeas.Name,
-                CompanyName = idea.CompanyName ?? existingIdeas.CompanyName,
                 FounderIdentity = idea.FounderIdentity ?? existingIdeas.FounderIdentity,
                 Problem = idea.Problem ?? existingIdeas.Problem,
                 Solution = idea.Solution ?? existingIdeas.Solution,
@@ -76,15 +69,15 @@ namespace WebApp.Services
                 Operations = idea.Operations ?? existingIdeas.Operations,
                 Roadmap = idea.Roadmap ?? existingIdeas.Roadmap,
                 Compliance = idea.Compliance ?? existingIdeas.Compliance,
-                ReadinessScore = idea.ReadinessScore ?? existingIdeas.ReadinessScore,
-                CurrentStage = idea.CurrentStage ?? existingIdeas.CurrentStage, // Default to stage 1
-                StageLabel = idea.StageLabel ?? existingIdeas.StageLabel,
-                IsVisibleToInvestors = existingIdeas.IsVisibleToInvestors,
+                IsPublished = existingIdeas.IsPublished,
                 FundingRequired = idea.FundingRequired ?? existingIdeas.FundingRequired,
                 EquityOffered = idea.EquityOffered ?? existingIdeas.EquityOffered,
                 Impressions = existingIdeas.Impressions,
                 Clicks = existingIdeas.Clicks,
                 Status = idea.Status, // Draft | Submitted | Approved | Rejected
+                ImageVideo = idea.ImageVideo ?? existingIdeas.ImageVideo,
+                DocumentUrls = idea.DocumentUrls ?? existingIdeas.DocumentUrls,
+
 
                 //Milestones = idea.Milestones?.Select(m => new Milestone
                 //{

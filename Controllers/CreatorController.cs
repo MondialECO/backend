@@ -209,8 +209,8 @@ namespace WebApp.Controllers
                 
                 status = idea.Status, // "Pending", "Approved", "Rejected"
                 score = idea.ReadinessScore,
-                stageLabel = idea.StageLabel, // "Idea", "MVP", "Growth"
-                isVisible = idea.IsVisibleToInvestors,
+                stageLabel = idea.Status, // "Idea", "MVP", "Growth"
+                isVisible = idea.IsPublished,
                 creatdate = idea.CreatedAt,
                 marketSize = idea.Market,
                 equityOffered = idea.EquityOffered,
@@ -320,7 +320,7 @@ namespace WebApp.Controllers
                 investorName = inv.InvestorName,
                 investedAmount = inv.Amount,
                 equityPercentage = inv.EquityPercentage,
-                investedDate = inv.InvestedAt.ToString("yyyy-MM-dd"),
+                investedDate = inv.CreatedAt.ToString("yyyy-MM-dd"),
                 roundName = inv.RoundName ?? "Seed Round"
             }).ToList();
 

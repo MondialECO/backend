@@ -6,43 +6,26 @@ namespace WebApp.Models.Dtos
 {
     public class CreateIdeaDto
     {
-        public string? Name { get; set; }
-        public Problem? Problem { get; set; }
-        public Solution? Solution { get; set; }
-        public Market? Market { get; set; }
+        public string? Name { get; set; }  // business name
+        public Problem? Problem { get; set; } // problem being solved
+        public Solution? Solution { get; set; } // proposed solution
+        public Market? Market { get; set; } // target market
         public BusinessModel? BusinessModel { get; set; }
         public Operations? Operations { get; set; }
         public Roadmap? Roadmap { get; set; }
         public Compliance? Compliance { get; set; }
-
-
-
-        public string? CompanyName { get; set; }
-
         public FounderIdentity? FounderIdentity { get; set; }
 
-        // --- Scoring & Stage ---
-        public double? ReadinessScore { get; set; } 
-        public int? CurrentStage { get; set; } // 1–5 (Investor stages)
-        public string? StageLabel { get; set; } // Idea | MVP | Growth
+        public List<string?> ImageVideo { get; set; } = new();
+        public List<string?> DocumentUrls { get; set; } = new();
 
-        // --- Investor visibility ---
-        public bool IsVisibleToInvestors { get; set; }
+
+        public string? Status { get; set; } // 1–5 (Investor stages)
+        public string? StageLabel { get; set; } // Idea | MVP | Growth
 
         // --- Funding ---
         public decimal? FundingRequired { get; set; }
         public double? EquityOffered { get; set; }
-
-        // --- Analytics ---
-        public long? Impressions { get; set; }
-        public long? Clicks { get; set; }
-
-        // --- Workflow ---
-        public string? Status { get; set; } // Draft | Submitted | Approved | Rejected
-
-        // --- Embedded ---
-        //public List<Milestone?> Milestones { get; set; } = new();
-        //public List<InvestmentRound?> InvestmentRounds { get; set; } = new();
 
     }
 

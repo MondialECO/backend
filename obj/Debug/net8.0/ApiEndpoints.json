@@ -22,27 +22,6 @@
   },
   {
     "ContainingType": "WebApp.Controllers.AdminController",
-    "Method": "CreateRole",
-    "RelativePath": "api/Admin/create-role",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "roleName",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "description",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.AdminController",
     "Method": "DeleteUser",
     "RelativePath": "api/Admin/delete-user/{id}",
     "HttpMethod": "DELETE",

@@ -36,10 +36,10 @@ namespace WebApp.Services.Repository
             await _collection.Indexes.CreateOneAsync(
                 new CreateIndexModel<BusinessIdeas>(
                     Builders<BusinessIdeas>.IndexKeys
-                        .Ascending(x => x.IsVisibleToInvestors)
-                        .Ascending(x => x.CurrentStage)
+                        .Ascending(x => x.IsPublished)
+                        .Ascending(x => x.Status)
                         .Descending(x => x.ReadinessScore),
-                    new CreateIndexOptions<BusinessIdeas>   // 🔥 IMPORTANT
+                    new CreateIndexOptions<BusinessIdeas>   //  IMPORTANT
                     {
                         Name = "Investor_Discovery_Index",
                         PartialFilterExpression =
@@ -52,7 +52,7 @@ namespace WebApp.Services.Repository
             // 4️ Stage analytics / filtering
             await _collection.Indexes.CreateOneAsync(
                 new CreateIndexModel<BusinessIdeas>(
-                    Builders<BusinessIdeas>.IndexKeys.Ascending(x => x.CurrentStage)
+                    Builders<BusinessIdeas>.IndexKeys.Ascending(x => x.Status)
                 )
             );
         }

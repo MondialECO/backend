@@ -10,64 +10,46 @@ namespace WebApp.Models.DatabaseModels
         public string Id { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]
-        public string CreatorId { get; set; }
-        public string CompanyName { get; set; }
+        public string CreatorId { get; set; } // Reference to Users collection
 
-        public string Name { get; set; }
+        public string Name { get; set; } // business name
 
-        public FounderIdentity FounderIdentity { get; set; }
-        public Problem Problem { get; set; }
-        public Solution Solution { get; set; }
-        public Market Market { get; set; }
-        public BusinessModel BusinessModel { get; set; }
-        public Operations Operations { get; set; }
-        public Roadmap Roadmap { get; set; }
-        public Compliance Compliance { get; set; }
-
-        // --- Scoring & Stage ---
-        public double ReadinessScore { get; set; }
-        public int CurrentStage { get; set; } // 1–5 (Investor stages)
-        public string StageLabel { get; set; } // Idea | MVP | Growth
-
-        // --- Investor visibility ---
-        public bool IsVisibleToInvestors { get; set; } = false;
+        public Problem Problem { get; set; } // problem being solved
+        public Solution Solution { get; set; } // proposed solution
+        public Market Market { get; set; } // target market
+        public BusinessModel BusinessModel { get; set; } // business model
+        public Operations Operations { get; set; }  // operations plan
+        public Roadmap Roadmap { get; set; } // roadmap
+        public Compliance Compliance { get; set; } // compliance info
+        public FounderIdentity FounderIdentity { get; set; } // founder details
+        public List<string> ImageVideo { get; set; } = new(); // image/video URLs
+        public List<string> DocumentUrls { get; set; } = new(); // supporting documents
 
         // --- Funding ---
-        public decimal FundingRequired { get; set; }
-        public double EquityOffered { get; set; }
+        public decimal FundingRequired { get; set; } // amount required
+        public double EquityOffered { get; set; } // percentage
+
+        public double ReadinessScore { get; set; }
+        public string Status { get; set; } // Draft | Submitted | Approved | Rejected
+        public bool IsPublished { get; set; } = false; // default to false
 
         // --- Analytics ---
-        public long Impressions { get; set; }
-        public long Clicks { get; set; }
-
-        // --- Workflow ---
-        public string Status { get; set; } // Draft | Submitted | Approved | Rejected
-
+        public long Impressions { get; set; } // number of views
+        public decimal Clicks { get; set; } // number of clicks
         // --- Embedded ---
         public List<Milestone> Milestones { get; set; } = new();
         public List<InvestmentRound> InvestmentRounds { get; set; } = new();
-
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
 
-
-    public class FounderIdentity
-    {
-        public string Name { get; set; }
-        public string Role { get; set; }
-        public string Experience { get; set; }
-        public bool LaunchedBefore { get; set; }
-        public int WeeklyTimeHours { get; set; }
-        public string Motivation { get; set; }
-    }
 
     public class Problem
     {
         public string Description { get; set; }
         public string TargetAudience { get; set; }
         //public List<string> CurrentSolutions { get; set; }
-        public string CurrentSolutions { get; set; }
+        public string ExistingSolutions { get; set; }
         public string Gaps { get; set; }
     }
 
@@ -75,7 +57,9 @@ namespace WebApp.Models.DatabaseModels
     {
         public string Description { get; set; }
         public string Differentiation { get; set; }
-        public List<string> Benefits { get; set; }
+        //public List<string> Benefits { get; set; }
+        public string StageLabel { get; set; } // Idea | MVP | Growth
+        public string Benefits { get; set; }
         public string Vision { get; set; }
     }
 
@@ -85,7 +69,8 @@ namespace WebApp.Models.DatabaseModels
         public string Geography { get; set; }
         public string BuyingBehavior { get; set; }
         public string MarketSize { get; set; }
-        public List<string> Competitors { get; set; }
+        //public List<string> Competitors { get; set; }
+        public string Competitors { get; set; }
     }
 
     public class BusinessModel
@@ -101,7 +86,7 @@ namespace WebApp.Models.DatabaseModels
     public class Operations
     {
         public string Requirements { get; set; }
-        public bool HasPrototype { get; set; }
+        public bool ProtoType { get; set; }
         //public List<string> PlannedTools { get; set; }
 
         //public List<string> Risks { get; set; }
@@ -118,10 +103,21 @@ namespace WebApp.Models.DatabaseModels
     public class Compliance
     {
         public bool IsRegulated { get; set; }
-        public List<string> LegalRisks { get; set; }
-        public List<string> Certifications { get; set; }
-        public string HelpNeeded { get; set; }
+        public string LegalRisks { get; set; }
+        public string Certifications { get; set; }
     }
+
+    public class FounderIdentity
+    {
+        public string BusinessName { get; set; }
+        public string Role { get; set; }
+        public List<string> Experience { get; set; } = new(); // ex: ["Software Development", "Marketing"]
+        public bool LaunchedBefore { get; set; }
+        public int WeeklyTimeHours { get; set; }
+        public string Motivation { get; set; }
+    }
+
+
 
     public class Milestone
     {
@@ -133,8 +129,11 @@ namespace WebApp.Models.DatabaseModels
 
     public class InvestmentRound
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string RoundName { get; set; } // Seed, Series A
-        public decimal TargetAmount { get; set; }
+        public decimal Amount { get; set; }
         public decimal MinInvestment { get; set; }
         public decimal MaxInvestment { get; set; }
         public DateTime OpenDate { get; set; }
