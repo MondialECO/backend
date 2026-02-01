@@ -114,7 +114,7 @@ namespace WebApp.Controllers
         }
 
         // get idea by id
-        [HttpGet("ideas/{id}")]
+        [HttpGet("idea/{id}")]
         public async Task<IActionResult> GetIdea(string id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -123,7 +123,31 @@ namespace WebApp.Controllers
             var idea = await _serviceIdea.GetByIdAsync(id);
             if (idea == null || idea.CreatorId != userId)
                 return NotFound();
-            return Ok(idea);
+
+            var responce = new
+            {
+                id = idea.Id,
+                name = idea.Name,
+                problem = idea.Problem,
+                solution = idea.Solution,
+                market = idea.Market,
+                businessModel = idea.BusinessModel,
+                operations = idea.Operations,
+                roadmap = idea.Roadmap,
+                compliance = idea.Compliance,
+                founderIdentity = idea.FounderIdentity,
+                isPublished = idea.IsPublished,
+                fundingRequired = idea.FundingRequired,
+                equityOffered = idea.EquityOffered,
+                status = idea.Status,
+                imageVideoUrls = idea.ImageVideo,
+                documentUrls = idea.DocumentUrls,
+                createAt = idea.CreatedAt,
+                updateAt = idea.UpdatedAt
+
+            };
+
+            return Ok(responce);
         }
 
         // update existing idea

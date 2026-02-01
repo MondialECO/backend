@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\creatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\services\\repository\\businessideasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\businessideasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\services\\businessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\businessideasservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\services\\repository\\businessideasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\repository\\businessideasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\models\\dtos\\createideadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -56,23 +56,22 @@
               "RelativeDocumentMoniker": "Controllers\\CreatorController.cs",
               "ToolTip": "D:\\GitHub\\Mondial.Eco\\Backend\\Controllers\\CreatorController.cs",
               "RelativeToolTip": "Controllers\\CreatorController.cs",
-              "ViewState": "AgIAALEAAAAAAAAAAAAlwLgAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAEMBAAAAAAAAAAAYwE4BAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-31T12:06:18.392Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "BusinessIdeasRepository.cs",
               "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\Backend\\Services\\Repository\\BusinessIdeasRepository.cs",
               "RelativeDocumentMoniker": "Services\\Repository\\BusinessIdeasRepository.cs",
               "ToolTip": "D:\\GitHub\\Mondial.Eco\\Backend\\Services\\Repository\\BusinessIdeasRepository.cs",
               "RelativeToolTip": "Services\\Repository\\BusinessIdeasRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAowAkAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-31T12:02:24.86Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-31T12:02:24.86Z"
             },
             {
               "$type": "Document",
@@ -84,21 +83,19 @@
               "RelativeToolTip": "Models\\Dtos\\CreateIdeaDto.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAzwBkAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-31T11:56:10.157Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-31T11:56:10.157Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "BusinessIdeasService.cs",
               "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\Backend\\Services\\BusinessIdeasService.cs",
               "RelativeDocumentMoniker": "Services\\BusinessIdeasService.cs",
               "ToolTip": "D:\\GitHub\\Mondial.Eco\\Backend\\Services\\BusinessIdeasService.cs",
               "RelativeToolTip": "Services\\BusinessIdeasService.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAgwCQAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAG0AAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-31T11:55:14.127Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-31T11:55:14.127Z"
             }
           ]
         }
