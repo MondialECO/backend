@@ -89,29 +89,37 @@ namespace WebApp.Controllers
 
 
         // create new business idea or save draft
-        [HttpPost("new-idea/{id}")]
-        public async Task<IActionResult> CreateBusinessIdea([FromBody] CreateIdeaDto idea, string id)
+        [HttpPost("new-idea/{id?}")]
+        public async Task<IActionResult> CreateOrUpdateBusinessIdea(
+            [FromRoute] string? id,
+            [FromForm] CreateIdeaDto idea
+        )
         {
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userId = "ds347tgr47ghf8ch";
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
+
+            string ideaId;
 
             if (string.IsNullOrEmpty(id))
             {
                 var createdIdea = await _serviceIdea.CreateIdeaAsync(idea, userId);
+                ideaId = createdIdea.Id;
             }
             else
             {
-                var update = await _serviceIdea.UpdateIdeaAsync(idea, userId, id);
+                await _serviceIdea.UpdateIdeaAsync(idea, userId, id);
+                ideaId = id;
             }
 
             return Ok(new
             {
                 success = true,
-                message = "Draft created/saved",
+                message = "Draft saved",
+                id = ideaId
             });
         }
+
 
         // get idea by id
         [HttpGet("idea/{id}")]

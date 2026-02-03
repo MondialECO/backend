@@ -23,6 +23,9 @@ namespace WebApp.Models.Dtos
         public decimal? FundingRequired { get; set; }
         public double? EquityOffered { get; set; }
 
+        public IFormFileCollection? Media { get; set; }
+        public IFormFileCollection? Documents { get; set; }
+
     }
 
 }
