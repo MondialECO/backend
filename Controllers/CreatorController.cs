@@ -120,6 +120,23 @@ namespace WebApp.Controllers
             });
         }
 
+        //[HttpPost("idea/submit")]
+        //public async Task<IActionResult> SubmitIdea([FromBody] SubmitIdeaDto dto)
+        //{
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    if (string.IsNullOrEmpty(userId))
+        //        return Unauthorized();
+
+        //    await _serviceIdea.SubmitIdeaAsync(dto.Id, userId);
+
+        //    return Ok(new
+        //    {
+        //        success = true,
+        //        message = "Idea submitted successfully"
+        //    });
+        //}
+
+
 
         // get idea by id
         [HttpGet("idea/{id}")]
