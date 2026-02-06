@@ -8,8 +8,6 @@ namespace WebApp.Models.DatabaseModels
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-
-        [BsonRepresentation(BsonType.ObjectId)]
         public string CreatorId { get; set; } // Reference to Users collection
 
         public string Name { get; set; } // idea name

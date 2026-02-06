@@ -614,26 +614,274 @@
         }
       }
     },
-    "/api/Creator/new-idea": {
+    "/api/Creator/new-idea/{id}": {
       "post": {
         "tags": [
           "Creator"
         ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateIdeaDto"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "problem_statement": {
+                    "type": "string"
+                  },
+                  "target_audience": {
+                    "type": "string"
+                  },
+                  "existing_solutions": {
+                    "type": "string"
+                  },
+                  "solution_description": {
+                    "type": "string"
+                  },
+                  "stage": {
+                    "type": "string"
+                  },
+                  "differentiation": {
+                    "type": "string"
+                  },
+                  "client_benefits": {
+                    "type": "string"
+                  },
+                  "long_term_vision": {
+                    "type": "string"
+                  },
+                  "primary_customer_segment": {
+                    "type": "string"
+                  },
+                  "geographic_target": {
+                    "type": "string"
+                  },
+                  "purchasing_behavior": {
+                    "type": "string"
+                  },
+                  "market_size": {
+                    "type": "string"
+                  },
+                  "product_type": {
+                    "type": "string"
+                  },
+                  "planned_price": {
+                    "type": "string"
+                  },
+                  "sales_channels": {
+                    "type": "string"
+                  },
+                  "startup_costs": {
+                    "type": "string"
+                  },
+                  "revenue_12_months": {
+                    "type": "string"
+                  },
+                  "startup_requirements": {
+                    "type": "string"
+                  },
+                  "prototype_status": {
+                    "type": "string"
+                  },
+                  "main_risks": {
+                    "type": "string"
+                  },
+                  "goals_30_days": {
+                    "type": "string"
+                  },
+                  "targets_90_days": {
+                    "type": "string"
+                  },
+                  "objectives_12_months": {
+                    "type": "string"
+                  },
+                  "regulatory_considerations": {
+                    "type": "string"
+                  },
+                  "legal_risks": {
+                    "type": "string"
+                  },
+                  "certifications_licenses": {
+                    "type": "string"
+                  },
+                  "business_name": {
+                    "type": "string"
+                  },
+                  "founder_role": {
+                    "type": "string"
+                  },
+                  "experience_skills": {
+                    "type": "string"
+                  },
+                  "prior_project_experience": {
+                    "type": "string"
+                  },
+                  "weekly_time_available": {
+                    "type": "string"
+                  },
+                  "motivation_vision_statement": {
+                    "type": "string"
+                  },
+                  "amount_required": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "equity_percentage": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "Id": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "media": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "documents": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "name": {
+                  "style": "form"
+                },
+                "problem_statement": {
+                  "style": "form"
+                },
+                "target_audience": {
+                  "style": "form"
+                },
+                "existing_solutions": {
+                  "style": "form"
+                },
+                "solution_description": {
+                  "style": "form"
+                },
+                "stage": {
+                  "style": "form"
+                },
+                "differentiation": {
+                  "style": "form"
+                },
+                "client_benefits": {
+                  "style": "form"
+                },
+                "long_term_vision": {
+                  "style": "form"
+                },
+                "primary_customer_segment": {
+                  "style": "form"
+                },
+                "geographic_target": {
+                  "style": "form"
+                },
+                "purchasing_behavior": {
+                  "style": "form"
+                },
+                "market_size": {
+                  "style": "form"
+                },
+                "product_type": {
+                  "style": "form"
+                },
+                "planned_price": {
+                  "style": "form"
+                },
+                "sales_channels": {
+                  "style": "form"
+                },
+                "startup_costs": {
+                  "style": "form"
+                },
+                "revenue_12_months": {
+                  "style": "form"
+                },
+                "startup_requirements": {
+                  "style": "form"
+                },
+                "prototype_status": {
+                  "style": "form"
+                },
+                "main_risks": {
+                  "style": "form"
+                },
+                "goals_30_days": {
+                  "style": "form"
+                },
+                "targets_90_days": {
+                  "style": "form"
+                },
+                "objectives_12_months": {
+                  "style": "form"
+                },
+                "regulatory_considerations": {
+                  "style": "form"
+                },
+                "legal_risks": {
+                  "style": "form"
+                },
+                "certifications_licenses": {
+                  "style": "form"
+                },
+                "business_name": {
+                  "style": "form"
+                },
+                "founder_role": {
+                  "style": "form"
+                },
+                "experience_skills": {
+                  "style": "form"
+                },
+                "prior_project_experience": {
+                  "style": "form"
+                },
+                "weekly_time_available": {
+                  "style": "form"
+                },
+                "motivation_vision_statement": {
+                  "style": "form"
+                },
+                "amount_required": {
+                  "style": "form"
+                },
+                "equity_percentage": {
+                  "style": "form"
+                },
+                "Id": {
+                  "style": "form"
+                },
+                "status": {
+                  "style": "form"
+                },
+                "media": {
+                  "style": "form"
+                },
+                "documents": {
+                  "style": "form"
+                }
               }
             }
           }
@@ -645,7 +893,7 @@
         }
       }
     },
-    "/api/Creator/ideas/{id}": {
+    "/api/Creator/idea/{id}": {
       "get": {
         "tags": [
           "Creator"
@@ -660,37 +908,6 @@
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Creator/ideas": {
-      "put": {
-        "tags": [
-          "Creator"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateIdeaDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateIdeaDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateIdeaDto"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success"
@@ -1078,32 +1295,6 @@
         },
         "additionalProperties": false
       },
-      "BusinessModel": {
-        "type": "object",
-        "properties": {
-          "productOrService": {
-            "type": "string",
-            "nullable": true
-          },
-          "pricing": {
-            "type": "string",
-            "nullable": true
-          },
-          "salesChannel": {
-            "type": "string",
-            "nullable": true
-          },
-          "startupCosts": {
-            "type": "number",
-            "format": "double"
-          },
-          "revenueTarget12Months": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
       "ChangePasswordModel": {
         "type": "object",
         "properties": {
@@ -1112,23 +1303,6 @@
             "nullable": true
           },
           "newPassword": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Compliance": {
-        "type": "object",
-        "properties": {
-          "isRegulated": {
-            "type": "boolean"
-          },
-          "legalRisks": {
-            "type": "string",
-            "nullable": true
-          },
-          "certifications": {
             "type": "string",
             "nullable": true
           }
@@ -1144,72 +1318,6 @@
           },
           "token": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateIdeaDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "problem": {
-            "$ref": "#/components/schemas/Problem"
-          },
-          "solution": {
-            "$ref": "#/components/schemas/Solution"
-          },
-          "market": {
-            "$ref": "#/components/schemas/Market"
-          },
-          "businessModel": {
-            "$ref": "#/components/schemas/BusinessModel"
-          },
-          "operations": {
-            "$ref": "#/components/schemas/Operations"
-          },
-          "roadmap": {
-            "$ref": "#/components/schemas/Roadmap"
-          },
-          "compliance": {
-            "$ref": "#/components/schemas/Compliance"
-          },
-          "founderIdentity": {
-            "$ref": "#/components/schemas/FounderIdentity"
-          },
-          "imageVideo": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "documentUrls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
-            "nullable": true
-          },
-          "stageLabel": {
-            "type": "string",
-            "nullable": true
-          },
-          "fundingRequired": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "equityOffered": {
-            "type": "number",
-            "format": "double",
             "nullable": true
           }
         },
@@ -1278,76 +1386,6 @@
         },
         "additionalProperties": false
       },
-      "FounderIdentity": {
-        "type": "object",
-        "properties": {
-          "businessName": {
-            "type": "string",
-            "nullable": true
-          },
-          "role": {
-            "type": "string",
-            "nullable": true
-          },
-          "experience": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "launchedBefore": {
-            "type": "boolean"
-          },
-          "weeklyTimeHours": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "motivation": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "InvestmentRound": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "roundName": {
-            "type": "string",
-            "nullable": true
-          },
-          "amount": {
-            "type": "number",
-            "format": "double"
-          },
-          "minInvestment": {
-            "type": "number",
-            "format": "double"
-          },
-          "maxInvestment": {
-            "type": "number",
-            "format": "double"
-          },
-          "openDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "closeDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "status": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "Investments": {
         "type": "object",
         "properties": {
@@ -1408,71 +1446,6 @@
         },
         "additionalProperties": false
       },
-      "Market": {
-        "type": "object",
-        "properties": {
-          "primaryCustomer": {
-            "type": "string",
-            "nullable": true
-          },
-          "geography": {
-            "type": "string",
-            "nullable": true
-          },
-          "buyingBehavior": {
-            "type": "string",
-            "nullable": true
-          },
-          "marketSize": {
-            "type": "string",
-            "nullable": true
-          },
-          "competitors": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Operations": {
-        "type": "object",
-        "properties": {
-          "requirements": {
-            "type": "string",
-            "nullable": true
-          },
-          "protoType": {
-            "type": "boolean"
-          },
-          "risks": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Problem": {
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "targetAudience": {
-            "type": "string",
-            "nullable": true
-          },
-          "existingSolutions": {
-            "type": "string",
-            "nullable": true
-          },
-          "gaps": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "RegisterModel": {
         "type": "object",
         "properties": {
@@ -1526,24 +1499,6 @@
         },
         "additionalProperties": false
       },
-      "Roadmap": {
-        "type": "object",
-        "properties": {
-          "days30": {
-            "type": "string",
-            "nullable": true
-          },
-          "days90": {
-            "type": "string",
-            "nullable": true
-          },
-          "year1": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "SendMessageRequest": {
         "type": "object",
         "properties": {
@@ -1552,32 +1507,6 @@
             "nullable": true
           },
           "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Solution": {
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "differentiation": {
-            "type": "string",
-            "nullable": true
-          },
-          "stageLabel": {
-            "type": "string",
-            "nullable": true
-          },
-          "benefits": {
-            "type": "string",
-            "nullable": true
-          },
-          "vision": {
             "type": "string",
             "nullable": true
           }
@@ -1645,83 +1574,6 @@
           },
           "address": {
             "$ref": "#/components/schemas/Address"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateIdeaDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "problem": {
-            "$ref": "#/components/schemas/Problem"
-          },
-          "solution": {
-            "$ref": "#/components/schemas/Solution"
-          },
-          "market": {
-            "$ref": "#/components/schemas/Market"
-          },
-          "businessModel": {
-            "$ref": "#/components/schemas/BusinessModel"
-          },
-          "operations": {
-            "$ref": "#/components/schemas/Operations"
-          },
-          "roadmap": {
-            "$ref": "#/components/schemas/Roadmap"
-          },
-          "compliance": {
-            "$ref": "#/components/schemas/Compliance"
-          },
-          "founderIdentity": {
-            "$ref": "#/components/schemas/FounderIdentity"
-          },
-          "imageVideo": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "documentUrls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
-            "nullable": true
-          },
-          "stageLabel": {
-            "type": "string",
-            "nullable": true
-          },
-          "fundingRequired": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "equityOffered": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "investmentRounds": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/InvestmentRound"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false

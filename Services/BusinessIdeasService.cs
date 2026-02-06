@@ -180,7 +180,7 @@ namespace WebApp.Services
                 //CreatedAt = DateTime.UtcNow,
 
             };
-
+            data.Id = id;
             await _repo.UpdateAsync(id, data);
             return data;
         }

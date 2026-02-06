@@ -380,24 +380,8 @@
   },
   {
     "ContainingType": "WebApp.Controllers.CreatorController",
-    "Method": "UpdateIdea",
-    "RelativePath": "api/Creator/ideas",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "WebApp.Models.Dtos.UpdateIdeaDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.CreatorController",
     "Method": "GetIdea",
-    "RelativePath": "api/Creator/ideas/{id}",
+    "RelativePath": "api/Creator/idea/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -422,16 +406,211 @@
   },
   {
     "ContainingType": "WebApp.Controllers.CreatorController",
-    "Method": "CreateBusinessIdea",
-    "RelativePath": "api/Creator/new-idea",
+    "Method": "CreateOrUpdateIdea",
+    "RelativePath": "api/Creator/new-idea/{id}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "idea",
-        "Type": "WebApp.Models.Dtos.CreateIdeaDto",
-        "IsRequired": true
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "problem_statement",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "target_audience",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "existing_solutions",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "solution_description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "stage",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "differentiation",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "client_benefits",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "long_term_vision",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "primary_customer_segment",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "geographic_target",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "purchasing_behavior",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "market_size",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "product_type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "planned_price",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "sales_channels",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "startup_costs",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "revenue_12_months",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "startup_requirements",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "prototype_status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "main_risks",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "goals_30_days",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "targets_90_days",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "objectives_12_months",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "regulatory_considerations",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "legal_risks",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "certifications_licenses",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "business_name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "founder_role",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "experience_skills",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "prior_project_experience",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "weekly_time_available",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "motivation_vision_statement",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "amount_required",
+        "Type": "System.Nullable\u00601[[System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "equity_percentage",
+        "Type": "System.Nullable\u00601[[System.Double, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Id",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "media",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "documents",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
