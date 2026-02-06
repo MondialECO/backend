@@ -48,9 +48,8 @@ namespace WebApp.Models.DatabaseModels
     {
         public string Description { get; set; }
         public string TargetAudience { get; set; }
-        //public List<string> CurrentSolutions { get; set; }
         public string ExistingSolutions { get; set; }
-        public string Gaps { get; set; }
+        //public string Gaps { get; set; }
     }
 
     public class Solution
@@ -70,7 +69,7 @@ namespace WebApp.Models.DatabaseModels
         public string BuyingBehavior { get; set; }
         public string MarketSize { get; set; }
         //public List<string> Competitors { get; set; }
-        public string Competitors { get; set; }
+        //public string Competitors { get; set; }
     }
 
     public class BusinessModel
@@ -78,15 +77,15 @@ namespace WebApp.Models.DatabaseModels
         public string ProductOrService { get; set; }
         public string Pricing { get; set; }
         public string SalesChannel { get; set; }
-        public decimal StartupCosts { get; set; }
-        public decimal RevenueTarget12Months { get; set; }
+        public string StartupCosts { get; set; }
+        public string RevenueTarget12Months { get; set; }
         //public List<string> PotentialPartners { get; set; }
     }
 
     public class Operations
     {
         public string Requirements { get; set; }
-        public bool ProtoType { get; set; }
+        public string ProtoType { get; set; }
         //public List<string> PlannedTools { get; set; }
 
         //public List<string> Risks { get; set; }
@@ -102,7 +101,7 @@ namespace WebApp.Models.DatabaseModels
 
     public class Compliance
     {
-        public bool IsRegulated { get; set; }
+        public string IsRegulated { get; set; }
         public string LegalRisks { get; set; }
         public string Certifications { get; set; }
     }
@@ -112,8 +111,8 @@ namespace WebApp.Models.DatabaseModels
         public string BusinessName { get; set; }
         public string Role { get; set; }
         public List<string> Experience { get; set; } = new(); // ex: ["Software Development", "Marketing"]
-        public bool LaunchedBefore { get; set; }
-        public int WeeklyTimeHours { get; set; }
+        public string LaunchedBefore { get; set; }
+        public string WeeklyTimeHours { get; set; }
         public string Motivation { get; set; }
     }
 

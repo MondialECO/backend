@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebApp.Models.DatabaseModels;
 using WebApp.Models.Dtos;
+using WebApp.Services;
 using WebApp.Services.Interface;
 
 
@@ -16,15 +17,18 @@ namespace WebApp.Controllers
         private readonly IInvestmentsService _investmentsService;
         private readonly ITransactionsService _transactionsService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SaveFile _saveFile;
         public CreatorController(IBusinessIdeasService service,
             IInvestmentsService investmentsService,
             ITransactionsService transactionsService,
-             UserManager<ApplicationUser> userManager)
+             UserManager<ApplicationUser> userManager,
+             SaveFile saveFile)
         {
             _serviceIdea = service;
             _investmentsService = investmentsService;
             _transactionsService = transactionsService;
             _userManager = userManager;
+            _saveFile = saveFile;
         }
 
 
@@ -90,25 +94,51 @@ namespace WebApp.Controllers
 
         // create new business idea or save draft
         [HttpPost("new-idea/{id?}")]
-        public async Task<IActionResult> CreateOrUpdateBusinessIdea(
-            [FromRoute] string? id,
-            [FromForm] CreateIdeaDto idea
-        )
+        public async Task<IActionResult> CreateOrUpdateIdea(
+            [FromForm] CreateIdeaDto dto,
+            [FromForm] List<IFormFile>? media,
+            [FromForm] List<IFormFile>? documents,
+            string? id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
 
+
+
+            // Save media files
+            var mediaPaths = new List<string>();
+            if (media != null && media.Any())
+            {
+                foreach (var file in media)
+                {
+                    var path = await _saveFile.SaveFileAsync(file, "media");
+                    mediaPaths.Add(path);
+                }
+            }
+
+            // Save document files
+            var documentPaths = new List<string>();
+            if (documents != null && documents.Any())
+            {
+                foreach (var file in documents)
+                {
+                    var path = await _saveFile.SaveFileAsync(file, "documents");
+                    documentPaths.Add(path);
+                }
+            }
+
+
             string ideaId;
 
             if (string.IsNullOrEmpty(id))
             {
-                var createdIdea = await _serviceIdea.CreateIdeaAsync(idea, userId);
+                var createdIdea = await _serviceIdea.CreateIdeaAsync(dto, userId, mediaPaths, documentPaths);
                 ideaId = createdIdea.Id;
             }
             else
             {
-                await _serviceIdea.UpdateIdeaAsync(idea, userId, id);
+                await _serviceIdea.UpdateIdeaAsync(dto, userId, id, mediaPaths, documentPaths);
                 ideaId = id;
             }
 
@@ -119,6 +149,15 @@ namespace WebApp.Controllers
                 id = ideaId
             });
         }
+
+
+
+
+
+
+
+
+
 
         //[HttpPost("idea/submit")]
         //public async Task<IActionResult> SubmitIdea([FromBody] SubmitIdeaDto dto)
