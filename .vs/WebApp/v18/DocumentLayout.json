@@ -29,19 +29,6 @@
           "SelectedChildIndex": 8,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "BusinessIdeas.cs",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\BusinessIdeas.cs",
-              "RelativeDocumentMoniker": "Models\\DatabaseModels\\BusinessIdeas.cs",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\BusinessIdeas.cs",
-              "RelativeToolTip": "Models\\DatabaseModels\\BusinessIdeas.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAAAUAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-06T12:00:59.256Z",
-              "EditorCaption": ""
-            },
-            {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
@@ -63,6 +50,18 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BusinessIdeas.cs",
+              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\BusinessIdeas.cs",
+              "RelativeDocumentMoniker": "Models\\DatabaseModels\\BusinessIdeas.cs",
+              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\BusinessIdeas.cs",
+              "RelativeToolTip": "Models\\DatabaseModels\\BusinessIdeas.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAAAUAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-06T12:00:59.256Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
               "Title": "CreateIdeaDto.cs",
               "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Dtos\\CreateIdeaDto.cs",
@@ -71,8 +70,7 @@
               "RelativeToolTip": "Models\\Dtos\\CreateIdeaDto.cs",
               "ViewState": "AgIAADIAAAAAAAAAAAAAADwAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-06T12:05:10.671Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-06T12:05:10.671Z"
             },
             {
               "$type": "Document",
@@ -84,8 +82,7 @@
               "RelativeToolTip": "Controllers\\CreatorController.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAABIAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-31T17:44:56.272Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-31T17:44:56.272Z"
             },
             {
               "$type": "Document",
