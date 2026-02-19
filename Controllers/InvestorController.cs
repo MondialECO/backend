@@ -21,19 +21,19 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Create(Investments investment)
         {
             var result = await _service.CreateInvestmentAsync(investment);
-            
+
             var responce = new
             {
                 id = result.Id,
                 investorName = result.InvestorName,
                 amaunt = result.Amount,
-                Status = result.Status,
-                RoundName = result.RoundName,
-                EquityPercentage = result.EquityPercentage,
-                CreatedAt = result.CreatedAt,
-            }
+                status = result.Status,
+                roundName = result.RoundName,
+                equityPercentage = result.EquityPercentage,
+                createdAt = result.CreatedAt,
+            };
 
-            return Ok(result);
+            return Ok(responce);
         }
 
         [HttpGet("investor/{investorId}")]
