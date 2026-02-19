@@ -154,29 +154,6 @@ namespace WebApp.Controllers
 
 
 
-
-
-
-
-
-        //[HttpPost("idea/submit")]
-        //public async Task<IActionResult> SubmitIdea([FromBody] SubmitIdeaDto dto)
-        //{
-        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //    if (string.IsNullOrEmpty(userId))
-        //        return Unauthorized();
-
-        //    await _serviceIdea.SubmitIdeaAsync(dto.Id, userId);
-
-        //    return Ok(new
-        //    {
-        //        success = true,
-        //        message = "Idea submitted successfully"
-        //    });
-        //}
-
-
-
         // get idea by id
         [HttpGet("idea/{id}")]
         public async Task<IActionResult> GetIdea(string id)
@@ -214,21 +191,6 @@ namespace WebApp.Controllers
             return Ok(responce);
         }
 
-        // update existing idea
-        //[HttpPut("ideas")]
-        //public async Task<IActionResult> UpdateIdea(UpdateIdeaDto request)
-        //{
-        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        //    if (string.IsNullOrEmpty(userId))
-        //        return Unauthorized();
-
-        //    if(string.IsNullOrEmpty(request.Id))
-        //        return BadRequest(new { message = "Idea ID is required for update." });
-
-        //    var resunt = await _serviceIdea.UpdateIdeaAsync(request, userId);
-        //    return Ok(new { message = "Idea updated successfully!" });
-        //}
 
 
         [HttpGet("my/ideas")]
@@ -293,10 +255,6 @@ namespace WebApp.Controllers
 
 
 
-
-
-
-
             // Build response with correct totalRaised for each idea
             var response = ideas.Select(idea => new
             {
@@ -317,25 +275,24 @@ namespace WebApp.Controllers
                 //investors = idea.IsVisibleToInvestors,
                 equity = investments.Sum(inv => inv.EquityPercentage)
 
-                
-
-                //investors = investorGuidsByIdea.TryGetValue(idea.Id, out var invGuids)
-                //    ? profiles
-                //        .Where(p => invGuids.Contains(p.Id))
-                //        .Select(p => new
-                //        {
-                //            p.Id,
-                //            p.UserName,
-                //            p.Email,
-                //            p.ImagePath
-                //        })
-                //        .ToList()
-                //    : new List<object>()
-
-        
             }).ToList();
 
             return Ok(response);
+
+
+
+            //investors = investorGuidsByIdea.TryGetValue(idea.Id, out var invGuids)
+            //    ? profiles
+            //        .Where(p => invGuids.Contains(p.Id))
+            //        .Select(p => new
+            //        {
+            //            p.Id,
+            //            p.UserName,
+            //            p.Email,
+            //            p.ImagePath
+            //        })
+            //        .ToList()
+            //    : new List<object>()
 
 
             //milestones = idea.Milestones != null && idea.Milestones.Any()
@@ -348,52 +305,6 @@ namespace WebApp.Controllers
             //    : new List<object>()
         }
 
-
-        //[HttpGet("ideas/{id}")]
-        //public async Task<IActionResult> GetIdea(string id)
-        //{
-        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //    if (string.IsNullOrEmpty(userId))
-        //        return Unauthorized();
-
-        //    var idea = await _serviceIdea.GetByIdAsync(id);
-
-        //    if (idea == null || idea.CreatorId != userId)
-        //        return NotFound();
-
-
-        //    // Investments for totalRaised
-        //    var investments = await _investmentsService.GetByIdeaAsync(id);
-        //    var totalRaised = investments.Sum(i => i.Amount);
-
-
-
-        //    var response = new
-        //    {
-        //        id = idea.Id,
-        //        title = idea.Title ?? "",
-        //        summary = idea.Summary ?? "",
-        //        stage = idea.Stage.ToString(),
-        //        marketSize = idea.MarketSize ?? "",
-        //        problem = idea.Problem ?? "",
-        //        solution = idea.Solution ?? "",
-        //        revenueModel = idea.RevenueModel ?? "",
-        //        fundingRequired = idea.FundingRequired,
-        //        equityOffered = idea.EquityOffered,
-        //        totalRaised = totalRaised,
-        //        status = idea.Status.ToString(),
-        //        milestones = idea.Milestones != null && idea.Milestones.Any()
-        //            ? idea.Milestones.Select(m => new
-        //            {
-        //                title = m.Title ?? "",
-        //                description = m.Description ?? "",
-        //                targetDate = m.TargetDate.ToString("yyyy-MM-dd")
-        //            }).ToList<object>()
-        //            : new List<object>()
-        //    };
-
-        //    return Ok(response);
-        //}
 
 
 
