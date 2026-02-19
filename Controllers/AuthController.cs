@@ -395,8 +395,14 @@ namespace WebApp.Controllers
                 user.PhoneNumber,
                 user.User,
                 user.Bio,
-                user.Address
-       
+                user.Address,
+                user.Roles,
+                user.AvailableTime,
+                user.Geography,
+                user.Experience,
+                user.MainExperience,
+
+
             });
         }
 

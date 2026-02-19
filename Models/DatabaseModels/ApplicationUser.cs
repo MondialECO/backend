@@ -29,6 +29,10 @@ namespace WebApp.Models.DatabaseModels
 
         [BsonElement("Bio")]
         public string Bio { get; set; }
+        public string AvailableTime { get; set; }
+        public string Geography { get; set; }
+        public string Experience { get; set; }
+        public string MainExperience { get; set; }
 
         [BsonElement("KycStatus")]
         public string KycStatus { get; set; } // Pending, Approved, Rejected
