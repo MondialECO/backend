@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models.DatabaseModels;
 using WebApp.Services.Interface;
@@ -20,6 +21,18 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Create(Investments investment)
         {
             var result = await _service.CreateInvestmentAsync(investment);
+            
+            var responce = new
+            {
+                id = result.Id,
+                investorName = result.InvestorName,
+                amaunt = result.Amount,
+                Status = result.Status,
+                RoundName = result.RoundName,
+                EquityPercentage = result.EquityPercentage,
+                CreatedAt = result.CreatedAt,
+            }
+
             return Ok(result);
         }
 
