@@ -402,7 +402,6 @@ namespace WebApp.Controllers
                 user.Experience,
                 user.MainExperience,
 
-
             });
         }
 

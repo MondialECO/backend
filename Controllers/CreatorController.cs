@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
+using Org.BouncyCastle.Crypto;
 using System.Security.Claims;
+using WebApp.DbContext;
 using WebApp.Models.DatabaseModels;
 using WebApp.Models.Dtos;
 using WebApp.Services;
@@ -18,17 +21,20 @@ namespace WebApp.Controllers
         private readonly ITransactionsService _transactionsService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SaveFile _saveFile;
+        private readonly MongoDbContext _context;
         public CreatorController(IBusinessIdeasService service,
             IInvestmentsService investmentsService,
             ITransactionsService transactionsService,
              UserManager<ApplicationUser> userManager,
-             SaveFile saveFile)
+             SaveFile saveFile,
+             MongoDbContext context)
         {
             _serviceIdea = service;
             _investmentsService = investmentsService;
             _transactionsService = transactionsService;
             _userManager = userManager;
             _saveFile = saveFile;
+            _context = context;
         }
 
 
@@ -43,6 +49,12 @@ namespace WebApp.Controllers
             var ideas = (await _serviceIdea.GetByCreatorAsync(userId)).ToList();
             var ideaIds = ideas.Select(i => i.Id).ToList();
 
+            
+
+
+
+
+
             // 2. Investments on those ideas
             var investments = ideaIds.Any()
                 ? (await _investmentsService.GetByIdeaIdsAsync(ideaIds)).ToList()
@@ -51,10 +63,9 @@ namespace WebApp.Controllers
             // 3. Wallet transactions
             var transactions = (await _transactionsService.GetByUserAsync(userId)).ToList();
 
-            // CALCULATIONS
-            var totalIdeas = ideas.Count;
-
             var totalFundRaised = investments.Sum(i => i.Amount);
+            var FundingRequired = ideas.Sum(i => i.FundingRequired) > 0;
+            var totalequaty = ideas.Sum(i => i.EquityOffered) > 0;
 
             var activeInvestors = investments
                 .Select(i => i.InvestorId)
@@ -64,6 +75,39 @@ namespace WebApp.Controllers
             var walletBalance = transactions
                 .Where(t => t.Status == "Completed")
                 .Sum(t => t.Amount);
+
+
+
+
+
+
+
+
+            // CALCULATIONS
+            var totalIdeas = ideas.Count;
+
+            var last7Days = DateTime.UtcNow.AddDays(-14);
+
+            var clickStats = await _context.IdeaClicks.Aggregate()
+                .Match(x => ideaIds.Contains(x.IdeaId) &&
+                            x.ClickedAt >= last7Days)
+                .Group(
+                    x => x.IdeaId,
+                    g => new
+                    {
+                        IdeaId = g.Key,
+                        Count = g.Count()
+                    })
+                .ToListAsync();
+
+
+
+
+
+
+
+
+
 
             // Idea wise summary
             var ideaSummaries = ideas.Select(i => new
@@ -79,14 +123,24 @@ namespace WebApp.Controllers
                     .Sum(inv => inv.Amount)
             });
 
-            return Ok(new
+
+            var responce = new
             {
-                totalIdeas,
-                totalFundRaised,
-                activeInvestors,
-                walletBalance,
-                ideas = ideaSummaries
-            });
+                totalIdeas = totalIdeas,
+                clickStats = clickStats,
+                totalFundRaised = totalFundRaised,
+                totalRequired = FundingRequired,
+                totalequaty = totalequaty,
+
+
+                activeInvestors = activeInvestors,
+                walletBalance = walletBalance,
+                ideaIds = ideaSummaries
+            };
+
+
+
+            return Ok(responce);
         }
 
 
@@ -269,7 +323,7 @@ namespace WebApp.Controllers
                 marketSize = idea.Market,
                 equityOffered = idea.EquityOffered,
 
-                clicks = idea.Clicks,
+                //clicks = idea.Clicks,
                 fundingRequired = idea.FundingRequired,
                 totalRaised = investmentByIdea.TryGetValue(idea.Id, out var raised) ? raised : 0,
                 //investors = idea.IsVisibleToInvestors,

@@ -17,6 +17,17 @@ namespace WebApp.Controllers
             _service = service;
         }
 
+
+        //var click = new IdeaClick
+        //{
+        //    IdeaId = ideaId,
+        //    UserId = User?.Identity?.Name, // optional
+        //    ClickedAt = DateTime.UtcNow
+        //};
+
+        //await _context.IdeaClicks.InsertOneAsync(click);
+
+
         [HttpPost]
         public async Task<IActionResult> Create(Investments investment)
         {

@@ -18,6 +18,7 @@ namespace WebApp.DbContext
 
         // Business Collections
         public IMongoCollection<BusinessIdeas> BusinessIdeas => _database.GetCollection<BusinessIdeas>("BusinessIdeas");
+        public IMongoCollection<IdeaClick> IdeaClicks => _database.GetCollection<IdeaClick>("IdeaClicks");
         public IMongoCollection<Investments> Investments => _database.GetCollection<Investments>("Investments");
         public IMongoCollection<Transactions> Transactions => _database.GetCollection<Transactions>("Transactions");
 

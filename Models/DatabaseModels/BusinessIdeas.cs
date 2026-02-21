@@ -33,7 +33,7 @@ namespace WebApp.Models.DatabaseModels
 
         // --- Analytics ---
         public long Impressions { get; set; } // number of views
-        public decimal Clicks { get; set; } // number of clicks
+        //public decimal Clicks { get; set; } // number of clicks
         // --- Embedded ---
         public List<Milestone> Milestones { get; set; } = new();
         public List<InvestmentRound> InvestmentRounds { get; set; } = new();
