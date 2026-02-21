@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Org.BouncyCastle.Crypto;
+using System.Linq;
 using System.Security.Claims;
 using WebApp.DbContext;
 using WebApp.Models.DatabaseModels;
@@ -19,20 +20,17 @@ namespace WebApp.Controllers
         private readonly IBusinessIdeasService _serviceIdea;
         private readonly IInvestmentsService _investmentsService;
         private readonly ITransactionsService _transactionsService;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SaveFile _saveFile;
         private readonly MongoDbContext _context;
         public CreatorController(IBusinessIdeasService service,
             IInvestmentsService investmentsService,
             ITransactionsService transactionsService,
-             UserManager<ApplicationUser> userManager,
              SaveFile saveFile,
              MongoDbContext context)
         {
             _serviceIdea = service;
             _investmentsService = investmentsService;
             _transactionsService = transactionsService;
-            _userManager = userManager;
             _saveFile = saveFile;
             _context = context;
         }
@@ -45,102 +43,120 @@ namespace WebApp.Controllers
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
 
-            // 1. Creator Ideas
+            // 1️ Get Creator Ideas
             var ideas = (await _serviceIdea.GetByCreatorAsync(userId)).ToList();
             var ideaIds = ideas.Select(i => i.Id).ToList();
 
-            
+            var totalIdeas = ideas.Count;
 
+            // 2️ Click Analytics (Last 14 Days)
+            var last14Days = DateTime.UtcNow.AddDays(-14);
 
+            var totalClicksLast14Days = ideaIds.Any()
+                ? await _context.IdeaClicks.CountDocumentsAsync(x =>
+                    ideaIds.Contains(x.IdeaId) &&
+                    x.ClickedAt >= last14Days)
+                : 0;
 
-
-
-            // 2. Investments on those ideas
+            // 3️ Investments
             var investments = ideaIds.Any()
                 ? (await _investmentsService.GetByIdeaIdsAsync(ideaIds)).ToList()
                 : new List<Investments>();
 
-            // 3. Wallet transactions
-            var transactions = (await _transactionsService.GetByUserAsync(userId)).ToList();
-
             var totalFundRaised = investments.Sum(i => i.Amount);
-            var FundingRequired = ideas.Sum(i => i.FundingRequired) > 0;
-            var totalequaty = ideas.Sum(i => i.EquityOffered) > 0;
+            var totalRequired = ideas.Sum(i => i.FundingRequired);
+            var totalEquity = ideas.Sum(i => i.EquityOffered);
 
             var activeInvestors = investments
                 .Select(i => i.InvestorId)
                 .Distinct()
                 .Count();
 
-            var walletBalance = transactions
-                .Where(t => t.Status == "Completed")
-                .Sum(t => t.Amount);
+            // 4️ Investor Info
+            var investorIds = investments
+                .Select(i => i.InvestorId)
+                .Distinct()
+                .ToList();
 
+            var investors = investorIds.Any()
+                ? await _context.ApplicationUsers
+                    .Find(x => investorIds.Contains(x.Id))
+                    .ToListAsync()
+                : new List<ApplicationUser>();
 
+            var investorDictionary = investors
+                .ToDictionary(x => x.Id);
 
+            // 5️ Optimize Investment Grouping 
+            var investmentGrouped = investments
+                .GroupBy(x => x.IdeaId)
+                .ToDictionary(g => g.Key, g => g.ToList());
 
-
-
-
-
-            // CALCULATIONS
-            var totalIdeas = ideas.Count;
-
-            var last7Days = DateTime.UtcNow.AddDays(-14);
-
-            var clickStats = await _context.IdeaClicks.Aggregate()
-                .Match(x => ideaIds.Contains(x.IdeaId) &&
-                            x.ClickedAt >= last7Days)
-                .Group(
-                    x => x.IdeaId,
-                    g => new
-                    {
-                        IdeaId = g.Key,
-                        Count = g.Count()
-                    })
-                .ToListAsync();
-
-
-
-
-
-
-
-
-
-
-            // Idea wise summary
-            var ideaSummaries = ideas.Select(i => new
+            // 6️ Idea Wise Summary
+            var ideaSummaries = ideas.Select(idea =>
             {
-                id = i.Id,
-                //title = i.Title,
-                status = i.Status,
-                //stage = i.Stage,
-                fundingRequired = i.FundingRequired,
-                equityOffered = i.EquityOffered,
-                totalRaised = investments
-                    .Where(inv => inv.IdeaId == i.Id)
-                    .Sum(inv => inv.Amount)
-            });
+                var ideaInvestments = investmentGrouped.ContainsKey(idea.Id)
+                    ? investmentGrouped[idea.Id]
+                    : new List<Investments>();
 
+                return new
+                {
+                    id = idea.Id,
+                    name = idea.Name,
+                    status = idea.Status,
+                    stageLabel = idea.Solution?.StageLabel,
+                    isPublished = idea.IsPublished,
+                    createdAt = idea.CreatedAt,
 
-            var responce = new
+                    fundingRequired = idea.FundingRequired,
+                    equityOffered = idea.EquityOffered,
+
+                    totalRaised = ideaInvestments.Sum(inv => inv.Amount),
+
+                    fundingProgress = idea.FundingRequired > 0
+                        ? Math.Round((ideaInvestments.Sum(inv => inv.Amount) / idea.FundingRequired) * 100, 2)
+                        : 0,
+
+                    investors = ideaInvestments
+                        .Select(inv =>
+                        {
+                            var user = investorDictionary.ContainsKey(inv.InvestorId)
+                                ? investorDictionary[inv.InvestorId]
+                                : null;
+
+                            return user == null ? null : new
+                            {
+                                investorId = user.Id,
+                                name = user.Name,
+                                imageUrl = user.ImagePath,
+                                ideaName = inv.ideaName,
+                                investedAmount = inv.Amount
+                            };
+                        })
+                        .Where(x => x != null)
+                        .ToList()
+                };
+            }).ToList();
+
+            // 7️ Final Response
+            var response = new
             {
-                totalIdeas = totalIdeas,
-                clickStats = clickStats,
-                totalFundRaised = totalFundRaised,
-                totalRequired = FundingRequired,
-                totalequaty = totalequaty,
-
-
-                activeInvestors = activeInvestors,
-                walletBalance = walletBalance,
-                ideaIds = ideaSummaries
+                totalIdeas,
+                totalClicksLast14Days,
+                totalFundRaised,
+                totalRequired,
+                totalEquity,
+                activeInvestors,
+                ideas = ideaSummaries
             };
 
+            // 3. Wallet transactions
+            //var transactions = (await _transactionsService.GetByUserAsync(userId)).ToList();
+            //var walletBalance = transactions
+            //    .Where(t => t.Status == "Completed")
+            //    .Sum(t => t.Amount);
 
-
-            return Ok(responce);
+            return Ok(response);
         }
 
 

@@ -20,7 +20,7 @@ namespace WebApp.Services.Repository
             await _collection.Indexes.CreateOneAsync(new CreateIndexModel<Investments>(ideaIndex));
         }
 
-        public async Task<IEnumerable<Investments>> GetByInvestorIdAsync(string investorId)
+        public async Task<IEnumerable<Investments>> GetByInvestorIdAsync(Guid investorId)
         {
             var filter = Builders<Investments>.Filter.Eq(i => i.InvestorId, investorId);
             return await _collection.Find(filter).ToListAsync();

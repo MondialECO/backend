@@ -33,7 +33,7 @@ namespace WebApp.Services
             return await _repo.GetByIdeaIdsAsync(ideaIds);
         }
 
-        public async Task<IEnumerable<Investments>> GetByInvestorAsync(string investorId)
+        public async Task<IEnumerable<Investments>> GetByInvestorAsync(Guid investorId)
         {
             return await _repo.GetByInvestorIdAsync(investorId);
         }

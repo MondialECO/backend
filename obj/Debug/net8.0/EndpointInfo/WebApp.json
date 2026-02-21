@@ -1078,7 +1078,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -1401,9 +1402,13 @@
             "type": "string",
             "nullable": true
           },
-          "investorId": {
+          "ideaName": {
             "type": "string",
             "nullable": true
+          },
+          "investorId": {
+            "type": "string",
+            "format": "uuid"
           },
           "investorName": {
             "type": "string",

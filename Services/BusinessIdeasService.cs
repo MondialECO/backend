@@ -161,7 +161,7 @@ namespace WebApp.Services
 
 
                 Impressions = existingIdeas.Impressions,
-                Clicks = existingIdeas.Clicks,
+                //Clicks = existingIdeas.Clicks,
                 Status = existingIdeas.Status,
                 ImageVideo = mediaPaths ?? existingIdeas.ImageVideo,
                 DocumentUrls = documentPaths ?? existingIdeas.DocumentUrls,

@@ -48,7 +48,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("investor/{investorId}")]
-        public async Task<IActionResult> GetByInvestor(string investorId)
+        public async Task<IActionResult> GetByInvestor(Guid investorId)
         {
             var investments = await _service.GetByInvestorAsync(investorId);
             return Ok(investments);

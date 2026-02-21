@@ -14,7 +14,8 @@ namespace WebApp.Models.DatabaseModels
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string IdeaId { get; set; }
-        public string InvestorId { get; set; }
+        public string ideaName { get; set; }
+        public Guid InvestorId { get; set; }
         public string InvestorName { get; set; }
         public string RoundName { get; set; }
         public decimal Amount { get; set; }
