@@ -263,7 +263,7 @@ namespace WebApp.Controllers
 
 
 
-        [HttpGet("my/ideas")]
+        [HttpGet("my-ideas")]
         public async Task<IActionResult> MyIdeas()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -322,7 +322,8 @@ namespace WebApp.Controllers
             //var profiles = await _userManager.Users
             //    .Where(u => investorGuidSet.Contains(u.Id))
             //    .ToListAsync();
-
+            var filter = Builders<IdeaClick>.Filter.Eq(c => c.UserId, userId);
+            var totalClicks = await _context.IdeaClicks.Find(filter).ToListAsync();
 
 
             // Build response with correct totalRaised for each idea
@@ -330,13 +331,13 @@ namespace WebApp.Controllers
             {
                 id = idea.Id,
                 name = idea.Name,
-                
+
                 status = idea.Status, // "Pending", "Approved", "Rejected"
                 score = idea.ReadinessScore,
-                stageLabel = idea.Status, // "Idea", "MVP", "Growth"
-                isVisible = idea.IsPublished,
+                stageLabel = idea.Solution.StageLabel, // "Idea", "MVP", "Growth"
+                isPublished = idea.IsPublished,
                 creatdate = idea.CreatedAt,
-                marketSize = idea.Market,
+                marketSize = idea.Market.MarketSize,
                 equityOffered = idea.EquityOffered,
 
                 //clicks = idea.Clicks,
