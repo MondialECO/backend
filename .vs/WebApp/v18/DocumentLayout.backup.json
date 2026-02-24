@@ -83,8 +83,7 @@
               "RelativeToolTip": "Middleware\\EmailService.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-23T17:00:07.218Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-23T17:00:07.218Z"
             },
             {
               "$type": "Document",
@@ -96,8 +95,7 @@
               "RelativeToolTip": "Services\\BusinessIdeasService.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAAgwL4AAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-21T19:41:58.182Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-21T19:41:58.182Z"
             },
             {
               "$type": "Document",
@@ -109,8 +107,7 @@
               "RelativeToolTip": "Models\\DatabaseModels\\BusinessIdeas.cs",
               "ViewState": "AgIAABUAAAAAAAAAAAAkwBsAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-21T16:57:09.804Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-21T16:57:09.804Z"
             },
             {
               "$type": "Document",
@@ -122,8 +119,7 @@
               "RelativeToolTip": "Controllers\\CreatorController.cs",
               "ViewState": "AgIAAC8AAAAAAAAAAAAUwEoAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T17:50:35.678Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-19T17:50:35.678Z"
             },
             {
               "$type": "Document",
@@ -135,8 +131,7 @@
               "RelativeToolTip": "Services\\Repository\\InvestmentsRepository.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAApwBkAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-21T17:25:37.138Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-21T17:25:37.138Z"
             },
             {
               "$type": "Document",
@@ -149,6 +144,10 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwBAAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-21T18:26:04.388Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         }

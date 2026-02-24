@@ -150,16 +150,8 @@ namespace WebApp.Controllers
                 ideas = ideaSummaries
             };
 
-            // 3. Wallet transactions
-            //var transactions = (await _transactionsService.GetByUserAsync(userId)).ToList();
-            //var walletBalance = transactions
-            //    .Where(t => t.Status == "Completed")
-            //    .Sum(t => t.Amount);
-
             return Ok(response);
         }
-
-
 
 
         // create new business idea or save draft
@@ -222,8 +214,6 @@ namespace WebApp.Controllers
 
 
 
-
-
         // get idea by id
         [HttpGet("idea/{id}")]
         public async Task<IActionResult> GetIdea(string id)
@@ -262,7 +252,6 @@ namespace WebApp.Controllers
         }
 
 
-
         [HttpGet("my-ideas")]
         public async Task<IActionResult> MyIdeas()
         {
@@ -278,115 +267,114 @@ namespace WebApp.Controllers
 
             var ideaIds = ideas.Select(i => i.Id).ToList();
 
-            // Get investments for these ideas
             var investments = ideaIds.Any()
-                ? await _investmentsService.GetByIdeaIdsAsync(ideaIds)
-                : new List<Investments>();
+            ? (await _investmentsService.GetByIdeaIdsAsync(ideaIds)).ToList()
+            : new List<Investments>();
 
-            // Group investments by IdeaId to calculate totalRaised per idea
-            var investmentByIdea = investments
-                .GroupBy(inv => inv.IdeaId)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Sum(inv => inv.Amount)
-                );
+            var investorIds = investments
+               .Select(i => i.InvestorId)
+               .Distinct()
+               .ToList();
 
-            var investorIdsByIdea = investments
-                .GroupBy(inv => inv.IdeaId)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Select(inv => inv.InvestorId).Distinct().ToList()
-                );
+            var investors = investorIds.Any()
+                ? await _context.ApplicationUsers
+                    .Find(x => investorIds.Contains(x.Id))
+                    .ToListAsync()
+                : new List<ApplicationUser>();
 
+            var investorDictionary = investors
+                .ToDictionary(x => x.Id);
 
-            //var investorGuidSet = investorIdsByIdea
-            //    .SelectMany(x => x.Value)      // string userIds
-            //    .Where(id => Guid.TryParse(id, out _))
-            //    .Select(Guid.Parse)
-            //    .ToHashSet();
+            var investmentGrouped = investments
+                .GroupBy(x => x.IdeaId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+            
 
-            //var investorGuidsByIdea = investorIdsByIdea
-            // .ToDictionary(
-            //     kvp => kvp.Key,
-            //     kvp => kvp.Value
-            //         .Where(id => Guid.TryParse(id, out _))
-            //         .Select(Guid.Parse)
-            //         .ToHashSet()
-            // );
+            var clickCounts = await _context.IdeaClicks
+                .Aggregate()
+                .Match(c => c.UserId == userId)
+                .Group(
+                    c => c.IdeaId,
+                    g => new
+                    {
+                        IdeaId = g.Key,
+                        Count = g.Count()
+                    })
+                .ToListAsync();
 
-            //var investorGuidSet = investorGuidsByIdea
-            //    .SelectMany(x => x.Value)
-            //    .ToHashSet();
-
-
-            //var profiles = await _userManager.Users
-            //    .Where(u => investorGuidSet.Contains(u.Id))
-            //    .ToListAsync();
-            var filter = Builders<IdeaClick>.Filter.Eq(c => c.UserId, userId);
-            var totalClicks = await _context.IdeaClicks.Find(filter).ToListAsync();
+            var clickDictionary = clickCounts.ToDictionary(x => x.IdeaId, x => x.Count);
 
 
             // Build response with correct totalRaised for each idea
-            var response = ideas.Select(idea => new
+            var response = ideas.Select(idea =>
             {
-                id = idea.Id,
-                name = idea.Name,
+                investmentGrouped.TryGetValue(idea.Id, out var ideaInvestments);
 
-                status = idea.Status, // "Pending", "Approved", "Rejected"
-                score = idea.ReadinessScore,
-                stageLabel = idea.Solution.StageLabel, // "Idea", "MVP", "Growth"
-                isPublished = idea.IsPublished,
-                creatdate = idea.CreatedAt,
-                marketSize = idea.Market.MarketSize,
-                equityOffered = idea.EquityOffered,
+                ideaInvestments ??= new List<Investments>();
 
-                //clicks = idea.Clicks,
-                fundingRequired = idea.FundingRequired,
-                totalRaised = investmentByIdea.TryGetValue(idea.Id, out var raised) ? raised : 0,
-                //investors = idea.IsVisibleToInvestors,
-                equity = investments.Sum(inv => inv.EquityPercentage)
+                var totalRaised = ideaInvestments.Sum(x => x.Amount);
 
+                var totalEquity = ideaInvestments.Sum(x => x.EquityPercentage);
+
+                var investorList = ideaInvestments
+                    .Select(inv => investorDictionary.TryGetValue(inv.InvestorId, out var investor)
+                        ? new
+                        {
+                            id = investor.Id,
+                            name = investor.Name,
+                            ImagePath = investor.ImagePath,
+                        }
+                        : null)
+                    .Where(x => x != null)
+                    .Distinct()
+                    .ToList();
+
+                return new
+                {
+                    id = idea.Id,
+                    name = idea.Name,
+                    status = idea.Status,
+                    score = idea.ReadinessScore,
+                    stageLabel = idea.Solution.StageLabel,
+                    isPublished = idea.IsPublished,
+                    creatdate = idea.CreatedAt,
+                    marketSize = idea.Market?.MarketSize,
+                    equityOffered = idea.EquityOffered,
+
+                    views = clickDictionary.TryGetValue(idea.Id, out var totalClick)
+                        ? totalClick
+                        : 0,
+
+                    fundingRequired = idea.FundingRequired,
+
+                    totalRaised = totalRaised,
+
+                    equity = totalEquity,
+
+                    investors = investorList
+                };
             }).ToList();
 
             return Ok(response);
-
-
-
-            //investors = investorGuidsByIdea.TryGetValue(idea.Id, out var invGuids)
-            //    ? profiles
-            //        .Where(p => invGuids.Contains(p.Id))
-            //        .Select(p => new
-            //        {
-            //            p.Id,
-            //            p.UserName,
-            //            p.Email,
-            //            p.ImagePath
-            //        })
-            //        .ToList()
-            //    : new List<object>()
-
-
-            //milestones = idea.Milestones != null && idea.Milestones.Any()
-            //    ? idea.Milestones.Select(m => new
-            //    {
-            //        title = m.Title ?? "",
-            //        description = m.Description ?? "",
-            //        targetDate = m.TargetDate.ToString("yyyy-MM-dd")
-            //    }).ToList<object>()
-            //    : new List<object>()
         }
 
 
 
 
-        [HttpGet("{id}/investments")]
-        public async Task<IActionResult> GetIdeaInvestments(string id)
+        [HttpGet("investments")]
+        public async Task<IActionResult> GetIdeaInvestments()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var idea = await _serviceIdea.GetByIdAsync(id);
-            if (idea == null || idea.CreatorId != userId) return NotFound();
+            var ideas = await _serviceIdea.GetByCreatorAsync(userId);
+            if (ideas == null || !ideas.Any())
+                return Ok(new List<object>());
+
+            var ideaIds = ideas.Select(i => i.Id).ToList();
+
+            var investor = await _investmentsService.GetByIdeaIdsAsync(ideaIds);
+            if (investor == null || investor.CreatorId != userId) return NotFound();
 
             var investments = await _investmentsService.GetByIdeaAsync(id);
             if (investments == null || !investments.Any())
