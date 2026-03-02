@@ -374,7 +374,7 @@ namespace WebApp.Controllers
             var ideaIds = ideas.Select(i => i.Id).ToList();
 
             var investor = await _investmentsService.GetByIdeaIdsAsync(ideaIds);
-            if (investor == null || investor.CreatorId != userId) return NotFound();
+            //if (investor == null || investor.CreatorId != userId) return NotFound();
 
             var investments = await _investmentsService.GetByIdeaAsync(id);
             if (investments == null || !investments.Any())
@@ -392,6 +392,10 @@ namespace WebApp.Controllers
 
             return Ok(response);
         }
+
+
+
+
 
 
         
