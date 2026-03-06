@@ -27,6 +27,7 @@ namespace WebApp.Controllers
             return Ok(data);
         }
 
+
         [HttpPost("read/{id}")]
         public async Task<IActionResult> MarkAsRead(string id)
         {

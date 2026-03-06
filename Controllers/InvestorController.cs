@@ -49,12 +49,14 @@ namespace WebApp.Controllers
             return Ok(responce);
         }
 
+
         [HttpGet("investor/{investorId}")]
         public async Task<IActionResult> GetByInvestor(Guid investorId)
         {
             var investments = await _service.GetByInvestorAsync(investorId);
             return Ok(investments);
         }
+
 
         [HttpGet("idea/{ideaId}")]
         public async Task<IActionResult> GetByIdea(string ideaId)
@@ -63,6 +65,7 @@ namespace WebApp.Controllers
             return Ok(investments);
         }
 
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
@@ -70,6 +73,7 @@ namespace WebApp.Controllers
             await _service.DeleteInvestmentAsync(id);
             return NoContent();
         }
+
 
     }
 }

@@ -203,11 +203,13 @@ namespace WebApp.Services
             return await _repo.GetAllAsync();
         }
 
+
         // Get idea by id for admin moderation
         public async Task<BusinessIdeas> GetByIdAsync(string id)
         {
             return await _repo.GetByIdAsync(id);
         }
+
 
         // Get pending ideas for admin moderation
         public async Task<IEnumerable<BusinessIdeas>> GetPendingIdeasAsync()

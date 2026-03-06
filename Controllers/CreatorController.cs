@@ -359,8 +359,6 @@ namespace WebApp.Controllers
         }
 
 
-
-
         [HttpGet("investments")]
         public async Task<IActionResult> GetIdeaInvestments()
         {
@@ -392,10 +390,6 @@ namespace WebApp.Controllers
 
             return Ok(response);
         }
-
-
-
-
 
 
         

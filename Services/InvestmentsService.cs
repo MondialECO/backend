@@ -13,16 +13,19 @@ namespace WebApp.Services
             _repo = repo;
         }
 
+
         public async Task<Investments> CreateInvestmentAsync(Investments investment)
         {
             await _repo.AddAsync(investment);
             return investment;
         }
 
+
         public async Task DeleteInvestmentAsync(string id)
         {
             await _repo.DeleteAsync(id);
         }
+
 
         public async Task<IEnumerable<Investments>> GetByIdeaAsync(string ideaId)
         {
@@ -33,11 +36,11 @@ namespace WebApp.Services
             return await _repo.GetByIdeaIdsAsync(ideaIds);
         }
 
-
         public async Task<IEnumerable<Investments>> GetByInvestorAsync(Guid investorId)
         {
             return await _repo.GetByInvestorIdAsync(investorId);
         }
+
 
         public async Task<Investments> GetByIdAsync(string id)
         {

@@ -32,7 +32,6 @@ namespace WebApp.Services.Repository
             return await _collection.Find(filter).ToListAsync();
         }
 
-
         public async Task<IEnumerable<Investments>> GetByIdeaIdsAsync(List<string> ideaIds)
         {
             var filter = Builders<Investments>.Filter.In(i => i.IdeaId, ideaIds);

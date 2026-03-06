@@ -17,6 +17,8 @@ namespace WebApp.Controllers
             _service = service;
         }
 
+
+
         //[HttpPost]
         //public async Task<IActionResult> Create(BusinessIdeas idea)
         //{
@@ -46,7 +48,6 @@ namespace WebApp.Controllers
             var ideas = await _service.GetPendingIdeasAsync();
             return Ok(ideas);
         }
-
 
 
         [HttpDelete("{id}")]

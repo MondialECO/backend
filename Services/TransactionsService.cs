@@ -13,22 +13,24 @@ namespace WebApp.Services
             _repo = repo;
         }
 
+
         public async Task<Transactions> CreateTransactionAsync(Transactions transaction)
         {
             await _repo.AddAsync(transaction);
             return transaction;
         }
 
+
         public async Task DeleteTransactionAsync(string id)
         {
             await _repo.DeleteAsync(id);
         }
 
+
         public async Task<Transactions> GetByIdAsync(string id)
         {
             return await _repo.GetByIdAsync(id);
         }
-
 
         public async Task<IEnumerable<Transactions>> GetByUserAsync(string userId)
         {

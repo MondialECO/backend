@@ -24,6 +24,7 @@ namespace WebApp.Models.DatabaseModels
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Indexes: InvestorId, IdeaId, RoundName
+
     }
 
 }
