@@ -915,7 +915,7 @@
         }
       }
     },
-    "/api/Creator/my/ideas": {
+    "/api/Creator/my-ideas": {
       "get": {
         "tags": [
           "Creator"
@@ -927,7 +927,29 @@
         }
       }
     },
-    "/api/Creator/{id}/investments": {
+    "/api/Creator/toggle-idea/{id}": {
+      "post": {
+        "tags": [
+          "Creator"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Creator/investments/{id}": {
       "get": {
         "tags": [
           "Creator"

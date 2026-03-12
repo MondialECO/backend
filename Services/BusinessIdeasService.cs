@@ -85,7 +85,7 @@ namespace WebApp.Services
                 FundingRequired = idea.amount_required ?? 0,
                 EquityOffered = idea.equity_percentage ?? 0,
 
-                CreatedAt = DateTime.UtcNow
+                //CreatedAt = DateTime.UtcNow
             };
             await _repo.AddAsync(data);
             return data;

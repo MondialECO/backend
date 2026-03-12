@@ -40,6 +40,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> GetCreatorDashboard()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //var userId = "5f5df910-2b3f-4469-b72e-fb9a2dacc233";
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
 
@@ -255,7 +256,8 @@ namespace WebApp.Controllers
         [HttpGet("my-ideas")]
         public async Task<IActionResult> MyIdeas()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = "5f5df910-2b3f-4469-b72e-fb9a2dacc233";
 
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
@@ -359,8 +361,26 @@ namespace WebApp.Controllers
         }
 
 
-        [HttpGet("investments")]
-        public async Task<IActionResult> GetIdeaInvestments()
+        [HttpPost("toggle-idea/{id}")]
+        public async Task<IActionResult> ToggleIdea(string id)
+        {
+            var idea = await _context.BusinessIdeas
+                .Find(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (idea == null)
+                return NotFound();
+
+            idea.IsPublished = !idea.IsPublished;
+
+            await _context.BusinessIdeas.ReplaceOneAsync(x => x.Id == id, idea);
+
+            return Ok(idea);
+        }
+
+
+        [HttpGet("investments/{id}")]
+        public async Task<IActionResult> GetIdeaInvestments(string id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
@@ -392,7 +412,7 @@ namespace WebApp.Controllers
         }
 
 
-        
+
 
     }
 }

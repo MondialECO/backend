@@ -396,8 +396,24 @@
   },
   {
     "ContainingType": "WebApp.Controllers.CreatorController",
+    "Method": "GetIdeaInvestments",
+    "RelativePath": "api/Creator/investments/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.CreatorController",
     "Method": "MyIdeas",
-    "RelativePath": "api/Creator/my/ideas",
+    "RelativePath": "api/Creator/my-ideas",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -617,9 +633,9 @@
   },
   {
     "ContainingType": "WebApp.Controllers.CreatorController",
-    "Method": "GetIdeaInvestments",
-    "RelativePath": "api/Creator/{id}/investments",
-    "HttpMethod": "GET",
+    "Method": "ToggleIdea",
+    "RelativePath": "api/Creator/toggle-idea/{id}",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
