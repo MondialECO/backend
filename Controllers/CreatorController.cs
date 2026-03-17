@@ -256,8 +256,8 @@ namespace WebApp.Controllers
         [HttpGet("my-ideas")]
         public async Task<IActionResult> MyIdeas()
         {
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userId = "5f5df910-2b3f-4469-b72e-fb9a2dacc233";
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //var userId = "5f5df910-2b3f-4469-b72e-fb9a2dacc233";
 
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized();
@@ -378,6 +378,7 @@ namespace WebApp.Controllers
             return Ok(idea);
         }
 
+        [HttpGet("")]
 
         [HttpGet("investments/{id}")]
         public async Task<IActionResult> GetIdeaInvestments(string id)

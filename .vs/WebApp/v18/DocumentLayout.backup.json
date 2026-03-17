@@ -58,8 +58,7 @@
               "RelativeToolTip": "Services\\Repository\\MongoRepository.cs",
               "ViewState": "AgIAABUAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-12T18:42:01.575Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-12T18:42:01.575Z"
             },
             {
               "$type": "Document",
@@ -71,8 +70,7 @@
               "RelativeToolTip": "Services\\BusinessIdeasService.cs",
               "ViewState": "AgIAADwAAAAAAAAAAAAowFYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-12T16:33:25.389Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-12T16:33:25.389Z"
             },
             {
               "$type": "Document",
@@ -84,8 +82,7 @@
               "RelativeToolTip": "Models\\DatabaseModels\\BusinessIdeas.cs",
               "ViewState": "AgIAAA4AAAAAAAAAAAAwwB8AAABKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-12T16:32:30.951Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-12T16:32:30.951Z"
             },
             {
               "$type": "Document",
@@ -95,7 +92,7 @@
               "RelativeDocumentMoniker": "Controllers\\CreatorController.cs",
               "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Controllers\\CreatorController.cs",
               "RelativeToolTip": "Controllers\\CreatorController.cs",
-              "ViewState": "AgIAAP4AAAAAAAAAAAAIwHUBAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAG0BAAAAAAAAAAAmwHwBAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-12T13:41:25.742Z",
               "EditorCaption": ""
