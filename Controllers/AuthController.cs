@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Amazon.Runtime.Internal.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System.ComponentModel.DataAnnotations;
@@ -29,7 +31,8 @@ namespace WebApp.Controllers
         private readonly EmailService _emailService;
         private readonly ILogger<AuthController> _logger;
         private readonly SaveFile _fileService;
-
+        private readonly IDistributedCache _cache;
+        private readonly TwilioService _twilioService;
         public AuthController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -37,7 +40,9 @@ namespace WebApp.Controllers
             RoleManager<ApplicationRole> roleManager,
             EmailService emailSender,
             ILogger<AuthController> logger,
-            SaveFile saveFile
+            SaveFile saveFile,
+            IDistributedCache cache,
+            TwilioService twilioService
             )
         {
             _userManager = userManager;
@@ -47,6 +52,8 @@ namespace WebApp.Controllers
             _emailService = emailSender;
             _logger = logger;
             _fileService = saveFile;
+            _cache = cache;
+            _twilioService = twilioService;
         }
 
 
@@ -490,10 +497,161 @@ namespace WebApp.Controllers
             return Ok("Face submitted for review");
         }
 
-      
+
+        //[HttpPost("send-email-otp")]
+        //public async Task<IActionResult> SendEmailOtp()
+        //{
+        //    var user = await _userManager.GetUserAsync(User);
+
+        //    if (user.EmailConfirmed)
+        //        return BadRequest("Email already verified");
+
+        //    // Generate 6-digit OTP
+        //    var otp = new Random().Next(100000, 999999).ToString();
+
+        //    // Store in Redis (5 min expiry)
+        //    await _cache.SetStringAsync($"email_otp:{user.Id}", otp,
+        //        new DistributedCacheEntryOptions
+        //        {
+        //            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+        //        });
+
+        //    // Send Email
+        //    await _emailService.SendAsync(user.Email, "Your OTP Code",
+        //        $"Your verification OTP is: {otp}");
+
+        //    return Ok("OTP sent to email");
+        //}
+
+        //public class VerifyOtpDto
+        //{
+        //    public string Otp { get; set; }
+        //}
+
+        //[HttpPost("verify-email-otp")]
+        //public async Task<IActionResult> VerifyEmailOtp([FromBody] VerifyOtpDto dto)
+        //{
+        //    var user = await _userManager.GetUserAsync(User);
+
+        //    var storedOtp = await _cache.GetStringAsync($"email_otp:{user.Id}");
+
+        //    if (storedOtp == null)
+        //        return BadRequest("OTP expired");
+
+        //    if (storedOtp != dto.Otp)
+        //        return BadRequest("Invalid OTP");
+
+        //    // Mark email as verified
+        //    user.EmailConfirmed = true;
+
+        //    await _userManager.UpdateAsync(user);
+
+        //    // Remove OTP after success
+        //    await _cache.RemoveAsync($"email_otp:{user.Id}");
+
+        //    return Ok("Email verified successfully");
+        //}
+
+        //[HttpPost("resend-email-otp")]
+        //public async Task<IActionResult> ResendOtp()
+        //{
+        //    var user = await _userManager.GetUserAsync(User);
+
+        //    var cooldownKey = $"otp_cooldown:{user.Id}";
+
+        //    var exists = await _cache.GetStringAsync(cooldownKey);
+
+        //    if (exists != null)
+        //        return BadRequest("Wait before requesting again");
+
+        //    await _cache.SetStringAsync(cooldownKey, "1",
+        //        new DistributedCacheEntryOptions
+        //        {
+        //            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60)
+        //        });
+
+        //    return await SendEmailOtp();
+        //}
 
 
 
+
+
+
+        [HttpPost("send-phone-otp")]
+        public async Task<IActionResult> SendPhoneOtp()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user.PhoneNumberConfirmed)
+                return BadRequest("Phone already verified");
+
+            // Generate 6-digit OTP
+            var otp = new Random().Next(100000, 999999).ToString();
+
+            // Store in Redis (5 min expiry)
+            await _cache.SetStringAsync($"phone_otp:{user.Id}", otp,
+                new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                });
+
+            //  Send SMS via Twilio
+            await _twilioService.SendSmsAsync(user.PhoneNumber, $"Your OTP is: {otp}");
+
+            return Ok("OTP sent to phone");
+        }
+
+
+        public class VerifyPhoneOtpDto
+        {
+            public string Otp { get; set; }
+        }
+
+        [HttpPost("verify-phone-otp")]
+        public async Task<IActionResult> VerifyPhoneOtp([FromBody] VerifyPhoneOtpDto dto)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var storedOtp = await _cache.GetStringAsync($"phone_otp:{user.Id}");
+
+            if (storedOtp == null)
+                return BadRequest("OTP expired");
+
+            if (storedOtp != dto.Otp)
+                return BadRequest("Invalid OTP");
+
+            // Mark phone as verified
+            user.PhoneNumberConfirmed = true;
+
+            await _userManager.UpdateAsync(user);
+
+            // Remove OTP after success
+            await _cache.RemoveAsync($"phone_otp:{user.Id}");
+
+            return Ok("Phone verified successfully");
+        }
+
+        [HttpPost("resend-phone-otp")]
+        public async Task<IActionResult> ResendPhoneOtp()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var cooldownKey = $"phone_otp_cooldown:{user.Id}";
+
+            var exists = await _cache.GetStringAsync(cooldownKey);
+
+            if (exists != null)
+                return BadRequest("Wait before requesting again");
+
+            await _cache.SetStringAsync(cooldownKey, "1",
+                new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60)
+                });
+
+            return await SendPhoneOtp();
+        }
     }
 
 

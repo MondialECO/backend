@@ -145,6 +145,19 @@ builder.Services.AddScoped<WebPushService>();
 
 
 
+// RadisCash
+//builder.Services.AddStackExchangeRedisCache(options =>
+//{
+//    options.Configuration = "localhost:6379";
+//});
+
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = "localhost:6379"; // Redis server address
+    options.InstanceName = "Mondial";       // Optional prefix
+});
+
 
 // need removed after using dashboard
 builder.Services.AddScoped<ISubmmitdata, SubmmitdataRepository>();
