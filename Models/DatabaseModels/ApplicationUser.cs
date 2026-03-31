@@ -45,6 +45,8 @@ namespace WebApp.Models.DatabaseModels
 
         [BsonElement("CreatedAt")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public KycVerification Kyc { get; set; } = new();
     }
 
     public class Address
@@ -68,5 +70,50 @@ namespace WebApp.Models.DatabaseModels
         public string CreatedByIp { get; set; } = "";
     }
 
+    public class KycVerification
+    {
+        public VerificationStatus Status { get; set; } = VerificationStatus.Pending;
 
+        public IdentityVerification Identity { get; set; } = new();
+        public FacialVerification Face { get; set; } = new();
+
+        public DateTime? VerifiedAt { get; set; }
+    }
+
+    public class IdentityVerification
+    {
+        public VerificationStatus Status { get; set; } = VerificationStatus.Pending;
+
+        public string DocumentType { get; set; } // NID / Passport / DL
+        public string DocumentNumber { get; set; }
+
+        public string FrontImage { get; set; }
+        public string BackImage { get; set; }
+
+        public DateTime? SubmittedAt { get; set; }
+        public DateTime? VerifiedAt { get; set; }
+
+        public string RejectionReason { get; set; }
+    }
+
+    public class FacialVerification
+    {
+        public VerificationStatus Status { get; set; } = VerificationStatus.Pending;
+
+        public string SelfieImage { get; set; }
+
+        public double? MatchScore { get; set; } // AI ready
+
+        public DateTime? SubmittedAt { get; set; }
+        public DateTime? VerifiedAt { get; set; }
+
+        public string RejectionReason { get; set; }
+    }
+
+    public enum VerificationStatus
+    {
+        Pending,
+        Verified,
+        Rejected
+    }
 }
