@@ -14,6 +14,7 @@ using WebApp.DbContext;
 using WebApp.Middleware;
 using WebApp.Models;
 using WebApp.Models.DatabaseModels;
+using WebApp.Services;
 //using static Org.BouncyCastle.Math.EC.ECCurve;
 namespace WebApp.Controllers
 {
@@ -27,7 +28,7 @@ namespace WebApp.Controllers
         private readonly IConfiguration _configuration;
         private readonly EmailService _emailService;
         private readonly ILogger<AuthController> _logger;
-
+        private readonly SaveFile _fileService;
 
         public AuthController(
             UserManager<ApplicationUser> userManager,
@@ -35,8 +36,8 @@ namespace WebApp.Controllers
             IConfiguration configuration,
             RoleManager<ApplicationRole> roleManager,
             EmailService emailSender,
-            ILogger<AuthController> logger
-
+            ILogger<AuthController> logger,
+            SaveFile saveFile
             )
         {
             _userManager = userManager;
@@ -45,6 +46,7 @@ namespace WebApp.Controllers
             _roleManager = roleManager;
             _emailService = emailSender;
             _logger = logger;
+            _fileService = saveFile;
         }
 
 
@@ -431,8 +433,70 @@ namespace WebApp.Controllers
         }
 
 
+        public class IdentityUploadDto
+        {
+            public string DocumentType { get; set; } // NID / Passport
+            //public string DocumentNumber { get; set; }
+
+            public IFormFile FrontImage { get; set; }
+            public IFormFile BackImage { get; set; }
+        }
+
+        [HttpPost("identity/upload")]
+        public async Task<IActionResult> UploadIdentity([FromForm] IdentityUploadDto dto)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var frontPath = await _fileService.SaveFileAsync(dto.FrontImage, "Identity");
+            var backPath = await _fileService.SaveFileAsync(dto.BackImage, "Identity");
+
+            user.Kyc.Identity = new IdentityVerification
+            {
+                DocumentType = dto.DocumentType,
+                //DocumentNumber = dto.DocumentNumber,
+                FrontImage = frontPath,
+                BackImage = backPath,
+                Status = VerificationStatus.Pending,
+                SubmittedAt = DateTime.UtcNow
+            };
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok("Identity submitted for review");
+        }
+
+
+        public class FaceUploadDto
+        {
+            public IFormFile SelfieImage { get; set; }
+        }
+
+        [HttpPost("face/upload")]
+        public async Task<IActionResult> UploadFace([FromForm] FaceUploadDto dto)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var selfiePath = await _fileService.SaveFileAsync(dto.SelfieImage, "Face");
+
+            user.Kyc.Face = new FacialVerification
+            {
+                SelfieImage = selfiePath,
+                Status = VerificationStatus.Pending,
+                SubmittedAt = DateTime.UtcNow
+            };
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok("Face submitted for review");
+        }
+
+      
+
+
 
     }
+
+
 
 }
 

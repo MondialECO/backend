@@ -7,6 +7,8 @@ using WebApp.Models.DatabaseModels;
 using WebApp.Services.Interface;
 using Microsoft.IdentityModel.Tokens;
 using WebApp.Models;
+using WebApp.DbContext;
+using MongoDB.Driver;
 
 namespace WebApp.Controllers
 {
@@ -17,12 +19,16 @@ namespace WebApp.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly MongoDbContext _context;
         public AdminController(UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager
+            RoleManager<ApplicationRole> roleManager,
+             MongoDbContext context
+
             )
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         // GET: api/admin/users
@@ -192,9 +198,54 @@ namespace WebApp.Controllers
         //    return Ok(info);
         //}
 
-       
+        public class RejectKycDto
+        {
+            public string Reason { get; set; }
+        }
 
 
+        // varification pending list
+        [HttpGet("pending")]
+        public async Task<IActionResult> GetPendingUsers()
+        {
+            var users = await _context.ApplicationUsers
+                .Find(x => x.Kyc.Status == VerificationStatus.Pending)
+                .ToListAsync();
+
+            return Ok(users);
+        }
+
+        // verificaton approve 
+        [HttpPost("approve/{userId}")]
+        public async Task<IActionResult> ApproveKyc(Guid userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            user.Kyc.Identity.Status = VerificationStatus.Verified;
+            user.Kyc.Face.Status = VerificationStatus.Verified;
+            user.Kyc.Status = VerificationStatus.Verified;
+            user.Kyc.VerifiedAt = DateTime.UtcNow;
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok("KYC Approved");
+        }
+
+
+        // verification rejected
+        [HttpPost("reject/{userId}")]
+        public async Task<IActionResult> RejectKyc(Guid userId, [FromBody] RejectKycDto dto)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            user.Kyc.Status = VerificationStatus.Rejected;
+            user.Kyc.Identity.Status = VerificationStatus.Rejected;
+            user.Kyc.Identity.RejectionReason = dto.Reason;
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok("KYC Rejected");
+        }
     }
 
 }

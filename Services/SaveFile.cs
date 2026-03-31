@@ -25,6 +25,14 @@
             {
                 isValid = allowedDocExt.Contains(extension);
             }
+            else if (folderName == "Identity")
+            {
+                isValid = allowedDocExt.Contains(extension);
+            }
+            else if (folderName == "Face")
+            {
+                isValid = allowedVideoExt.Contains(extension);
+            }
 
             if (!isValid)
                 throw new ArgumentException($"Invalid file type: {extension}");
