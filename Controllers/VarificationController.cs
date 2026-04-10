@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
@@ -12,24 +11,24 @@ namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KycController : ControllerBase
+    public class VarificationController : ControllerBase
     {
         private readonly EmailService _emailService;
-        private readonly ILogger<AuthController> _logger;
         private readonly SaveFile _fileService;
         private readonly IDistributedCache _cache;
         private readonly TwilioService _twilioService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly MongoDbContext _context;
 
-        public KycController(EmailService emailService,
-            ILogger<AuthController> logger, SaveFile fileService,
-            IDistributedCache cache, TwilioService twilioService,
+        public VarificationController(
+            EmailService emailService,
+            SaveFile fileService,
+            IDistributedCache cache,
+            TwilioService twilioService,
             UserManager<ApplicationUser> userManager,
-             MongoDbContext context)
+            MongoDbContext context)
         {
             _emailService = emailService;
-            _logger = logger;
             _fileService = fileService;
             _cache = cache;
             _twilioService = twilioService;
@@ -37,16 +36,46 @@ namespace WebApp.Controllers
             _context = context;
         }
 
+        #region Helper Methods
+
+        private IActionResult Success(string message, object? data = null)
+        {
+            return Ok(new
+            {
+                success = true,
+                message,
+                data
+            });
+        }
+
+        private IActionResult Fail(string message)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message
+            });
+        }
+
+        private IActionResult NotFoundResponse(string message)
+        {
+            return NotFound(new
+            {
+                success = false,
+                message
+            });
+        }
+
+        #endregion
 
         public class IdentityUploadDto
         {
-            public string DocumentType { get; set; } // NID / Passport
-
+            public string DocumentType { get; set; }
             public IFormFile FrontImage { get; set; }
             public IFormFile BackImage { get; set; }
         }
 
-        [HttpPost("identity/upload")]
+        [HttpPost("identity")]
         public async Task<IActionResult> UploadIdentity([FromForm] IdentityUploadDto dto)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -57,7 +86,6 @@ namespace WebApp.Controllers
             user.Kyc.Identity = new IdentityVerification
             {
                 DocumentType = dto.DocumentType,
-                //DocumentNumber = dto.DocumentNumber,
                 FrontImage = frontPath,
                 BackImage = backPath,
                 Status = VerificationStatus.Pending,
@@ -66,34 +94,25 @@ namespace WebApp.Controllers
 
             await _userManager.UpdateAsync(user);
 
-            return Ok("Identity submitted for review");
+            return Success("Identity submitted for review");
         }
 
-
-        public class FaceUploadDto
-        {
-            public IFormFile Image { get; set; }
-        }
-
-        [HttpPost("face/upload")]
-        public async Task<IActionResult> UploadFace([FromForm] FaceUploadDto dto)
+        [HttpPost("face")]
+        public async Task<IActionResult> UploadFace()
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var selfiePath = await _fileService.SaveFileAsync(dto.Image, "Face");
-
             user.Kyc.Face = new FacialVerification
             {
-                SelfieImage = selfiePath,
                 Status = VerificationStatus.Pending,
-                SubmittedAt = DateTime.UtcNow
+                SubmittedAt = DateTime.UtcNow,
+                VerifiedAt = DateTime.UtcNow
             };
 
             await _userManager.UpdateAsync(user);
 
-            return Ok("Face submitted for review");
+            return Success("Face submitted for review");
         }
-
 
         [HttpPost("send-email-otp")]
         public async Task<IActionResult> SendEmailOtp()
@@ -101,23 +120,22 @@ namespace WebApp.Controllers
             var user = await _userManager.GetUserAsync(User);
 
             if (user.EmailConfirmed)
-                return BadRequest("Email already verified");
+                return Fail("Email already verified");
 
-            // Generate 6-digit OTP
             var otp = new Random().Next(100000, 999999).ToString();
 
-            // Store in Redis (5 min expiry)
             await _cache.SetStringAsync($"email_otp:{user.Id}", otp,
                 new DistributedCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 });
 
-            // Send Email
-            await _emailService.SendEmailAsync(user.Email, "Your OTP Code",
+            await _emailService.SendEmailAsync(
+                user.Email,
+                "Your OTP Code",
                 $"Your verification OTP is: {otp}");
 
-            return Ok("OTP sent to email");
+            return Success("OTP sent to email");
         }
 
         public class VerifyOtpDto
@@ -133,20 +151,17 @@ namespace WebApp.Controllers
             var storedOtp = await _cache.GetStringAsync($"email_otp:{user.Id}");
 
             if (storedOtp == null)
-                return BadRequest("OTP expired");
+                return Fail("OTP expired");
 
             if (storedOtp != dto.Otp)
-                return BadRequest("Invalid OTP");
+                return Fail("Invalid OTP");
 
-            // Mark email as verified
             user.EmailConfirmed = true;
-
             await _userManager.UpdateAsync(user);
 
-            // Remove OTP after success
             await _cache.RemoveAsync($"email_otp:{user.Id}");
 
-            return Ok("Email verified successfully");
+            return Success("Email verified successfully");
         }
 
         [HttpPost("resend-email-otp")]
@@ -155,11 +170,10 @@ namespace WebApp.Controllers
             var user = await _userManager.GetUserAsync(User);
 
             var cooldownKey = $"otp_cooldown:{user.Id}";
-
             var exists = await _cache.GetStringAsync(cooldownKey);
 
             if (exists != null)
-                return BadRequest("Wait before requesting again");
+                return Fail("Wait before requesting again");
 
             await _cache.SetStringAsync(cooldownKey, "1",
                 new DistributedCacheEntryOptions
@@ -170,69 +184,54 @@ namespace WebApp.Controllers
             return await SendEmailOtp();
         }
 
-
-
-        public class PhoneNumber
+        public class PhoneNumberDto
         {
             public string Number { get; set; }
         }
 
-
         [HttpPost("send-phone-otp")]
-        public async Task<IActionResult> SendPhoneOtp([FromBody] PhoneNumber dto)
+        public async Task<IActionResult> SendPhoneOtp([FromBody] PhoneNumberDto dto)
         {
             var user = await _userManager.GetUserAsync(User);
 
             if (user.PhoneNumberConfirmed)
-                return BadRequest("Phone already verified");
+                return Fail("Phone already verified");
 
             user.PhoneNumber = dto.Number;
             await _userManager.UpdateAsync(user);
 
-            // Generate 6-digit OTP
             var otp = new Random().Next(100000, 999999).ToString();
 
-            // Store in Redis (5 min expiry)
             await _cache.SetStringAsync($"phone_otp:{user.Id}", otp,
                 new DistributedCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 });
 
-            //  Send SMS via Twilio
             await _twilioService.SendSmsAsync(user.PhoneNumber, $"Your OTP is: {otp}");
 
-            return Ok("OTP sent to phone");
-        }
-
-
-        public class VerifyPhoneOtpDto
-        {
-            public string Otp { get; set; }
+            return Success("OTP sent to phone");
         }
 
         [HttpPost("verify-phone-otp")]
-        public async Task<IActionResult> VerifyPhoneOtp([FromBody] VerifyPhoneOtpDto dto)
+        public async Task<IActionResult> VerifyPhoneOtp([FromBody] VerifyOtpDto dto)
         {
             var user = await _userManager.GetUserAsync(User);
 
             var storedOtp = await _cache.GetStringAsync($"phone_otp:{user.Id}");
 
             if (storedOtp == null)
-                return BadRequest("OTP expired");
+                return Fail("OTP expired");
 
             if (storedOtp != dto.Otp)
-                return BadRequest("Invalid OTP");
+                return Fail("Invalid OTP");
 
-            // Mark phone as verified
             user.PhoneNumberConfirmed = true;
-
             await _userManager.UpdateAsync(user);
 
-            // Remove OTP after success
             await _cache.RemoveAsync($"phone_otp:{user.Id}");
 
-            return Ok("Phone verified successfully");
+            return Success("Phone verified successfully");
         }
 
         [HttpPost("resend-phone-otp")]
@@ -241,11 +240,10 @@ namespace WebApp.Controllers
             var user = await _userManager.GetUserAsync(User);
 
             var cooldownKey = $"phone_otp_cooldown:{user.Id}";
-
             var exists = await _cache.GetStringAsync(cooldownKey);
 
             if (exists != null)
-                return BadRequest("Wait before requesting again");
+                return Fail("Wait before requesting again");
 
             await _cache.SetStringAsync(cooldownKey, "1",
                 new DistributedCacheEntryOptions
@@ -253,35 +251,12 @@ namespace WebApp.Controllers
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60)
                 });
 
-            // Generate 6-digit OTP
-            var otp = new Random().Next(100000, 999999).ToString();
-
-            // Store in Redis (5 min expiry)
-            await _cache.SetStringAsync($"phone_otp:{user.Id}", otp,
-                new DistributedCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-                });
-
-            //  Send SMS via Twilio
-            await _twilioService.SendSmsAsync(user.PhoneNumber, $"Your OTP is: {otp}");
-
-            return Ok("OTP sent to phone");
+            return await SendPhoneOtp(new PhoneNumberDto
+            {
+                Number = user.PhoneNumber
+            });
         }
 
-
-
-
-
-
-
-        public class RejectKycDto
-        {
-            public string Reason { get; set; }
-        }
-
-
-        // varification pending list
         [Authorize(Roles = "Admin")]
         [HttpGet("pending")]
         public async Task<IActionResult> GetPendingUsers()
@@ -290,15 +265,17 @@ namespace WebApp.Controllers
                 .Find(x => x.Kyc.Status == VerificationStatus.Pending)
                 .ToListAsync();
 
-            return Ok(users);
+            return Success("Pending users fetched successfully", users);
         }
 
-        // verificaton approve 
         [Authorize(Roles = "Admin")]
         [HttpPost("approve/{userId}")]
         public async Task<IActionResult> ApproveKyc(Guid userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+                return NotFoundResponse("User not found");
 
             user.Kyc.Identity.Status = VerificationStatus.Verified;
             user.Kyc.Face.Status = VerificationStatus.Verified;
@@ -307,16 +284,22 @@ namespace WebApp.Controllers
 
             await _userManager.UpdateAsync(user);
 
-            return Ok("KYC Approved");
+            return Success("KYC Approved");
         }
 
+        public class RejectKycDto
+        {
+            public string Reason { get; set; }
+        }
 
-        // verification rejected
         [Authorize(Roles = "Admin")]
         [HttpPost("reject/{userId}")]
         public async Task<IActionResult> RejectKyc(Guid userId, [FromBody] RejectKycDto dto)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+                return NotFoundResponse("User not found");
 
             user.Kyc.Status = VerificationStatus.Rejected;
             user.Kyc.Identity.Status = VerificationStatus.Rejected;
@@ -324,7 +307,7 @@ namespace WebApp.Controllers
 
             await _userManager.UpdateAsync(user);
 
-            return Ok("KYC Rejected");
+            return Success("KYC Rejected");
         }
     }
 }

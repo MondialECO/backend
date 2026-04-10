@@ -105,9 +105,9 @@ namespace WebApp.Models.DatabaseModels
     {
         public VerificationStatus Status { get; set; } = VerificationStatus.Pending;
 
-        public string SelfieImage { get; set; }
+        //public string SelfieImage { get; set; }
 
-        public double? MatchScore { get; set; } // AI ready
+        //public double? MatchScore { get; set; } // AI ready
 
         public DateTime? SubmittedAt { get; set; }
         public DateTime? VerifiedAt { get; set; }

@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "D:\\GitHub\\Mondial.Eco\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\controllers\\varificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\varificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\models\\common.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\common.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\services\\twilioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:services\\twilioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\controllers\\kyccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:controllers\\kyccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\models\\databasemodels\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|solutionrelative:models\\databasemodels\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EF441655-59D0-4BF6-B6CB-B827FF39100A}|WebApp.csproj|d:\\github\\mondial.eco\\backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,8 +26,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Common.cs",
+              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Common.cs",
+              "RelativeDocumentMoniker": "Models\\Common.cs",
+              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Common.cs",
+              "RelativeToolTip": "Models\\Common.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAowBUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-10T05:49:46.831Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "Models\\DatabaseModels\\ApplicationUser.cs",
+              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\ApplicationUser.cs",
+              "RelativeToolTip": "Models\\DatabaseModels\\ApplicationUser.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAIA5wHAAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-10T05:27:14.729Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -55,58 +77,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-04-10T04:51:53.68Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAAwBIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-10T04:43:24.361Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TwilioService.cs",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Services\\TwilioService.cs",
-              "RelativeDocumentMoniker": "Services\\TwilioService.cs",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Services\\TwilioService.cs",
-              "RelativeToolTip": "Services\\TwilioService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-10T04:43:33.702Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "KycController.cs",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Controllers\\KycController.cs",
-              "RelativeDocumentMoniker": "Controllers\\KycController.cs",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Controllers\\KycController.cs",
-              "RelativeToolTip": "Controllers\\KycController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHgAAAAJAAAAAAAAAA==",
+              "Title": "VarificationController.cs",
+              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\Backend\\Controllers\\VarificationController.cs",
+              "RelativeDocumentMoniker": "Controllers\\VarificationController.cs",
+              "ToolTip": "D:\\GitHub\\Mondial.Eco\\Backend\\Controllers\\VarificationController.cs",
+              "RelativeToolTip": "Controllers\\VarificationController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB8AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-10T04:29:06.632Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "AuthController.cs",
               "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
@@ -114,8 +97,7 @@
               "RelativeToolTip": "Controllers\\AuthController.cs",
               "ViewState": "AgIAAFUBAAAAAAAAAAAswJUBAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-09T14:40:26.135Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-09T14:40:26.135Z"
             }
           ]
         }

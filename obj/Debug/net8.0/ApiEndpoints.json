@@ -780,173 +780,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "ApproveKyc",
-    "RelativePath": "api/Kyc/approve/{userId}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "UploadFace",
-    "RelativePath": "api/Kyc/face/upload",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "Image",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "UploadIdentity",
-    "RelativePath": "api/Kyc/identity/upload",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "DocumentType",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "FrontImage",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "BackImage",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "GetPendingUsers",
-    "RelativePath": "api/Kyc/pending",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "RejectKyc",
-    "RelativePath": "api/Kyc/reject/{userId}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Guid",
-        "IsRequired": true
-      },
-      {
-        "Name": "dto",
-        "Type": "WebApp.Controllers.KycController\u002BRejectKycDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "ResendOtp",
-    "RelativePath": "api/Kyc/resend-email-otp",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "ResendPhoneOtp",
-    "RelativePath": "api/Kyc/resend-phone-otp",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "SendEmailOtp",
-    "RelativePath": "api/Kyc/send-email-otp",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "SendPhoneOtp",
-    "RelativePath": "api/Kyc/send-phone-otp",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "WebApp.Controllers.KycController\u002BPhoneNumber",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "VerifyEmailOtp",
-    "RelativePath": "api/Kyc/verify-email-otp",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "WebApp.Controllers.KycController\u002BVerifyOtpDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebApp.Controllers.KycController",
-    "Method": "VerifyPhoneOtp",
-    "RelativePath": "api/Kyc/verify-phone-otp",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "WebApp.Controllers.KycController\u002BVerifyPhoneOtpDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "WebApp.Controllers.NotificationController",
     "Method": "GetNotifications",
     "RelativePath": "api/Notification",
@@ -1036,6 +869,167 @@
       {
         "Name": "id",
         "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "ApproveKyc",
+    "RelativePath": "api/Varification/approve/{userId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "UploadFace",
+    "RelativePath": "api/Varification/face",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "UploadIdentity",
+    "RelativePath": "api/Varification/identity",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "DocumentType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "FrontImage",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "BackImage",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "GetPendingUsers",
+    "RelativePath": "api/Varification/pending",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "RejectKyc",
+    "RelativePath": "api/Varification/reject/{userId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "WebApp.Controllers.VarificationController\u002BRejectKycDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "ResendOtp",
+    "RelativePath": "api/Varification/resend-email-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "ResendPhoneOtp",
+    "RelativePath": "api/Varification/resend-phone-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "SendEmailOtp",
+    "RelativePath": "api/Varification/send-email-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "SendPhoneOtp",
+    "RelativePath": "api/Varification/send-phone-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "WebApp.Controllers.VarificationController\u002BPhoneNumberDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "VerifyEmailOtp",
+    "RelativePath": "api/Varification/verify-email-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "WebApp.Controllers.VarificationController\u002BVerifyOtpDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebApp.Controllers.VarificationController",
+    "Method": "VerifyPhoneOtp",
+    "RelativePath": "api/Varification/verify-phone-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "WebApp.Controllers.VarificationController\u002BVerifyOtpDto",
         "IsRequired": true
       }
     ],
