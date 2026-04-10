@@ -259,3 +259,14 @@ D:\GitHub\Mondial.Eco\Backend\obj\Debug\net8.0\WebApp.genruntimeconfig.cache
 D:\GitHub\Mondial.Eco\Backend\obj\Debug\net8.0\ref\WebApp.dll
 D:\GitHub\Mondial.Eco\Backend\obj\Debug\net8.0\swae.build.ex.cache
 D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\WebApp.staticwebassets.runtime.json
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\Microsoft.Bcl.Memory.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\StackExchange.Redis.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+D:\GitHub\Mondial.Eco\Backend\bin\Debug\net8.0\Twilio.dll

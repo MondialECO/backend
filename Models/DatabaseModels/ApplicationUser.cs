@@ -33,12 +33,17 @@ namespace WebApp.Models.DatabaseModels
         public string Geography { get; set; }
         public string Experience { get; set; }
         public string MainExperience { get; set; }
+        public string linkedin_url { get; set; }
 
         [BsonElement("KycStatus")]
         public string KycStatus { get; set; } // Pending, Approved, Rejected
 
         [BsonElement("WalletBalance")]
         public double WalletBalance { get; set; }
+        public int Tier_level { get; set; }
+        public int Trust_score { get; set; }
+        public int investor_ready_score { get; set; }
+
 
         [BsonElement("LastLogin")]
         public DateTime LastLogin { get; set; }

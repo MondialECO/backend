@@ -159,6 +159,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 
 
+
 // need removed after using dashboard
 builder.Services.AddScoped<ISubmmitdata, SubmmitdataRepository>();
 
