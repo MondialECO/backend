@@ -162,6 +162,7 @@ namespace WebApp.Controllers
                 return Success("Logged in successfully", new
                 {
                     token,
+                    refreshToken,
                     user = new
                     {
                         Id = user.Id,
@@ -179,11 +180,11 @@ namespace WebApp.Controllers
 
 
 
-        //public class TokenRefreshRequest
-        //{
-        //    public string AccessToken { get; set; } = "";
-        //    public string RefreshToken { get; set; } = "";
-        //}
+        public class TokenRefreshRequest
+        {
+            public string AccessToken { get; set; } = "";
+            public string RefreshToken { get; set; } = "";
+        }
 
         [HttpGet("me")]
         public async Task<IActionResult> Me()
@@ -208,66 +209,66 @@ namespace WebApp.Controllers
         }
 
 
-        //[HttpPost("refresh")]
-        //public async Task<IActionResult> Refresh(TokenRefreshRequest request)
-        //{
-        //    try
-        //    {
-        //        var principal = JwtTokenHelper.GetPrincipalFromExpiredToken(
-        //            request.AccessToken,
-        //           _configuration["JwtSettings:Key"],
-        //            _configuration["JwtSettings:Issuer"],
-        //            _configuration["JwtSettings:Audience"]
-        //        );
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh(TokenRefreshRequest request)
+        {
+            try
+            {
+                var principal = JwtTokenHelper.GetPrincipalFromExpiredToken(
+                    request.AccessToken,
+                   _configuration["JwtSettings:Key"],
+                    _configuration["JwtSettings:Issuer"],
+                    _configuration["JwtSettings:Audience"]
+                );
 
-        //        var userId = principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        //        if (userId == null)
-        //            return UnauthorizedResponse("Invalid access token");
+                var userId = principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+                if (userId == null)
+                    return UnauthorizedResponse("Invalid access token");
 
-        //        var user = await _userManager.FindByIdAsync(userId);
-        //        if (user == null)
-        //            return UnauthorizedResponse("User not found");
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                    return UnauthorizedResponse("User not found");
 
-        //        if (user.RefreshToken == null ||
-        //            user.RefreshToken.Token != request.RefreshToken ||
-        //            user.RefreshToken.ExpiresAt < DateTime.UtcNow ||
-        //            user.RefreshToken.IsRevoked)
-        //        {
-        //            return UnauthorizedResponse("Invalid refresh token");
-        //        }
+                if (user.RefreshToken == null ||
+                    user.RefreshToken.Token != request.RefreshToken ||
+                    user.RefreshToken.ExpiresAt < DateTime.UtcNow ||
+                    user.RefreshToken.IsRevoked)
+                {
+                    return UnauthorizedResponse("Invalid refresh token");
+                }
 
-        //        var newAccessToken = JwtTokenHelper.GenerateToken(
-        //            user.Id.ToString(),
-        //            (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "User",
-        //            _configuration["JwtSettings:Key"],
-        //            _configuration["JwtSettings:Issuer"],
-        //            _configuration["JwtSettings:Audience"]
-        //        );
+                var newAccessToken = JwtTokenHelper.GenerateToken(
+                    user.Id.ToString(),
+                    (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "User",
+                    _configuration["JwtSettings:Key"],
+                    _configuration["JwtSettings:Issuer"],
+                    _configuration["JwtSettings:Audience"]
+                );
 
-        //        var newRefreshToken = JwtTokenHelper.GenerateRefreshToken();
+                var newRefreshToken = JwtTokenHelper.GenerateRefreshToken();
 
-        //        user.RefreshToken.Token = newRefreshToken;
-        //        user.RefreshToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
+                user.RefreshToken.Token = newRefreshToken;
+                user.RefreshToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
 
-        //        await _userManager.UpdateAsync(user);
+                await _userManager.UpdateAsync(user);
 
-        //        return Success("Token refreshed", new
-        //        {
-        //            accessToken = newAccessToken,
-        //            refreshToken = newRefreshToken
-        //        });
-        //    }
-        //    catch (SecurityTokenException ste)
-        //    {
-        //        _logger.LogWarning(ste, "Invalid token during refresh");
-        //        return UnauthorizedResponse("Invalid token");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error refreshing token");
-        //        return InternalError("Failed to refresh token");
-        //    }
-        //}
+                return Success("Token refreshed", new
+                {
+                    accessToken = newAccessToken,
+                    refreshToken = newRefreshToken
+                });
+            }
+            catch (SecurityTokenException ste)
+            {
+                _logger.LogWarning(ste, "Invalid token during refresh");
+                return UnauthorizedResponse("Invalid token");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error refreshing token");
+                return InternalError("Failed to refresh token");
+            }
+        }
 
         [Authorize]
         [HttpPost("logout")]
@@ -278,6 +279,9 @@ namespace WebApp.Controllers
 
             if (user == null)
                 return Success("Logged out");
+
+            if (user.RefreshToken != null)
+                user.RefreshToken.IsRevoked = true;
 
             await _userManager.UpdateAsync(user);
             await _signInManager.SignOutAsync();

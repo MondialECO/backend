@@ -87,24 +87,6 @@ namespace WebApp.Controllers
             });
         }
 
-        private IActionResult UnauthorizedResponse(string message)
-        {
-            return Unauthorized(new
-            {
-                success = false,
-                message
-            });
-        }
-
-        private IActionResult InternalError(string message)
-        {
-            return StatusCode(500, new
-            {
-                success = false,
-                message
-            });
-        }
-
         #endregion
 
 
@@ -116,23 +98,23 @@ namespace WebApp.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                    return Fail("Invalid request data");
+                    return BadRequest(ModelState);
 
 
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null)
-                    return UnauthorizedResponse("Invalid email or password");
+                    return Unauthorized(new { Message = "Invalid email or password" });
 
                 if (!user.EmailConfirmed)
                 {
-                    return UnauthorizedResponse("You need to confirm your email before logging in.");
+                    return Unauthorized(new { Message = "You need to confirm your email before logging in." });
                 }
 
-                if (!await _userManager.CheckPasswordAsync(user, model.Password))
-                    return UnauthorizedResponse("Invalid email or password");
+                if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+                    return Unauthorized(new { Message = "Invalid email or password" });
 
                 if (user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.UtcNow)
-                    return UnauthorizedResponse("Your account is locked. Please try again later.");
+                    return Unauthorized(new { Message = "Your account is locked. Please try again later." });
 
                 var roles = await _userManager.GetRolesAsync(user);
                 var role = roles.Count > 0 ? roles[0] : "User";
@@ -144,6 +126,7 @@ namespace WebApp.Controllers
 
                 var refreshTokenEntity = new RefreshToken
                 {
+                    
                     Token = refreshToken,
                     ExpiresAt = DateTime.UtcNow.AddDays(7),
                     CreatedByIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? ""
@@ -151,123 +134,102 @@ namespace WebApp.Controllers
 
                 user.RefreshToken = refreshTokenEntity;
                 user.LastLogin = DateTime.UtcNow;
+                // Here you would typically save the refresh token to your database
                 var updateResult = await _userManager.UpdateAsync(user);
 
-                if (!updateResult.Succeeded)
+                //await _signInManager.SignInAsync(user, user.LastLogin == refreshTokenEntity.CreatedAt);
+                return Ok(new
                 {
-                    _logger.LogWarning("Failed to update user with refresh token");
-                    // still return tokens to user, but log warning
-                }
-
-                return Success("Logged in successfully", new
-                {
-                    token,
-                    user = new
+                    Token = token,
+                    User = new
                     {
                         Id = user.Id,
                         Name = user.Name,
                         Roles = roles
+
+
                     }
                 });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error during login");
-                return InternalError("An unexpected error occurred. Please try again later.");
+                return StatusCode(500, new { Message = "An unexpected error occurred. Please try again later." });
             }
         }
 
 
 
-        //public class TokenRefreshRequest
-        //{
-        //    public string AccessToken { get; set; } = "";
-        //    public string RefreshToken { get; set; } = "";
-        //}
+        public class TokenRefreshRequest
+        {
+            public string AccessToken { get; set; } = "";
+            public string RefreshToken { get; set; } = "";
+        }
 
         [HttpGet("me")]
         public async Task<IActionResult> Me()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
-                return UnauthorizedResponse("User not authenticated.");
+                return Unauthorized(new { Message = "User not authenticated." });
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                return NotFoundResponse("User not found.");
+                return NotFound(new { Message = "User not found." });
 
-            return Success("User retrieved", new
-            {
-                user.Id,
-                user.Name,
-                user.Email,
-                user.PhoneNumber,
-                user.User,
-                user.Bio
-            });
+            return Ok();
         }
 
 
-        //[HttpPost("refresh")]
-        //public async Task<IActionResult> Refresh(TokenRefreshRequest request)
-        //{
-        //    try
-        //    {
-        //        var principal = JwtTokenHelper.GetPrincipalFromExpiredToken(
-        //            request.AccessToken,
-        //           _configuration["JwtSettings:Key"],
-        //            _configuration["JwtSettings:Issuer"],
-        //            _configuration["JwtSettings:Audience"]
-        //        );
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh(TokenRefreshRequest request)
+        {
+            var principal = JwtTokenHelper.GetPrincipalFromExpiredToken(
+                request.AccessToken,
+               _configuration["JwtSettings:Key"],
+                _configuration["JwtSettings:Issuer"],
+                _configuration["JwtSettings:Audience"]
+            );
 
-        //        var userId = principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        //        if (userId == null)
-        //            return UnauthorizedResponse("Invalid access token");
+            var userId = principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            if (userId == null)
+                return Unauthorized();
 
-        //        var user = await _userManager.FindByIdAsync(userId);
-        //        if (user == null)
-        //            return UnauthorizedResponse("User not found");
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return Unauthorized();
 
-        //        if (user.RefreshToken == null ||
-        //            user.RefreshToken.Token != request.RefreshToken ||
-        //            user.RefreshToken.ExpiresAt < DateTime.UtcNow ||
-        //            user.RefreshToken.IsRevoked)
-        //        {
-        //            return UnauthorizedResponse("Invalid refresh token");
-        //        }
+            // Validate refresh token
+            if (user.RefreshToken == null ||
+                user.RefreshToken.Token != request.RefreshToken ||
+                user.RefreshToken.ExpiresAt < DateTime.UtcNow ||
+                user.RefreshToken.IsRevoked)
+            {
+                return Unauthorized("Invalid refresh token");
+            }
 
-        //        var newAccessToken = JwtTokenHelper.GenerateToken(
-        //            user.Id.ToString(),
-        //            (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "User",
-        //            _configuration["JwtSettings:Key"],
-        //            _configuration["JwtSettings:Issuer"],
-        //            _configuration["JwtSettings:Audience"]
-        //        );
+            // Generate new tokens
+            var newAccessToken = JwtTokenHelper.GenerateToken(
+                user.Id.ToString(),
+                user.User,
+                _configuration["JwtSettings:Key"],
+                _configuration["JwtSettings:Issuer"],
+                _configuration["JwtSettings:Audience"]
+            );
 
-        //        var newRefreshToken = JwtTokenHelper.GenerateRefreshToken();
+            var newRefreshToken = JwtTokenHelper.GenerateRefreshToken();
 
-        //        user.RefreshToken.Token = newRefreshToken;
-        //        user.RefreshToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
+            // Rotate refresh token
+            user.RefreshToken.Token = newRefreshToken;
+            user.RefreshToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
 
-        //        await _userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
 
-        //        return Success("Token refreshed", new
-        //        {
-        //            accessToken = newAccessToken,
-        //            refreshToken = newRefreshToken
-        //        });
-        //    }
-        //    catch (SecurityTokenException ste)
-        //    {
-        //        _logger.LogWarning(ste, "Invalid token during refresh");
-        //        return UnauthorizedResponse("Invalid token");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error refreshing token");
-        //        return InternalError("Failed to refresh token");
-        //    }
-        //}
+            return Ok(new
+            {
+                accessToken = newAccessToken,
+                refreshToken = newRefreshToken
+            });
+        }
 
         [Authorize]
         [HttpPost("logout")]
@@ -277,26 +239,36 @@ namespace WebApp.Controllers
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
-                return Success("Logged out");
+                return Ok();
 
+            user.RefreshToken.IsRevoked = true;
             await _userManager.UpdateAsync(user);
             await _signInManager.SignOutAsync();
-            return Success("Logged out");
+            return Ok("Logged out");
         }
+
+
+
+
+        //[HttpPost("logout")]
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await _signInManager.SignOutAsync();
+        //    return Ok(new { Message = "Logged out successfully." });
+        //}
+
+
 
         // POST: api/auth/register
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterModel model)
         {
-            if (!ModelState.IsValid)
-                return Fail("Invalid request data");
-
-            if (string.Equals(model.User, "Admin", StringComparison.OrdinalIgnoreCase))
-                return Fail("Invalid role");
+            if (!ModelState.IsValid || model.User == "Admin" || model.User == "admin")
+                return BadRequest(ModelState);
 
             var existingUser = await _userManager.FindByEmailAsync(model.Email);
             if (existingUser != null)
-                return Fail("Email already in use");
+                return BadRequest(new { Message = "Email already in use" });
 
             var user = new ApplicationUser
             {
@@ -309,12 +281,12 @@ namespace WebApp.Controllers
 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                return Fail("User registration failed");
+                return BadRequest(new { Message = "User registration failed", Errors = result.Errors });
 
             var roleExists = await _roleManager.RoleExistsAsync(model.User);
             if (!roleExists)
             {
-                return InternalError("Failed to create default role");
+                return BadRequest(new { Message = "Failed to create default role" });
             }
 
             await _userManager.AddToRoleAsync(user, model.User);
@@ -329,9 +301,9 @@ namespace WebApp.Controllers
                 $"Please confirm your account by clicking this link: <a href='{confirmationLink}'>Confirm Email</a>");
 
             if (!emailSent)
-                return InternalError("User registered, but failed to send confirmation email.");
+                return StatusCode(500, new { Message = "User registered, but failed to send confirmation email." });
 
-            return StatusCode(201, new { success = true, message = "User registered successfully! Please check your email for confirmation.", data = new { user.Id, user.Email } });
+            return Ok(new { Message = "User registered successfully! Please check your email for confirmation." });
         }
 
         [HttpPost("confirm-email")]
@@ -339,26 +311,26 @@ namespace WebApp.Controllers
         {
             if (string.IsNullOrEmpty(model.UserId) || string.IsNullOrEmpty(model.Token))
             {
-                return Fail("Invalid confirmation request. User ID and Token are required.");
+                return BadRequest(new { Message = "Invalid confirmation request. User ID and Token are required." });
             }
 
             var user = await _userManager.FindByIdAsync(model.UserId);
             if (user == null)
             {
-                return NotFoundResponse("User not found.");
+                return NotFound(new { Message = "User not found." });
             }
 
             if (user.EmailConfirmed)
             {
-                return Success("Your email is already confirmed. You can log in now.");
+                return Ok(new { Message = "Your email is already confirmed. You can log in now." });
             }
             var result = await _userManager.ConfirmEmailAsync(user, model.Token);
             if (!result.Succeeded)
             {
-                return Fail("Email confirmation failed. Invalid or expired token.");
+                return BadRequest(new { Message = "Email confirmation failed. Invalid or expired token." });
             }
 
-            return Success("Email confirmed successfully! You can now log in.");
+            return Ok(new { Message = "Email confirmed successfully! You can now log in." });
         }
 
 
@@ -374,15 +346,21 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Fail("Invalid email");
+                return BadRequest(new
+                {
+                    Message = "Invalid email"
+                });
             }
 
+            // Find the user by email
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
-                return NotFoundResponse("User not found");
+                return BadRequest(new { Message = "User not found" });
 
+            // Generate the reset token
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = WebUtility.UrlEncode(token);
+            // var resetUrl = $"{Request.Scheme}://{Request.Host}/reset-password?token={encodedToken}&email={model.Email}";
             var resetUrl = $"https://mondialbusiness.eu/reset-password?email={model.Email}&token={encodedToken}";
 
             _logger.LogInformation($"Generated password reset token for {model.Email}");
@@ -390,9 +368,9 @@ namespace WebApp.Controllers
                 $"Click here to reset your password: <a href='{resetUrl}'>Reset Password</a>");
 
             if (!emailSent)
-                return InternalError("Failed to send reset password email.");
+                return StatusCode(500, new { Message = "Failed to send reset password email." });
 
-            return Success("Password reset link sent to your email.");
+            return Ok(new { Message = "Password reset link sent to your email." });
         }
 
 
@@ -400,19 +378,21 @@ namespace WebApp.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordRequestModel model)
         {
             if (!ModelState.IsValid)
-                return Fail("Invalid request data");
+                return BadRequest(ModelState);
 
+            // Find the user by email
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
-                return NotFoundResponse("User not found");
+                return BadRequest(new { Message = "User not found" });
 
+            // Reset the password using the token
             var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
 
             if (!result.Succeeded)
-                return Fail("Invalid or expired token.");
+                return BadRequest(new { Message = "Invalid or expired token." });
 
             _logger.LogInformation($"Password successfully reset for {model.Email}");
-            return Success("Password reset successfully.");
+            return Ok(new { Message = "Password reset successfully." });
         }
 
         public class ChangePasswordModel
@@ -428,26 +408,30 @@ namespace WebApp.Controllers
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
-                    return UnauthorizedResponse("User not authenticated.");
+                    return Unauthorized(new { Message = "User not authenticated." });
 
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user == null)
-                    return NotFoundResponse("User not found.");
+                    return NotFound(new { Message = "User not found." });
 
                 var result = await _userManager.ChangePasswordAsync(user, model.currentPassword, model.newPassword);
                 if (!result.Succeeded)
                 {
-                    return Fail("Password change failed.");
+                    return BadRequest(new
+                    {
+                        Message = "Password change failed.",
+                        Errors = result.Errors.Select(e => e.Description)
+                    });
                 }
 
-                _logger.LogInformation($"Password successfully changed for user {user.Email}");
+                _logger.LogInformation($"Password successfully reset for user {user.Email}");
 
-                return Success("Password changed successfully.");
+                return Ok(new { Message = "Password reset successfully." });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error changing password");
-                return InternalError("Internal server error");
+                return StatusCode(500, new { Message = "Internal server error", Error = ex.Message });
             }
         }
 
@@ -456,13 +440,13 @@ namespace WebApp.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
-                return UnauthorizedResponse("User not authenticated.");
+                return Unauthorized(new { Message = "User not authenticated." });
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                return NotFoundResponse("User not found.");
+                return NotFound(new { Message = "User not found." });
 
-            return Success("Account details retrieved", new
+            return Ok(new
             {
                 user.Id,
                 user.Name,
@@ -485,11 +469,11 @@ namespace WebApp.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
-                return UnauthorizedResponse("User not authenticated.");
+                return Unauthorized(new { Message = "User not authenticated." });
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                return NotFoundResponse("User not found.");
+                return NotFound(new { Message = "User not found." });
 
             user.Name = model.Name ?? user.Name;
             user.PhoneNumber = model.Phone ?? user.PhoneNumber;
@@ -499,15 +483,16 @@ namespace WebApp.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                return Fail("Failed to update account.");
+                return BadRequest(new { Message = "Failed to update account.", Errors = result.Errors });
             }
 
-            return Success("Account updated successfully.", new { ImagePath = user.ImagePath });
+            return Ok(new { Message = "Account updated successfully.", ImagePath = user.ImagePath });
         }
 
 
       
     }
+
 
 
 }

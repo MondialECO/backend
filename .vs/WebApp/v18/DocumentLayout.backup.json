@@ -29,32 +29,6 @@
           "SelectedChildIndex": 7,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Common.cs",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Common.cs",
-              "RelativeDocumentMoniker": "Models\\Common.cs",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Common.cs",
-              "RelativeToolTip": "Models\\Common.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAowBUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-10T05:49:46.831Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ApplicationUser.cs",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\ApplicationUser.cs",
-              "RelativeDocumentMoniker": "Models\\DatabaseModels\\ApplicationUser.cs",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\ApplicationUser.cs",
-              "RelativeToolTip": "Models\\DatabaseModels\\ApplicationUser.cs",
-              "ViewState": "AgIAAGEAAAAAAAAAAIA5wHAAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-10T05:27:14.729Z",
-              "EditorCaption": ""
-            },
-            {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
@@ -76,13 +50,37 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Common.cs",
+              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Common.cs",
+              "RelativeDocumentMoniker": "Models\\Common.cs",
+              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\Common.cs",
+              "RelativeToolTip": "Models\\Common.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAowBUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-10T05:49:46.831Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "Models\\DatabaseModels\\ApplicationUser.cs",
+              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Models\\DatabaseModels\\ApplicationUser.cs",
+              "RelativeToolTip": "Models\\DatabaseModels\\ApplicationUser.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAIA5wHAAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-10T05:27:14.729Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "VarificationController.cs",
-              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\Backend\\Controllers\\VarificationController.cs",
+              "DocumentMoniker": "D:\\GitHub\\Mondial.Eco\\backend\\Controllers\\VarificationController.cs",
               "RelativeDocumentMoniker": "Controllers\\VarificationController.cs",
-              "ToolTip": "D:\\GitHub\\Mondial.Eco\\Backend\\Controllers\\VarificationController.cs",
+              "ToolTip": "D:\\GitHub\\Mondial.Eco\\backend\\Controllers\\VarificationController.cs",
               "RelativeToolTip": "Controllers\\VarificationController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB8AAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-10T04:29:06.632Z",
               "EditorCaption": ""
