@@ -182,30 +182,11 @@
         }
       }
     },
-    "/api/Auth/refresh": {
-      "post": {
+    "/api/Auth/me": {
+      "get": {
         "tags": [
           "Auth"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TokenRefreshRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TokenRefreshRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/TokenRefreshRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success"
@@ -983,93 +964,6 @@
         }
       }
     },
-    "/api/Formdata/submit": {
-      "post": {
-        "tags": [
-          "Formdata"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FormData"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FormData"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/FormData"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Formdata/all": {
-      "get": {
-        "tags": [
-          "Formdata"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Formdata/{id}": {
-      "get": {
-        "tags": [
-          "Formdata"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Formdata"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/api/Investor": {
       "post": {
         "tags": [
@@ -1635,55 +1529,6 @@
         },
         "additionalProperties": false
       },
-      "FormData": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "prenom": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "pays": {
-            "type": "string",
-            "nullable": true
-          },
-          "typeProjet": {
-            "type": "string",
-            "nullable": true
-          },
-          "idee": {
-            "type": "string",
-            "nullable": true
-          },
-          "pourquoi": {
-            "type": "string",
-            "nullable": true
-          },
-          "peur": {
-            "type": "string",
-            "nullable": true
-          },
-          "temps": {
-            "type": "string",
-            "nullable": true
-          },
-          "budget": {
-            "type": "string",
-            "nullable": true
-          },
-          "conditions": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
       "Investments": {
         "type": "object",
         "properties": {
@@ -1829,20 +1674,6 @@
             "nullable": true
           },
           "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TokenRefreshRequest": {
-        "type": "object",
-        "properties": {
-          "accessToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "refreshToken": {
             "type": "string",
             "nullable": true
           }

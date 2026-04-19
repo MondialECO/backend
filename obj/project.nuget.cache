@@ -81,5 +81,18 @@
     "C:\\Users\\Hafiz\\.nuget\\packages\\webpush\\1.0.12\\webpush.1.0.12.nupkg.sha512",
     "C:\\Users\\Hafiz\\.nuget\\packages\\zstdsharp.port\\0.7.3\\zstdsharp.port.0.7.3.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'MailKit' 4.11.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr",
+      "projectPath": "D:\\GitHub\\Mondial.Eco\\Backend\\WebApp.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\GitHub\\Mondial.Eco\\Backend\\WebApp.csproj",
+      "libraryId": "MailKit",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

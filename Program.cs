@@ -166,7 +166,7 @@ builder.Services.AddScoped<ISubmmitdata, SubmmitdataRepository>();
 // Email service
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<SaveFile>();
-
+builder.Services.AddScoped<TwilioService>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
