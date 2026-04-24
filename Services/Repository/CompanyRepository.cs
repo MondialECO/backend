@@ -3,14 +3,14 @@ using WebApp.Services.Interface;
 
 namespace WebApp.Services.Repository
 {
-    public class CompanyRepository : ICompanyRepository<Company>
+    public class CompanyRepository : ICompanyRepository<companies>
     {
-        public Task CreateAsync(Company company)
+        public Task CreateAsync(companies company)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Company?> GetByUserIdAsync(string userId)
+        public Task<companies?> GetByUserIdAsync(string userId)
         {
             throw new NotImplementedException();
         }
