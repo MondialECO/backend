@@ -1,0 +1,69 @@
+# Prometheus alerting rules for the Mondial backend.
+# Load via Prometheus rule_files and wire the group to Alertmanager.
+#
+# NOTE: metric names come from the OpenTelemetry Prometheus exporter and
+# ASP.NET Core / runtime instrumentation. Confirm the exact exposed names
+# against your /metrics output and adjust label/job selectors to match
+# your scrape config (job name assumed: "mondial-backend").
+
+groups:
+  - name: mondial-backend.slo
+    rules:
+      - alert: MondialBackendDown
+        expr: up{job="mondial-backend"} == 0
+        for: 2m
+        labels: { severity: page }
+        annotations:
+          summary: "Backend target down"
+          description: "No replica of {{ $labels.job }} has been scrapable for 2m."
+
+      - alert: MondialHigh5xxRate
+        # 5xx share of all requests over 5m exceeds the 0.5% SLO.
+        expr: |
+          sum(rate(http_server_request_duration_seconds_count{http_response_status_code=~"5.."}[5m]))
+          /
+          sum(rate(http_server_request_duration_seconds_count[5m])) > 0.005
+        for: 5m
+        labels: { severity: page }
+        annotations:
+          summary: "5xx error rate above SLO"
+          description: "5xx ratio {{ $value | humanizePercentage }} over 5m (SLO 0.5%)."
+
+      - alert: MondialHighLatencyP99
+        expr: |
+          histogram_quantile(0.99,
+            sum(rate(http_server_request_duration_seconds_bucket[5m])) by (le)) > 1.5
+        for: 10m
+        labels: { severity: page }
+        annotations:
+          summary: "API p99 latency above SLO"
+          description: "p99 = {{ $value }}s over 5m (SLO 1.5s)."
+
+      - alert: MondialHighLatencyP95
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_server_request_duration_seconds_bucket[5m])) by (le)) > 0.8
+        for: 15m
+        labels: { severity: ticket }
+        annotations:
+          summary: "API p95 latency above SLO"
+          description: "p95 = {{ $value }}s over 5m (SLO 0.8s)."
+
+  - name: mondial-backend.runtime
+    rules:
+      - alert: MondialHighProcessMemory
+        # Adjust metric name to your runtime instrumentation output.
+        expr: process_runtime_dotnet_gc_heap_size_bytes / 1024 / 1024 > 1024
+        for: 10m
+        labels: { severity: ticket }
+        annotations:
+          summary: "Managed heap > 1 GiB"
+          description: "Possible leak or under-provisioning on {{ $labels.instance }}."
+
+      - alert: MondialThreadPoolStarvation
+        expr: process_runtime_dotnet_thread_pool_queue_length > 100
+        for: 5m
+        labels: { severity: page }
+        annotations:
+          summary: "Thread pool queue backing up"
+          description: "Queue length {{ $value }} — request processing starved."

@@ -20,8 +20,10 @@
 **Operations**
 - [ ] CI green on `main`; deploy workflow secrets configured.
 - [ ] MongoDB Atlas automated backups enabled (PITR if available).
-- [ ] Prometheus scraping `/metrics` from an internal host.
+- [ ] Prometheus scraping `/metrics` from an internal host;
+      `ops/prometheus-alerts.yml` rules loaded and wired to on-call.
 - [ ] Log output shipped/retained somewhere durable.
+- [ ] On-call has read `OPERATIONS.md` (runbook, SLOs, recovery).
 - [ ] Load test meets thresholds (see below).
 
 ## Backups & data durability
