@@ -1,8 +1,10 @@
-﻿using FluentValidation;
+﻿using Asp.Versioning;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Identity;
@@ -275,10 +277,46 @@ builder.Services.AddRateLimiter(options =>
             }));
 });
 
+// API versioning. Non-breaking: a default version is assumed when the
+// client does not specify one, so existing routes/clients keep working.
+// Clients can opt into versions via the X-Api-Version header or
+// ?api-version= query string.
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new HeaderApiVersionReader("X-Api-Version"),
+        new QueryStringApiVersionReader("api-version"));
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+});
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ValidationFilter>();
+})
+.ConfigureApiBehaviorOptions(options =>
+{
+    // Make the built-in [ApiController] model-state 400 use the shared
+    // ApiResponse envelope so every validation error has one shape.
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(kvp => kvp.Value is { Errors.Count: > 0 })
+            .ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
+
+        var payload = WebApp.Models.ApiResponse.Error(
+            "Validation failed.",
+            context.HttpContext.TraceIdentifier,
+            errors);
+        return new BadRequestObjectResult(payload);
+    };
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
