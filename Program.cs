@@ -57,11 +57,23 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
 
-// MongoClient → Singleton (recommended by MongoDB)
+// MongoClient → Singleton (recommended by MongoDB). Production-tuned:
+// bounded server-selection/connect timeouts so a DB blip fails fast
+// instead of blocking request threads, an explicit connection pool so
+// spiky traffic cannot exhaust connections, and retryable reads/writes
+// so transient primary elections recover transparently.
 builder.Services.AddSingleton<IMongoClient>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-    return new MongoClient(settings.ConnectionString);
+    var clientSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
+    clientSettings.ServerSelectionTimeout = TimeSpan.FromSeconds(5);
+    clientSettings.ConnectTimeout = TimeSpan.FromSeconds(10);
+    clientSettings.SocketTimeout = TimeSpan.FromSeconds(30);
+    clientSettings.MaxConnectionPoolSize = 200;
+    clientSettings.MinConnectionPoolSize = 10;
+    clientSettings.RetryReads = true;
+    clientSettings.RetryWrites = true;
+    return new MongoClient(clientSettings);
 });
 // IMongoDatabase → Singleton
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
@@ -77,7 +89,17 @@ builder.Services.AddSingleton<MongoDbContext>();
 // and the DataProtection key ring so every replica shares the same state.
 var redisConnection = builder.Configuration["Redis:Configuration"] ?? "localhost:6379";
 var redisInstanceName = builder.Configuration["Redis:InstanceName"] ?? "Mondial";
-var redisMultiplexer = ConnectionMultiplexer.Connect(redisConnection);
+
+// AbortOnConnectFail=false: do not crash-loop if Redis is briefly
+// unreachable at startup; the multiplexer reconnects in the background
+// and the Redis readiness health check keeps this replica out of the
+// load balancer until Redis is actually available.
+var redisOptions = ConfigurationOptions.Parse(redisConnection);
+redisOptions.AbortOnConnectFail = false;
+redisOptions.ConnectRetry = 5;
+redisOptions.ConnectTimeout = 5000;
+redisOptions.KeepAlive = 60;
+var redisMultiplexer = ConnectionMultiplexer.Connect(redisOptions);
 builder.Services.AddSingleton<IConnectionMultiplexer>(redisMultiplexer);
 builder.Services.AddSingleton<IPresenceTracker, RedisPresenceTracker>();
 
