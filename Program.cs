@@ -390,3 +390,7 @@ finally
 {
     Log.CloseAndFlush();
 }
+
+// Exposed so WebApplicationFactory<Program> can bootstrap the app in
+// integration tests (top-level statements otherwise emit an internal Program).
+public partial class Program { }
