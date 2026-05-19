@@ -26,6 +26,7 @@ using WebApp.Middleware;
 using WebApp.Models;
 using WebApp.Models.DatabaseModels;
 using WebApp.Services;
+using WebApp.Services.Email;
 using WebApp.Services.Interface;
 using WebApp.Services.Repository;
 using WebApp.Validation;
@@ -210,7 +211,9 @@ builder.Services.AddStackExchangeRedisCache(options =>
 // need removed after using dashboard
 builder.Services.AddScoped<ISubmmitdata, SubmmitdataRepository>();
 
-// Email service
+// Email: queue (singleton) + background sender; EmailService now enqueues.
+builder.Services.AddSingleton<IEmailQueue, EmailQueue>();
+builder.Services.AddHostedService<EmailBackgroundService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<SaveFile>();
 builder.Services.AddScoped<TwilioService>();

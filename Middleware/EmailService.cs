@@ -1,49 +1,33 @@
-﻿using MailKit.Net.Smtp;
-using MimeKit;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Threading.Tasks;
+using WebApp.Services.Email;
 
+/// <summary>
+/// Public email API used by controllers. Now enqueues the message and
+/// returns immediately; the actual SMTP send happens in
+/// <see cref="EmailBackgroundService"/> off the request path. The bool
+/// return now means "accepted for delivery" rather than "delivered".
+/// Signature kept unchanged so callers need no modification.
+/// </summary>
 public class EmailService
 {
-    private readonly IConfiguration _configuration;
+    private readonly IEmailQueue _queue;
+    private readonly ILogger<EmailService> _logger;
 
-    public EmailService(IConfiguration configuration)
+    public EmailService(IEmailQueue queue, ILogger<EmailService> logger)
     {
-        _configuration = configuration;
+        _queue = queue;
+        _logger = logger;
     }
 
     public async Task<bool> SendEmailAsync(string toEmail, string subject, string body)
     {
-        try
+        if (string.IsNullOrWhiteSpace(toEmail))
         {
-            var emailSettings = _configuration.GetSection("EmailSettings");
-
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Mondial Eco", emailSettings["Email"]));
-            message.To.Add(new MailboxAddress("", toEmail));
-            message.Subject = subject;
-
-            message.Body = new TextPart("html")
-            {
-                Text = body
-            };
-
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync(emailSettings["SmtpServer"], int.Parse(emailSettings["Port"]), MailKit.Security.SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync(emailSettings["Email"], emailSettings["Password"]);
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
-            }
-
-            return true;
-        }
-
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Email sending failed: {ex.Message}");
+            _logger.LogWarning("SendEmailAsync called with empty recipient; skipped");
             return false;
         }
+
+        await _queue.EnqueueAsync(new EmailMessage(toEmail, subject, body));
+        _logger.LogInformation("Email to {To} queued for delivery", toEmail);
+        return true;
     }
 }
