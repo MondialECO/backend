@@ -42,6 +42,17 @@ target, reliability work preempts feature work.
 4. If a bad deploy: roll back (see `DEPLOYMENT.md` → Rollback).
 5. If load: scale `docker compose up -d --scale api=N api`.
 
+### Note on DataProtection at startup
+
+The DataProtection key ring is persisted to Redis (so all replicas share
+it). The framework's hosted service eagerly tries to load the ring at
+startup; if Redis is unreachable at that exact moment it logs `Key ring
+failed to load during application startup` and continues — the app does
+**not** crash (Phase 10 resilience). Once Redis is reachable, keys load
+lazily on first use. Readiness is gated on Redis, so the reverse proxy
+holds traffic until then; the practical impact is just an extra log line
+during cold/rolling deploys when Redis warms after the API.
+
 ### 2. Redis unreachable
 - Symptom: `/health/ready` 503, replicas out of rotation, SignalR
   fan-out degraded. App does **not** crash-loop (AbortOnConnectFail
