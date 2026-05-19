@@ -1,0 +1,20 @@
+# Normalize line endings. Text files are LF in the repo; Git converts to
+# the platform on checkout. Shell scripts and Dockerfiles MUST stay LF or
+# they break inside Linux containers (Phase 8).
+* text=auto eol=lf
+
+*.cs        text eol=lf
+*.csproj    text eol=lf
+*.sln       text eol=crlf
+*.json      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+*.config    text eol=lf
+
+# Binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.dll binary
