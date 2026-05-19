@@ -166,7 +166,10 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"])),
         RoleClaimType = ClaimTypes.Role,
-        NameClaimType = JwtRegisteredClaimNames.Sub
+        NameClaimType = JwtRegisteredClaimNames.Sub,
+        // Default ClockSkew is 5 min: a revoked/expired token would
+        // remain valid for that long. 30s is enough for NTP drift.
+        ClockSkew = TimeSpan.FromSeconds(30)
     };
     // SignalR access token support
     options.Events = new JwtBearerEvents
@@ -444,6 +447,15 @@ app.MapControllers();
 // Prometheus metrics scrape endpoint. Restrict this at the reverse proxy
 // (Phase 8) so it is not publicly exposed.
 app.MapPrometheusScrapingEndpoint();
+
+// RFC 9116 vulnerability disclosure. Served as a route (not a static
+// file) because ASP.NET Core's static file provider excludes dotted
+// directories by default. Update Expires before it lapses (max ~1 year).
+app.MapGet("/.well-known/security.txt", () => Results.Text(
+    "Contact: mailto:security@mondialbusiness.eu\n" +
+    "Expires: 2027-05-20T00:00:00Z\n" +
+    "Preferred-Languages: en\n",
+    "text/plain"));
 
 // Liveness: process is up and the pipeline responds (no dependency checks).
 app.MapHealthChecks("/health/live", new HealthCheckOptions

@@ -309,7 +309,10 @@ namespace WebApp.Controllers
 
             var existingUser = await _userManager.FindByEmailAsync(model.Email);
             if (existingUser != null)
+            {
+                _audit.Record("register", model.Email, false, new { reason = "email_in_use" });
                 return Fail("Email already in use");
+            }
 
             var user = new ApplicationUser
             {
@@ -343,6 +346,8 @@ namespace WebApp.Controllers
 
             if (!emailSent)
                 return InternalError("User registered, but failed to send confirmation email.");
+
+            _audit.Record("register", user.Email!, true, new { role = model.User });
 
             return StatusCode(201, new { success = true, message = "User registered successfully! Please check your email for confirmation.", data = new { user.Id, user.Email } });
         }
@@ -392,7 +397,10 @@ namespace WebApp.Controllers
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
+            {
+                _audit.Record("forgot_password", model.Email, false, new { reason = "unknown_email" });
                 return NotFoundResponse("User not found");
+            }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = WebUtility.UrlEncode(token);
@@ -405,6 +413,7 @@ namespace WebApp.Controllers
             if (!emailSent)
                 return InternalError("Failed to send reset password email.");
 
+            _audit.Record("forgot_password", user.Email!, true);
             return Success("Password reset link sent to your email.");
         }
 
@@ -422,9 +431,13 @@ namespace WebApp.Controllers
             var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
 
             if (!result.Succeeded)
+            {
+                _audit.Record("reset_password", user.Email!, false, new { reason = "bad_or_expired_token" });
                 return Fail("Invalid or expired token.");
+            }
 
             _logger.LogInformation($"Password successfully reset for {model.Email}");
+            _audit.Record("reset_password", user.Email!, true);
             return Success("Password reset successfully.");
         }
 
@@ -450,10 +463,12 @@ namespace WebApp.Controllers
                 var result = await _userManager.ChangePasswordAsync(user, model.currentPassword, model.newPassword);
                 if (!result.Succeeded)
                 {
+                    _audit.Record("change_password", user.Email ?? userId, false, new { reason = "bad_current_password" });
                     return Fail("Password change failed.");
                 }
 
                 _logger.LogInformation($"Password successfully changed for user {user.Email}");
+                _audit.Record("change_password", user.Email ?? userId, true);
 
                 return Success("Password changed successfully.");
             }
