@@ -1,0 +1,29 @@
+# ---- .NET build output ----
+bin/
+obj/
+out/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ---- Visual Studio / Rider IDE ----
+.vs/
+.idea/
+*.DotSettings.user
+
+# ---- Secrets & environment ----
+# appsettings.json is tracked but MUST NOT contain real secrets (use placeholders).
+# Environment-specific overrides hold real secrets and are NEVER committed:
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+appsettings.*.local.json
+.env
+.env.*
+secrets.json
+
+# ---- Misc ----
+*.log
+Thumbs.db
+.DS_Store
