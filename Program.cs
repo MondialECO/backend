@@ -288,12 +288,17 @@ builder.Services.AddRateLimiter(options =>
         await ctx.HttpContext.Response.WriteAsJsonAsync(payload, token);
     };
 
-    options.AddFixedWindowLimiter("auth", o =>
-    {
-        o.PermitLimit = 5;
-        o.Window = TimeSpan.FromMinutes(1);
-        o.QueueLimit = 0;
-    });
+    // Per-IP partition: a brute-force attempt from one IP must NOT lock
+    // other legitimate users out of /login. 5 attempts/min/IP.
+    options.AddPolicy("auth", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0
+            }));
 
     options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
