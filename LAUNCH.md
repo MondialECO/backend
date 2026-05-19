@@ -35,6 +35,20 @@
   business data is lost. Back up the `redis-data` volume if you want to
   avoid forced re-logins on disaster recovery.
 
+## Dependency security
+
+`dotnet restore` runs NuGet audit. All direct and transitive packages
+with available patches are pinned to fixed versions (OTLP exporter,
+MailKit, MessagePack, Microsoft.Bcl.Memory, Snappier,
+System.Security.Cryptography.Xml).
+
+**Accepted risk:** `SharpCompress` (transitive via `MongoDB.Driver.Core`)
+— advisory GHSA-6c8g-7p36-r338, **no upstream patch exists**. Used only
+for compression on the trusted app↔MongoDB Atlas connection, never on
+untrusted/user-supplied archives, so the vector is not reachable.
+Suppressed via `<NuGetAuditSuppress>` with justification in the csproj.
+Re-evaluate when SharpCompress ships a fix.
+
 ## Load test
 
 ```
