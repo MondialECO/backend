@@ -140,6 +140,36 @@ so state stays isolated.
 
 `README.md` + this `CHANGELOG.md`.
 
+## Phase 17 — Real runtime validation
+
+`scripts/smoke-local.ps1` — reusable runtime smoke that boots the app
+without external infra (Phase 10's lazy MongoClient + Redis
+AbortOnConnectFail=false make this possible) and probes the full public
+surface. Two modes:
+
+- `-Mode Run` (Development) — `dotnet build` + `dotnet WebApp.dll`.
+- `-Mode Published` (Production) — `dotnet publish` + `dotnet WebApp.dll`,
+  which is the **exact execution path the Docker container takes**.
+
+Both modes pass 9/9 probes (health/live, security headers, correlation
+id behaviour, /version build metadata, /.well-known/security.txt,
+/metrics Prometheus content, response compression negotiation, 404
+handling without stack-trace leak, per-IP auth rate-limit firing at the
+6th request). This validates the production runtime path end-to-end.
+
+Findings recorded:
+- `launchSettings.json` pins `applicationUrl: http://localhost:5093`,
+  overriding `ASPNETCORE_URLS` when `dotnet run` is used. Dev-only — not
+  used by containers/CI; the smoke script passes `--no-launch-profile`
+  internally (older versions did; current version uses `dotnet WebApp.dll`
+  directly which doesn't consult launchSettings).
+- DataProtection key-ring eager-loads at startup and logs `Key ring
+  failed to load during application startup` when Redis is unreachable,
+  but the hosted service catches and continues — process stays up
+  (Phase 10 resilience confirmed). Keys load lazily once Redis comes
+  back; readiness gating prevents user impact. Documented in
+  `OPERATIONS.md`.
+
 ## Outstanding (owner: project lead)
 
 1. **Rotate leaked credentials + purge git history.** Code/config now

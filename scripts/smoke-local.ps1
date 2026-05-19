@@ -9,7 +9,14 @@
 # Exit:    0 = all probes passed, 1 = at least one failed
 
 [CmdletBinding()]
-param([int]$Port = 5099)
+param(
+    [int]$Port = 5099,
+    # Run  = `dotnet run` against the project (Development) - fast dev iteration.
+    # Published = `dotnet publish` then run WebApp.dll (Production) - validates
+    #             the exact entrypoint the Docker runtime image uses.
+    [ValidateSet('Run','Published')]
+    [string]$Mode = 'Run'
+)
 
 $ErrorActionPreference = 'Stop'
 $env:Path = "$env:USERPROFILE\.dotnet;$env:Path"
@@ -21,7 +28,10 @@ Remove-Item $logOut,$logErr -ErrorAction SilentlyContinue
 
 # --- format-valid dummy config; never connects to real services. ---
 $env:ASPNETCORE_URLS        = $base
-$env:ASPNETCORE_ENVIRONMENT = "Development"
+# Published mode runs as the container would (Production); Run mode is for dev.
+$env:ASPNETCORE_ENVIRONMENT = if ($Mode -eq 'Published') { 'Production' } else { 'Development' }
+$env:BUILD_SHA              = "smoke-$Mode"
+$env:BUILD_TIME             = (Get-Date).ToString('o')
 $env:MongoDbSettings__ConnectionString = "mongodb://127.0.0.1:27017/?serverSelectionTimeoutMS=2000"
 $env:MongoDbSettings__DatabaseName     = "SmokeTest"
 $env:JwtSettings__Issuer    = "smoke"
@@ -62,9 +72,29 @@ function Probe([string]$name, [scriptblock]$body) {
     }
 }
 
-Write-Host "Starting WebApp on $base ..."
-$p = Start-Process -FilePath dotnet `
-    -ArgumentList "run","--no-build","--no-launch-profile","--project","WebApp.csproj","-c","Release" `
+# Both modes: prep an output directory containing WebApp.dll + deps,
+# then run `dotnet WebApp.dll` exactly as the container does. Published
+# mode runs publish (one self-contained folder, what Docker ships); Run
+# mode just does a build (lighter, for dev iteration).
+if ($Mode -eq 'Published') {
+    $entryDir = Join-Path $env:TEMP "mondial-smoke-publish"
+    Remove-Item -Recurse -Force $entryDir -ErrorAction SilentlyContinue
+    Write-Host "dotnet publish (Release) -> $entryDir ..."
+    dotnet publish WebApp.csproj -c Release -o $entryDir /p:UseAppHost=false --nologo | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed" }
+} else {
+    Write-Host "dotnet build (Release) ..."
+    dotnet build WebApp.csproj -c Release --nologo | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "dotnet build failed" }
+    $entryDir = Join-Path (Get-Location) 'bin\Release\net8.0'
+}
+
+$entryDll = Join-Path $entryDir 'WebApp.dll'
+if (-not (Test-Path $entryDll)) { throw "WebApp.dll not found at $entryDll" }
+
+Write-Host "Starting WebApp.dll ($Mode / $($env:ASPNETCORE_ENVIRONMENT)) on $base ..."
+$p = Start-Process -FilePath dotnet -ArgumentList $entryDll `
+    -WorkingDirectory $entryDir `
     -PassThru -WindowStyle Hidden `
     -RedirectStandardOutput $logOut -RedirectStandardError $logErr
 

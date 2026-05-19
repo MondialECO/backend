@@ -62,6 +62,20 @@ dotnet test    WebApp.sln -c Release        # 12 unit tests
 
 Local run requires user-secrets set + a reachable Redis + MongoDB.
 
+### Runtime smoke test (no external infra)
+
+```
+pwsh scripts/smoke-local.ps1                 # Mode=Run  - dotnet build + WebApp.dll, Development
+pwsh scripts/smoke-local.ps1 -Mode Published # dotnet publish + WebApp.dll, Production
+                                             #   (the exact execution path the Docker container uses)
+```
+
+Boots the app with format-valid dummy config and probes the public
+surface end-to-end (health, /version, /.well-known/security.txt,
+/metrics, security headers, correlation-id, response compression,
+404 handling, per-IP rate limit). Requires no external Mongo/Redis;
+9 probes pass in either mode.
+
 ## Deploy
 
 See `DEPLOYMENT.md`. CI builds + tests on every push; CD builds an image
