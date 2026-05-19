@@ -12,7 +12,7 @@ COPY . .
 RUN dotnet publish WebApp.csproj -c Release -o /app/publish /p:UseAppHost=false
 
 # ---- Runtime stage ----
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
 # curl is needed for the container HEALTHCHECK; run as non-root.
