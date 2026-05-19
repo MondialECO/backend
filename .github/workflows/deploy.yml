@@ -1,0 +1,63 @@
+# Builds the container image, pushes to GHCR, and deploys to the VPS.
+# Runs only after the .NET build/test workflow succeeds on main.
+#
+# Required repository secrets:
+#   VPS_HOST     - server hostname/IP
+#   VPS_USER     - ssh user (member of the docker group)
+#   VPS_SSH_KEY  - private key for that user
+# Server prerequisites (one-time):
+#   /opt/mondial/docker-compose.yml  (this repo's compose file)
+#   /opt/mondial/.env                (filled from .env.example, chmod 600)
+
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [".NET"]
+    types: [completed]
+    branches: ["main"]
+
+jobs:
+  build-and-deploy:
+    # Only deploy if the build/test workflow actually passed.
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/mondial
+            echo "APP_IMAGE=ghcr.io/${{ github.repository }}:${{ github.sha }}" > .image.env
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+            export $(grep -v '^#' .image.env | xargs)
+            docker compose pull api
+            docker compose up -d --scale api=3 --no-recreate redis traefik
+            docker compose up -d --scale api=3 api
+            docker image prune -f

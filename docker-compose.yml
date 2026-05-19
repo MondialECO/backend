@@ -1,0 +1,72 @@
+# Production stack for a single VPS:
+#   Traefik (TLS termination + Let's Encrypt + load balancing)
+#   -> N stateless api replicas
+#   -> Redis (shared backplane/cache/presence/dataprotection)
+# MongoDB is external (Atlas) and supplied via .env.
+#
+# Deploy:   docker compose pull && docker compose up -d --scale api=3
+# Scale:    docker compose up -d --scale api=5     (zero-downtime, Traefik
+#           re-balances as healthy replicas appear)
+
+services:
+  traefik:
+    image: traefik:v3.1
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --certificatesresolvers.le.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
+  api:
+    image: ${APP_IMAGE:-mondial-backend:local}
+    build: .
+    expose:
+      - "8080"
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.api.entrypoints=websecure
+      - traefik.http.routers.api.tls.certresolver=le
+      - traefik.http.services.api.loadbalancer.server.port=8080
+      - traefik.http.services.api.loadbalancer.healthcheck.path=/health/ready
+      - traefik.http.services.api.loadbalancer.healthcheck.interval=15s
+      # /metrics reachable only from private ranges, never the public internet
+      - traefik.http.routers.metrics.rule=Host(`${APP_DOMAIN}`) && PathPrefix(`/metrics`)
+      - traefik.http.routers.metrics.entrypoints=websecure
+      - traefik.http.routers.metrics.tls.certresolver=le
+      - traefik.http.routers.metrics.service=api
+      - traefik.http.routers.metrics.middlewares=metrics-ipallow
+      - traefik.http.middlewares.metrics-ipallow.ipallowlist.sourcerange=127.0.0.1/32,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  redis-data:
