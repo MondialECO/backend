@@ -9,12 +9,16 @@ using WebApp.Services.Interface;
 [Authorize]
 public class NotificationHub : Hub
 {
+    private readonly IPresenceTracker _presence;
+
+    public NotificationHub(IPresenceTracker presence) => _presence = presence;
+
     public override async Task OnConnectedAsync()
     {
         var userId = Context.User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
         if (!string.IsNullOrEmpty(userId))
         {
-            PresenceTracker.UserConnected(userId, Context.ConnectionId);
+            await _presence.UserConnectedAsync(userId, Context.ConnectionId);
             await Groups.AddToGroupAsync(Context.ConnectionId, userId);
         }
         await base.OnConnectedAsync();
@@ -26,7 +30,7 @@ public class NotificationHub : Hub
 
         if (!string.IsNullOrEmpty(userId))
         {
-            PresenceTracker.UserDisconnected(userId, Context.ConnectionId);
+            await _presence.UserDisconnectedAsync(userId, Context.ConnectionId);
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, userId);
         }
 

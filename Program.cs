@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.RateLimiting;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using Serilog;
+using StackExchange.Redis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -64,6 +66,22 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
     return client.GetDatabase(settings.DatabaseName);
 });
 builder.Services.AddSingleton<MongoDbContext>();
+
+// ---- Shared Redis (required for multi-replica/stateless operation) ----
+// One multiplexer is reused for caching, the SignalR backplane, presence,
+// and the DataProtection key ring so every replica shares the same state.
+var redisConnection = builder.Configuration["Redis:Configuration"] ?? "localhost:6379";
+var redisInstanceName = builder.Configuration["Redis:InstanceName"] ?? "Mondial";
+var redisMultiplexer = ConnectionMultiplexer.Connect(redisConnection);
+builder.Services.AddSingleton<IConnectionMultiplexer>(redisMultiplexer);
+builder.Services.AddSingleton<IPresenceTracker, RedisPresenceTracker>();
+
+// Shared DataProtection key ring: without this each replica generates its
+// own keys, so auth/reset tokens and antiforgery break behind a load
+// balancer. SetApplicationName must be identical across replicas.
+builder.Services.AddDataProtection()
+    .PersistKeysToStackExchangeRedis(redisMultiplexer, $"{redisInstanceName}-DataProtection-Keys")
+    .SetApplicationName("MondialBackend");
 
 
 // Allowed origins come from configuration (Cors:AllowedOrigins) so each
@@ -141,8 +159,14 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// SignalR
-builder.Services.AddSignalR();
+// SignalR with a Redis backplane so connections/messages are shared
+// across all replicas (a client connected to replica A still receives
+// messages published from replica B).
+builder.Services.AddSignalR()
+    .AddStackExchangeRedis(redisConnection, o =>
+    {
+        o.Configuration.ChannelPrefix = RedisChannel.Literal($"{redisInstanceName}SignalR");
+    });
 // Define CustomUserIdProvider for SignalR
 builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
@@ -174,17 +198,11 @@ builder.Services.AddScoped<WebPushService>();
 
 
 
-// RadisCash
-//builder.Services.AddStackExchangeRedisCache(options =>
-//{
-//    options.Configuration = "localhost:6379";
-//});
-
-
+// Distributed cache on the same shared Redis (connection from config).
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = "localhost:6379"; // Redis server address
-    options.InstanceName = "Mondial";       // Optional prefix
+    options.Configuration = redisConnection;
+    options.InstanceName = redisInstanceName;
 });
 
 
@@ -200,7 +218,6 @@ builder.Services.AddScoped<TwilioService>();
 // Health checks: liveness (process up) is the bare endpoint; readiness
 // (tagged "ready") verifies MongoDB + Redis so the orchestrator only routes
 // traffic to replicas that can actually serve requests.
-var redisConnection = builder.Configuration["Redis:Configuration"] ?? "localhost:6379";
 builder.Services.AddHealthChecks()
     .AddCheck<MongoHealthCheck>(
         "mongodb",

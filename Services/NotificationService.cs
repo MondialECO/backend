@@ -13,17 +13,20 @@ namespace WebApp.Services
         private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IPushSubscriptionEntity _pushRepo;
         public readonly WebPushService _webPushService;
+        private readonly IPresenceTracker _presence;
 
 
         public NotificationService(NotificationRepository repo,
             IHubContext<NotificationHub> hubContext,
             IPushSubscriptionEntity pushRepo,
-            WebPushService webPushService)
+            WebPushService webPushService,
+            IPresenceTracker presence)
         {
             _repo = repo;
             _hubContext = hubContext;
             _pushRepo = pushRepo;
             _webPushService = webPushService;
+            _presence = presence;
         }
 
 
@@ -46,7 +49,7 @@ namespace WebApp.Services
         {
             var notification = await CreateNotification(userId, title, body);
 
-            if (PresenceTracker.IsOnline(userId.ToString()))
+            if (await _presence.IsOnlineAsync(userId.ToString()))
             {
                 await _hubContext.Clients.Group(userId.ToString()).SendAsync("ReceiveNotification", notification);
             }
