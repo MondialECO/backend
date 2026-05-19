@@ -25,6 +25,8 @@ using WebApp.Hubs;
 using WebApp.Middleware;
 using WebApp.Models;
 using WebApp.Models.DatabaseModels;
+using WebApp.Observability;
+using WebApp.Services.Audit;
 using WebApp.Services;
 using WebApp.Services.Email;
 using WebApp.Services.Interface;
@@ -211,6 +213,13 @@ builder.Services.AddStackExchangeRedisCache(options =>
 // need removed after using dashboard
 builder.Services.AddScoped<ISubmmitdata, SubmmitdataRepository>();
 
+// Observability: OpenTelemetry traces + metrics (/metrics for Prometheus).
+builder.AddObservability();
+
+// Audit trail for security-sensitive operations.
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IAuditLogger, AuditLogger>();
+
 // Email: queue (singleton) + background sender; EmailService now enqueues.
 builder.Services.AddSingleton<IEmailQueue, EmailQueue>();
 builder.Services.AddHostedService<EmailBackgroundService>();
@@ -313,6 +322,10 @@ app.MapHub<NotificationHub>("/hubs/notifications");
 app.MapHub<ChatHub>("/hubs/chat");
 
 app.MapControllers();
+
+// Prometheus metrics scrape endpoint. Restrict this at the reverse proxy
+// (Phase 8) so it is not publicly exposed.
+app.MapPrometheusScrapingEndpoint();
 
 // Liveness: process is up and the pipeline responds (no dependency checks).
 app.MapHealthChecks("/health/live", new HealthCheckOptions

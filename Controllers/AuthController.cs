@@ -35,6 +35,7 @@ namespace WebApp.Controllers
         private readonly SaveFile _fileService;
         private readonly IDistributedCache _cache;
         private readonly TwilioService _twilioService;
+        private readonly WebApp.Services.Audit.IAuditLogger _audit;
 
         public AuthController(
             UserManager<ApplicationUser> userManager,
@@ -45,7 +46,8 @@ namespace WebApp.Controllers
             ILogger<AuthController> logger,
             SaveFile saveFile,
             IDistributedCache cache,
-            TwilioService twilioService
+            TwilioService twilioService,
+            WebApp.Services.Audit.IAuditLogger audit
             )
         {
             _userManager = userManager;
@@ -57,6 +59,7 @@ namespace WebApp.Controllers
             _fileService = saveFile;
             _cache = cache;
             _twilioService = twilioService;
+            _audit = audit;
         }
 
         #region Helper Methods
@@ -123,7 +126,10 @@ namespace WebApp.Controllers
 
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null)
+                {
+                    _audit.Record("login", model.Email, false, new { reason = "unknown_email" });
                     return UnauthorizedResponse("Invalid email or password");
+                }
 
                 if (!user.EmailConfirmed)
                 {
@@ -131,7 +137,10 @@ namespace WebApp.Controllers
                 }
 
                 if (!await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    _audit.Record("login", model.Email, false, new { reason = "bad_password" });
                     return UnauthorizedResponse("Invalid email or password");
+                }
 
                 if (user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.UtcNow)
                     return UnauthorizedResponse("Your account is locked. Please try again later.");
@@ -160,6 +169,8 @@ namespace WebApp.Controllers
                     _logger.LogWarning("Failed to update user with refresh token");
                     // still return tokens to user, but log warning
                 }
+
+                _audit.Record("login", user.Email ?? model.Email, true, new { role });
 
                 return Success("Logged in successfully", new
                 {
