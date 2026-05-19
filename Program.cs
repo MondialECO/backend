@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -343,14 +344,69 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Kestrel limits: cap body size, header size and connection count so a
+// hostile or runaway client cannot exhaust memory/sockets under spiky
+// traffic. Body size is configurable (uploads); the rest are safe caps.
+var maxBodyBytes = builder.Configuration.GetValue<long?>("Limits:MaxRequestBodyBytes")
+    ?? 10 * 1024 * 1024; // 10 MB default
+builder.WebHost.ConfigureKestrel(o =>
+{
+    o.Limits.MaxRequestBodySize = maxBodyBytes;
+    o.Limits.MaxRequestHeadersTotalSize = 32 * 1024;
+    o.Limits.MaxConcurrentConnections = 1000;
+    o.Limits.MaxConcurrentUpgradedConnections = 1000;
+    o.Limits.KeepAliveTimeout = TimeSpan.FromSeconds(120);
+    o.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(30);
+});
+
+// Request timeouts: a hung/slow handler frees resources (504) instead of
+// pinning a request thread indefinitely and cascading under load.
+// SignalR hub connections are long-lived and opt out explicitly below.
+builder.Services.AddRequestTimeouts(o =>
+{
+    o.DefaultPolicy = new RequestTimeoutPolicy
+    {
+        Timeout = TimeSpan.FromSeconds(30),
+        TimeoutStatusCode = StatusCodes.Status504GatewayTimeout
+    };
+});
+
 var app = builder.Build();
 
-// Trust the reverse proxy's forwarded headers first so client IP/scheme
-// are correct for everything downstream (logging, rate limiting later).
-app.UseForwardedHeaders(new ForwardedHeadersOptions
+// Trust forwarded headers ONLY from known proxies/networks. Otherwise a
+// client could spoof X-Forwarded-For to evade the per-IP rate limiter and
+// poison audit logs. Defaults cover loopback + RFC1918/Docker ranges
+// (Traefik sits on the private network); override via config per env.
+var fwdOptions = new ForwardedHeadersOptions
 {
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-});
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    ForwardLimit = 1
+};
+fwdOptions.KnownNetworks.Clear();
+fwdOptions.KnownProxies.Clear();
+
+var knownNetworks = builder.Configuration.GetSection("ForwardedHeaders:KnownNetworks").Get<string[]>()
+    ?? new[] { "127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "::1/128" };
+foreach (var cidr in knownNetworks)
+{
+    var parts = cidr.Split('/');
+    if (parts.Length == 2 &&
+        System.Net.IPAddress.TryParse(parts[0], out var prefix) &&
+        int.TryParse(parts[1], out var prefixLength))
+    {
+        fwdOptions.KnownNetworks.Add(
+            new Microsoft.AspNetCore.HttpOverrides.IPNetwork(prefix, prefixLength));
+    }
+}
+
+foreach (var proxy in builder.Configuration.GetSection("ForwardedHeaders:KnownProxies").Get<string[]>()
+    ?? Array.Empty<string>())
+{
+    if (System.Net.IPAddress.TryParse(proxy, out var ip))
+        fwdOptions.KnownProxies.Add(ip);
+}
+
+app.UseForwardedHeaders(fwdOptions);
 
 // Correlation id must be established before the exception handler and
 // request logging so both are tagged with it.
@@ -373,13 +429,15 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseRequestTimeouts();
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// SignalR Hubs configuration
-app.MapHub<NotificationHub>("/hubs/notifications");
-app.MapHub<ChatHub>("/hubs/chat");
+// SignalR Hubs: long-lived connections must opt out of the request
+// timeout or they would be killed after 30s.
+app.MapHub<NotificationHub>("/hubs/notifications").DisableRequestTimeout();
+app.MapHub<ChatHub>("/hubs/chat").DisableRequestTimeout();
 
 app.MapControllers();
 
