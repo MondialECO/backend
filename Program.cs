@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
@@ -14,13 +17,16 @@ using System.Security.Claims;
 using System.Text;
 using WebApp.Configuration;
 using WebApp.DbContext;
+using WebApp.Filters;
 using WebApp.HealthChecks;
 using WebApp.Hubs;
 using WebApp.Middleware;
+using WebApp.Models;
 using WebApp.Models.DatabaseModels;
 using WebApp.Services;
 using WebApp.Services.Interface;
 using WebApp.Services.Repository;
+using WebApp.Validation;
 
 
 // Bootstrap logger: captures errors that occur during startup itself
@@ -60,20 +66,21 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 builder.Services.AddSingleton<MongoDbContext>();
 
 
+// Allowed origins come from configuration (Cors:AllowedOrigins) so each
+// environment sets its own without a redeploy. Credentials are allowed,
+// so origins must be explicit (wildcard + credentials is invalid anyway).
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? new[] { "http://localhost:3000", "https://mondialbusiness.eu" };
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        //policy.AllowAnyOrigin()
-        //      .AllowAnyMethod()
-        //      .AllowAnyHeader();
-        policy.WithOrigins(
-        "http://localhost:3000",
-        "https://mondialbusiness.eu" // Replace with actual domain
-        )
-         .AllowAnyHeader()
-         .AllowAnyMethod()
-         .AllowCredentials();
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
@@ -203,8 +210,47 @@ builder.Services.AddHealthChecks()
         name: "redis",
         tags: new[] { "ready" });
 
+// FluentValidation: validators run via ValidationFilter, returning the
+// shared ApiResponse envelope on failure.
+builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestModelValidator>();
+
+// Rate limiting. Global per-IP limit protects every endpoint; the stricter
+// "auth" policy is applied to AuthController to blunt credential brute-force.
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.OnRejected = async (ctx, token) =>
+    {
+        ctx.HttpContext.Response.ContentType = "application/json";
+        var payload = ApiResponse.Error(
+            "Too many requests. Please slow down and try again shortly.",
+            ctx.HttpContext.TraceIdentifier);
+        await ctx.HttpContext.Response.WriteAsJsonAsync(payload, token);
+    };
+
+    options.AddFixedWindowLimiter("auth", o =>
+    {
+        o.PermitLimit = 5;
+        o.Window = TimeSpan.FromMinutes(1);
+        o.QueueLimit = 0;
+    });
+
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 100,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0
+            }));
+});
+
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -221,7 +267,13 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 // request logging so both are tagged with it.
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<SecurityHeadersMiddleware>();
 app.UseSerilogRequestLogging();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+}
 
 app.UseCors("AllowAll");
 
@@ -230,10 +282,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseStaticFiles();
-app.UseHttpsRedirection();
 
 // SignalR Hubs configuration
 app.MapHub<NotificationHub>("/hubs/notifications");
