@@ -1,28 +1,39 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+# Build & test the .NET backend
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
 name: .NET
 
 on:
   push:
-    branches: [ "Main" ]
+    branches: [ "main", "enterprise-hardening" ]
   pull_request:
-    branches: [ "Main" ]
+    branches: [ "main" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration Release
+
+    # Only run tests if a test project exists (added in Phase 7).
+    # Avoids failing every CI run on "no test projects found".
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      shell: bash
+      run: |
+        if ls **/*[Tt]ests*.csproj >/dev/null 2>&1; then
+          dotnet test --no-build --configuration Release --verbosity normal
+        else
+          echo "No test projects found yet — skipping (added in Phase 7)."
+        fi

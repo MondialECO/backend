@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
@@ -7,18 +8,39 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
+using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WebApp.Configuration;
 using WebApp.DbContext;
+using WebApp.HealthChecks;
 using WebApp.Hubs;
+using WebApp.Middleware;
 using WebApp.Models.DatabaseModels;
 using WebApp.Services;
 using WebApp.Services.Interface;
 using WebApp.Services.Repository;
 
 
+// Bootstrap logger: captures errors that occur during startup itself
+// (before the full Serilog pipeline is configured).
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Refuse to start if required secrets/config are missing or weak.
+builder.ValidateRequiredConfiguration();
+
+// Structured logging for every request, enriched with the correlation id.
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .Enrich.WithProperty("Application", "MondialBackend")
+    .WriteTo.Console());
 
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
 
@@ -168,6 +190,19 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<SaveFile>();
 builder.Services.AddScoped<TwilioService>();
 
+// Health checks: liveness (process up) is the bare endpoint; readiness
+// (tagged "ready") verifies MongoDB + Redis so the orchestrator only routes
+// traffic to replicas that can actually serve requests.
+var redisConnection = builder.Configuration["Redis:Configuration"] ?? "localhost:6379";
+builder.Services.AddHealthChecks()
+    .AddCheck<MongoHealthCheck>(
+        "mongodb",
+        tags: new[] { "ready" })
+    .AddRedis(
+        redisConnection,
+        name: "redis",
+        tags: new[] { "ready" });
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -175,13 +210,20 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
-
-
+// Trust the reverse proxy's forwarded headers first so client IP/scheme
+// are correct for everything downstream (logging, rate limiting later).
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
+
+// Correlation id must be established before the exception handler and
+// request logging so both are tagged with it.
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseSerilogRequestLogging();
+
+app.UseCors("AllowAll");
 
 if (app.Environment.IsDevelopment())
 {
@@ -199,4 +241,28 @@ app.MapHub<ChatHub>("/hubs/chat");
 
 app.MapControllers();
 
-app.Run();
+// Liveness: process is up and the pipeline responds (no dependency checks).
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = _ => false
+});
+// Readiness: MongoDB + Redis reachable. Used by the orchestrator/reverse
+// proxy to decide whether this replica should receive traffic.
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready")
+});
+
+try
+{
+    app.Run();
+}
+catch (Exception ex) when (ex is not HostAbortedException)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly during startup");
+    throw;
+}
+finally
+{
+    Log.CloseAndFlush();
+}
