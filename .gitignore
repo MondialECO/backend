@@ -23,6 +23,9 @@ appsettings.*.local.json
 .env.*
 secrets.json
 
+# ---- Tooling (machine-local) ----
+.claude/
+
 # ---- Misc ----
 *.log
 Thumbs.db
