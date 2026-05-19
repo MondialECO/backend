@@ -55,7 +55,7 @@ jobs:
             BUILD_TIME=${{ github.event.head_commit.timestamp }}
 
       - name: Deploy on VPS
-        uses: appleboy/ssh-action@v1.2.0
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
