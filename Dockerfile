@@ -25,9 +25,15 @@ COPY --from=build /app/publish .
 RUN chown -R appuser /app
 USER appuser
 
+# Build provenance, surfaced at /version for incident triage.
+ARG BUILD_SHA=local
+ARG BUILD_TIME=unknown
+
 ENV ASPNETCORE_URLS=http://+:8080 \
     ASPNETCORE_ENVIRONMENT=Production \
-    DOTNET_RUNNING_IN_CONTAINER=true
+    DOTNET_RUNNING_IN_CONTAINER=true \
+    BUILD_SHA=${BUILD_SHA} \
+    BUILD_TIME=${BUILD_TIME}
 EXPOSE 8080
 
 # Liveness probe used by Docker; the reverse proxy uses /health/ready.

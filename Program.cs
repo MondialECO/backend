@@ -1,5 +1,8 @@
 ﻿using Asp.Versioning;
 using FluentValidation;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.IO.Compression;
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -347,6 +350,25 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Response compression: JSON APIs compress 3-8x, lowering bandwidth and
+// TTFB on slow/mobile links. EnableForHttps=true is standard for JSON
+// SaaS APIs - the BREACH/CRIME class of attacks targets responses that
+// mix attacker-controlled input alongside secrets in one body, which
+// this API does not do.
+builder.Services.AddResponseCompression(o =>
+{
+    o.EnableForHttps = true;
+    o.Providers.Add<BrotliCompressionProvider>();
+    o.Providers.Add<GzipCompressionProvider>();
+    o.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+    {
+        "application/json",
+        "application/problem+json"
+    });
+});
+builder.Services.Configure<BrotliCompressionProviderOptions>(o => o.Level = CompressionLevel.Fastest);
+builder.Services.Configure<GzipCompressionProviderOptions>(o => o.Level = CompressionLevel.Fastest);
+
 // Kestrel limits: cap body size, header size and connection count so a
 // hostile or runaway client cannot exhaust memory/sockets under spiky
 // traffic. Body size is configurable (uploads); the rest are safe caps.
@@ -417,6 +439,7 @@ app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<SecurityHeadersMiddleware>();
 app.UseSerilogRequestLogging();
+app.UseResponseCompression();
 
 if (!app.Environment.IsDevelopment())
 {
@@ -456,6 +479,22 @@ app.MapGet("/.well-known/security.txt", () => Results.Text(
     "Expires: 2027-05-20T00:00:00Z\n" +
     "Preferred-Languages: en\n",
     "text/plain"));
+
+// Build/version reporting for incident triage: which replica/sha is
+// actually serving? Image build threads BUILD_SHA / BUILD_TIME via
+// docker build args.
+var asm = typeof(Program).Assembly;
+var versionInfo = new
+{
+    service = "MondialBackend",
+    version = asm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+              ?? asm.GetName().Version?.ToString()
+              ?? "unknown",
+    commit = Environment.GetEnvironmentVariable("BUILD_SHA") ?? "local",
+    buildTime = Environment.GetEnvironmentVariable("BUILD_TIME") ?? "unknown",
+    environment = app.Environment.EnvironmentName
+};
+app.MapGet("/version", () => Results.Json(versionInfo));
 
 // Liveness: process is up and the pipeline responds (no dependency checks).
 app.MapHealthChecks("/health/live", new HealthCheckOptions
