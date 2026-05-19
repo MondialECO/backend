@@ -1,0 +1,32 @@
+# Automated dependency update PRs. Keeps the supply chain patched
+# without manual auditing; grouped to reduce PR noise.
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      opentelemetry:
+        patterns: ["OpenTelemetry*"]
+      aspnetcore:
+        patterns: ["Microsoft.AspNetCore*", "Microsoft.Extensions*"]
+      test:
+        patterns: ["xunit*", "*Testcontainers*", "FluentAssertions", "Microsoft.NET.Test.Sdk"]
+    commit-message:
+      prefix: "chore(deps)"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(ci)"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(docker)"

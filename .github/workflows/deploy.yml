@@ -17,6 +17,12 @@ on:
     types: [completed]
     branches: ["main"]
 
+# Serialize deploys: never run two at once, and never cancel a deploy
+# that is already in flight (would leave the stack half-updated).
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
     # Only deploy if the build/test workflow actually passed.
