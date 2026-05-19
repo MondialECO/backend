@@ -22,8 +22,11 @@ $ErrorActionPreference = 'Stop'
 $env:Path = "$env:USERPROFILE\.dotnet;$env:Path"
 
 $base = "http://127.0.0.1:$Port"
-$logOut = Join-Path $env:TEMP "smoke-app.out.log"
-$logErr = Join-Path $env:TEMP "smoke-app.err.log"
+# Cross-platform temp dir (env:TEMP is Windows-only; GitHub Linux runners
+# expose pwsh Core where this would be empty).
+$tempDir = [System.IO.Path]::GetTempPath()
+$logOut = Join-Path $tempDir "smoke-app.out.log"
+$logErr = Join-Path $tempDir "smoke-app.err.log"
 Remove-Item $logOut,$logErr -ErrorAction SilentlyContinue
 
 # --- format-valid dummy config; never connects to real services. ---
@@ -77,7 +80,7 @@ function Probe([string]$name, [scriptblock]$body) {
 # mode runs publish (one self-contained folder, what Docker ships); Run
 # mode just does a build (lighter, for dev iteration).
 if ($Mode -eq 'Published') {
-    $entryDir = Join-Path $env:TEMP "mondial-smoke-publish"
+    $entryDir = Join-Path $tempDir "mondial-smoke-publish"
     Remove-Item -Recurse -Force $entryDir -ErrorAction SilentlyContinue
     Write-Host "dotnet publish (Release) -> $entryDir ..."
     dotnet publish WebApp.csproj -c Release -o $entryDir /p:UseAppHost=false --nologo | Out-Null
@@ -182,10 +185,13 @@ try {
 finally {
     Write-Host "Stopping app ..."
     try { if ($p -and -not $p.HasExited) { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue } } catch {}
-    # Also clean up any orphan dotnet WebApp child processes
-    Get-CimInstance Win32_Process -Filter "Name='WebApp.exe' OR Name='dotnet.exe'" -ErrorAction SilentlyContinue |
-        Where-Object { $_.CommandLine -match 'WebApp' } |
-        ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+    # Best-effort orphan cleanup (Windows-only via CIM; on Linux the child
+    # is reaped when its parent group terminates).
+    if ($IsWindows -or [System.Environment]::OSVersion.Platform -eq 'Win32NT') {
+        Get-CimInstance Win32_Process -Filter "Name='WebApp.exe' OR Name='dotnet.exe'" -ErrorAction SilentlyContinue |
+            Where-Object { $_.CommandLine -match 'WebApp' } |
+            ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+    }
 }
 
 $passed = ($results | Where-Object status -eq 'PASS').Count

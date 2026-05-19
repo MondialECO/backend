@@ -54,3 +54,12 @@ jobs:
 
     - name: Test
       run: dotnet test WebApp.sln --no-build --configuration Release --verbosity normal
+
+    # End-to-end runtime smoke against the published artifact (the exact
+    # execution path the Docker container takes). Requires no external
+    # infra: lazy MongoClient + Phase 10 Redis resilience let the app start
+    # with no Mongo/Redis. Validates health/version/metrics/security
+    # headers/correlation id/compression/404/per-IP rate limit.
+    - name: Runtime smoke (Published)
+      shell: pwsh
+      run: ./scripts/smoke-local.ps1 -Mode Published
